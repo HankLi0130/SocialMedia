@@ -21,9 +21,9 @@ class AuthFragment : Fragment() {
             }
         }
         binding.btnSignup.setOnClickListener {
-//            if (findNavController().currentDestination?.id == R.id.authFragment) {
-//                findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToSignUpFragment())
-//            }
+            if (findNavController().currentDestination?.id == R.id.authFragment) {
+                findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToSignUpFragment())
+            }
         }
         return binding.root
     }
