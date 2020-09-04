@@ -16,4 +16,12 @@
     <string name="cancel">Cancel</string>
     <string name="open_camera">Open camera</string>
     <string name="pick_from_gallery">Pick from gallery</string>
+    <string name="name_required_error">Name is required to sign up.</string>
+    <string name="phone_required_error">Phone number is required to sign up.</string>
+    <string name="email_required_error">Email address is required to sign up.</string>
+    <string name="password_required_error">Password is required to sign up.</string>
+    <string name="malformed_phone_error">This phone number is badly formatted.</string>
+    <string name="malformed_email_error">This email address is badly formatted.</string>
+    <string name="short_password_error">Password should be at least 6 characters.</string>
+    <string name="creating_new_user">Creating new user</string>
 </resources>

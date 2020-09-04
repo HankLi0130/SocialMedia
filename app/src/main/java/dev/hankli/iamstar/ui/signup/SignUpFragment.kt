@@ -1,19 +1,19 @@
 package dev.hankli.iamstar.ui.signup
 
 import android.Manifest
-import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,6 +26,10 @@ import dev.hankli.iamstar.utils.Consts.PERMISSION_CODE
 import dev.hankli.iamstar.utils.Consts.PICK_FROM_CAMERA
 import dev.hankli.iamstar.utils.Consts.REQUEST_CAMERA
 import dev.hankli.iamstar.utils.Consts.REQUEST_SD_CARD
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 import dev.hankli.iamstar.utils.Consts.PICK_FROM_GALLERY as PICK_FROM_GALLERY1
 
 
@@ -64,8 +68,9 @@ class SignUpFragment : Fragment() {
         })
         signUpViewModel.shouldNavigateToHome.observe(viewLifecycleOwner, Observer {
             if (it) {
-                startActivity(Intent(context, MainActivity::class.java))
-                hostActivity.finish()
+                //startActivity(Intent(context, MainActivity::class.java))
+                //hostActivity.finish()
+                // TODO show home fragment and don't save the back stack
                 signUpViewModel.doneNavigatingToHomeFragment()
             }
         })
@@ -78,7 +83,9 @@ class SignUpFragment : Fragment() {
         binding.etPhone.doAfterTextChanged { phone ->
             signUpViewModel.phoneNumber = phone.toString()
         }
-        binding.etEmail.doAfterTextChanged { email -> signUpViewModel.email = email.toString() }
+        binding.etEmail.doAfterTextChanged { email ->
+            signUpViewModel.email = email.toString()
+        }
         binding.etPassword.doAfterTextChanged { password ->
             signUpViewModel.password = password.toString()
         }
@@ -124,7 +131,7 @@ class SignUpFragment : Fragment() {
 
     private fun checkPermissions() {
         if (ContextCompat.checkSelfPermission(
-                context!!,
+                requireContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
@@ -156,42 +163,49 @@ class SignUpFragment : Fragment() {
         if (!(activity as MainActivity).checkPermissions(REQUEST_CAMERA)) {
             return
         }
-        val values = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "Picture")
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From your camera")
-        imageUri = activity?.contentResolver!!.insert(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values
-        )!!
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-        startActivityForResult(intent, PICK_FROM_CAMERA)
+
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    signUpViewModel.showError("Fail to create photo file.")
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        requireContext(),
+                        "dev.hankli.iamstar.fileprovider",
+                        it
+                    )
+                    imageUri = photoURI
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, PICK_FROM_CAMERA)
+                }
+            }
+        }
 
     }
 
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String =
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val storageDir: File =
+            requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+        return File.createTempFile(
+            "headshot_${timeStamp}_", /* prefix */
+            ".png", /* suffix */
+            storageDir /* directory */
+        )
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == PICK_FROM_CAMERA && resultCode == AppCompatActivity.RESULT_OK) {
-            var bitmap: Bitmap? = null
-            try {
-                bitmap =
-                    MediaStore.Images.Media.getBitmap(
-                        activity?.contentResolver,
-                        signUpViewModel.imageUri.value
-                    )
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-            val path =
-                MediaStore.Images.Media.insertImage(
-                    activity?.contentResolver,
-                    bitmap,
-                    "Title",
-                    null
-                )
-
-            signUpViewModel.setImageUri(Uri.parse(path))
-
+            signUpViewModel.setImageUri(imageUri)
         } else if (requestCode == PICK_FROM_GALLERY1 && resultCode == AppCompatActivity.RESULT_OK) {
             signUpViewModel.setImageUri(data?.data!!)
         }

@@ -38,4 +38,9 @@
         android:name="dev.hankli.iamstar.ui.signup.SignUpFragment"
         tools:layout="@layout/fragment_sign_up" />
 
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="dev.hankli.iamstar.ui.home.HomeFragment"
+        tools:layout="@layout/fragment_home" />
+
 </navigation>
