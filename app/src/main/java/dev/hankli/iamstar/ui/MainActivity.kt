@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import com.kaopiz.kprogresshud.KProgressHUD
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.FirestoreUtil.auth
+import dev.hankli.iamstar.utils.FirestoreUtil.getUserToken
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,22 +19,42 @@ class MainActivity : AppCompatActivity() {
     private lateinit var hud: KProgressHUD
     private lateinit var alertDialog: AlertDialog
     private lateinit var builder: AlertDialog.Builder
+    private var token = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        obtainUserToken()
 
         navController = findNavController(R.id.navHostFragment)
         val navGraph = navController.graph
 
         when {
             auth.currentUser == null -> navGraph.startDestination = R.id.authFragment
-            else -> navGraph.startDestination = R.id.homeFragment
+            else -> {
+                navGraph.startDestination = R.id.homeFragment
+//                getCurrentUser(OnSuccessListener {
+//                    val userModel = it.toObject(UserModel::class.java)!!
+//                    userModel.fcmToken = token
+//                    App.currentUser = userModel
+//                    updateUser(App.currentUser!!) {}
+//                }, OnFailureListener {
+//                    navGraph.startDestination = R.id.authFragment
+//                })
+            }
         }
 
         navController.graph = navGraph
 
         prepareDialogs()
+    }
+
+    private fun obtainUserToken() {
+        getUserToken {
+            if (!it.isNullOrEmpty()) {
+                token = it
+            }
+        }
     }
 
     private fun prepareDialogs() {

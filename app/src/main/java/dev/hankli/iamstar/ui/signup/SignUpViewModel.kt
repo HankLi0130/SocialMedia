@@ -7,7 +7,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
-import dev.hankli.iamstar.App
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.model.UserModel
 import dev.hankli.iamstar.utils.Consts.USERS
@@ -123,7 +122,7 @@ class SignUpViewModel(private val myApplication: Application) : AndroidViewModel
                 userModel.userName = items["userName"].toString()
                 userModel.profilePictureURL = items["profilePictureURL"].toString()
                 userModel.active = true
-                App.currentUser = userModel
+//                App.currentUser = userModel
                 _loading.value = null
                 navigateToHomeFragment()
             }.addOnFailureListener {

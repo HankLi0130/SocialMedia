@@ -15,6 +15,7 @@ object Consts {
     const val PICK_FROM_CAMERA = 66
     const val PICK_FROM_GALLERY = 1000
     const val SIGN_IN_WITH_GOOGLE = 14
+    const val SIGN_IN = 15
     const val FRIENDSHIP = "friendships"
     const val PENDING_FRIENDSHIP = "pending_friendships"
     const val CHANNEL_PARTICIPATION = "channel_participation"

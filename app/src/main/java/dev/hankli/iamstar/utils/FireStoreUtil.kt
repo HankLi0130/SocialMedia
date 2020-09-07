@@ -1,9 +1,16 @@
 package dev.hankli.iamstar.utils
 
+import android.util.Log
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.FirebaseStorage
+import dev.hankli.iamstar.model.UserModel
 import dev.hankli.iamstar.utils.Consts.USERS
 
 object FirestoreUtil {
@@ -18,33 +25,33 @@ object FirestoreUtil {
 //    private val channelParticipationCollectionRef = db.collection("channel_participation")
 //    private val channelsCollectionRef = db.collection(CHANNELS)
 
-//    fun getUserByID(
-//        id: String,
-//        completeListener: OnCompleteListener<DocumentSnapshot>
-//    ) {
-//        db.collection(USERS).document(id).get().addOnCompleteListener(completeListener)
-//    }
+    fun getUserByID(
+        id: String,
+        completeListener: OnCompleteListener<DocumentSnapshot>
+    ) {
+        db.collection(USERS).document(id).get().addOnCompleteListener(completeListener)
+    }
 
-//    fun getCurrentUser(
-//        onSuccessListener: OnSuccessListener<DocumentSnapshot>,
-//        onFailureListener: OnFailureListener
-//    ) {
-//        currentUserDocRef.get()
-//            .addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener)
-//    }
+    fun getCurrentUser(
+        onSuccessListener: OnSuccessListener<DocumentSnapshot>,
+        onFailureListener: OnFailureListener
+    ) {
+        currentUserDocRef.get()
+            .addOnSuccessListener(onSuccessListener).addOnFailureListener(onFailureListener)
+    }
 
-//    fun updateUser(userModel: UserModel, onComplete: (String) -> Unit) {
-//
-//        val task = currentUserDocRef.set(userModel)
-//
-//        task.continueWith {
-//            if (it.isSuccessful) {
-//                onComplete("success")
-//            }
-//        }.addOnFailureListener {
-//            onComplete("failure")
-//        }
-//    }
+    fun updateUser(userModel: UserModel, onComplete: (String) -> Unit) {
+
+        val task = currentUserDocRef.set(userModel)
+
+        task.continueWith {
+            if (it.isSuccessful) {
+                onComplete("success")
+            }
+        }.addOnFailureListener {
+            onComplete("failure")
+        }
+    }
 
 //    fun addMessageListener(
 //        channelId: String,
@@ -113,16 +120,16 @@ object FirestoreUtil {
 //
 //    }
 
-//    fun getUserToken(onComplete: (String?) -> Unit) {
-//        FirebaseInstanceId.getInstance().instanceId
-//            .addOnCompleteListener(OnCompleteListener { task ->
-//                if (!task.isSuccessful) {
-//                    Log.w("test", "getInstanceId failed", task.exception)
-//                    return@OnCompleteListener
-//                }
-//                onComplete(task.result?.token)
-//            })
-//    }
+    fun getUserToken(onComplete: (String?) -> Unit) {
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("test", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+                onComplete(task.result?.token)
+            })
+    }
 
 //    fun getUserListener(uid: String, onComplete: (UserModel?) -> Unit): ListenerRegistration {
 //        return db.collection(USERS).document(uid)

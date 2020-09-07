@@ -70,7 +70,6 @@ class SignUpFragment : Fragment() {
             if (it) {
                 startActivity(Intent(context, MainActivity::class.java))
                 hostActivity.finish()
-                // TODO show home fragment and don't save the back stack
                 signUpViewModel.doneNavigatingToHomeFragment()
             }
         })
