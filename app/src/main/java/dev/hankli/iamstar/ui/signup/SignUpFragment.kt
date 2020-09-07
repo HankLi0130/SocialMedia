@@ -68,8 +68,8 @@ class SignUpFragment : Fragment() {
         })
         signUpViewModel.shouldNavigateToHome.observe(viewLifecycleOwner, Observer {
             if (it) {
-                //startActivity(Intent(context, MainActivity::class.java))
-                //hostActivity.finish()
+                startActivity(Intent(context, MainActivity::class.java))
+                hostActivity.finish()
                 // TODO show home fragment and don't save the back stack
                 signUpViewModel.doneNavigatingToHomeFragment()
             }

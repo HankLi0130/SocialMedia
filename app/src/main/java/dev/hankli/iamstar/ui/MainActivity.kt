@@ -6,11 +6,15 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.kaopiz.kprogresshud.KProgressHUD
 import dev.hankli.iamstar.R
+import dev.hankli.iamstar.utils.FirestoreUtil.auth
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var navController: NavController
     private lateinit var hud: KProgressHUD
     private lateinit var alertDialog: AlertDialog
     private lateinit var builder: AlertDialog.Builder
@@ -18,6 +22,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        navController = findNavController(R.id.navHostFragment)
+        val navGraph = navController.graph
+
+        when {
+            auth.currentUser == null -> navGraph.startDestination = R.id.authFragment
+            else -> navGraph.startDestination = R.id.homeFragment
+        }
+
+        navController.graph = navGraph
 
         prepareDialogs()
     }
