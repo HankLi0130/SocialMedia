@@ -39,6 +39,10 @@ class MainActivity : AppCompatActivity() {
             navController.graph = navGraph
         }
 
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            if (destination.id == R.id.authFragment) supportActionBar?.hide()
+        }
+
         prepareDialogs()
     }
 
