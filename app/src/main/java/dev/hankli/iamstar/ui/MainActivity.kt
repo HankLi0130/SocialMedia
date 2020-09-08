@@ -1,16 +1,21 @@
 package dev.hankli.iamstar.ui
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.kaopiz.kprogresshud.KProgressHUD
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.FirebaseUtil.auth
+import dev.hankli.iamstar.utils.FirebaseUtil.signOut
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +40,23 @@ class MainActivity : AppCompatActivity() {
         }
 
         prepareDialogs()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.activity_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
+            R.id.action_sign_out -> {
+                signOut(this) { restart() }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun prepareDialogs() {
@@ -77,5 +99,10 @@ class MainActivity : AppCompatActivity() {
         } else {
             return true
         }
+    }
+
+    fun restart() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 }

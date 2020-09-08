@@ -8,6 +8,7 @@
     <string name="welcome">Welcome to Instachatty</string>
     <string name="browse_and_post_anything">Stay in touch with your best friends.</string>
     <string name="sign_up">Sign Up</string>
+    <string name="sign_out">Sign Out</string>
     <string name="error_message">An error occurred, Please try again later.</string>
     <string name="create_new_account">Create new account</string>
     <string name="fullName">Full Name</string>
