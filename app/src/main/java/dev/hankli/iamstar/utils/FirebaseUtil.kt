@@ -13,10 +13,12 @@ import com.google.firebase.storage.FirebaseStorage
 import dev.hankli.iamstar.model.UserModel
 import dev.hankli.iamstar.utils.Consts.USERS
 
-object FirestoreUtil {
+object FirebaseUtil {
+
+    val auth: FirebaseAuth = FirebaseAuth.getInstance()
     val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     val storage by lazy { FirebaseStorage.getInstance().reference }
-    val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+
     private val currentUserDocRef: DocumentReference
         get() = db.collection(USERS).document(
             auth.currentUser?.uid

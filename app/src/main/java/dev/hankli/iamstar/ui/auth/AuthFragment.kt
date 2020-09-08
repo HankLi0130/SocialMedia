@@ -3,44 +3,22 @@ package dev.hankli.iamstar.ui.auth
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import dev.hankli.iamstar.R
-import dev.hankli.iamstar.databinding.FragmentAuthBinding
 import dev.hankli.iamstar.ui.MainActivity
 import dev.hankli.iamstar.utils.Consts.SIGN_IN
-import dev.hankli.iamstar.utils.FirestoreUtil.auth
+import dev.hankli.iamstar.utils.showDialog
+import kotlinx.android.synthetic.main.fragment_auth.*
 
-class AuthFragment : Fragment() {
+class AuthFragment : Fragment(R.layout.fragment_auth) {
 
-    private lateinit var hostActivity: MainActivity
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val binding = FragmentAuthBinding.inflate(inflater, container, false)
-        binding.btnLogin.setOnClickListener {
-            if (findNavController().currentDestination?.id == R.id.authFragment) {
-//                findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToLoginFragment())
-                loginWithFirebase()
-            }
-        }
-        binding.btnSignup.setOnClickListener {
-            if (findNavController().currentDestination?.id == R.id.authFragment) {
-                findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToSignUpFragment())
-            }
-        }
-
-        hostActivity = activity as MainActivity
-
-        return binding.root
+        view_sign_in.setOnClickListener { loginWithFirebase() }
     }
 
     private fun loginWithFirebase() {
@@ -66,32 +44,22 @@ class AuthFragment : Fragment() {
             val response = IdpResponse.fromResultIntent(data)
 
             if (resultCode == RESULT_OK) {
-                val user = auth.currentUser!!
-
-                Log.i("test", user.toString())
-
-//                getUserByID(user.uid, OnCompleteListener {
-//                    if (it.isSuccessful) {
-//                        val document = it.result
-//                        if (document!!["email"] != null) {
-//                            val userInfo = document.toObject(UserModel::class.java)
-//                            App.currentUser = userInfo
-//                            startActivity(Intent(context, MainActivity::class.java))
-//                            hostActivity.finish()
-//                        }
-//                    }
-//                })
+                // Sign in successful.
+                startActivity(Intent(requireContext(), MainActivity::class.java))
+                requireActivity().finish()
             } else {
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
                 // response.getError().getErrorCode() and handle the error.
-                // ...
-                val errorMessage = StringBuilder(getString(R.string.error_message))
-                response?.let {
-                    val errorCode = it.error?.errorCode
-                    errorMessage.append(" Error Code: $errorCode")
+
+                if (response != null) {
+                    val message = StringBuilder(getString(R.string.error_message))
+                    response.error?.let {
+                        it.printStackTrace()
+                        message.append(" ${it.message}")
+                    }
+                    showDialog(requireContext(), message.toString())
                 }
-                hostActivity.showDialog(errorMessage.toString())
             }
         }
     }

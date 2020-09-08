@@ -23,9 +23,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    buildFeatures {
-        dataBinding true
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -51,10 +48,10 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // Firebase
-    implementation 'com.firebaseui:firebase-ui-auth:6.3.0'
-    implementation 'com.google.firebase:firebase-auth-ktx:19.3.2'
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.6.0'
-    implementation 'com.google.firebase:firebase-storage-ktx:19.2.0'
+    def firebase_ui_version = "6.3.0"
+    implementation "com.firebaseui:firebase-ui-auth:$firebase_ui_version"
+    implementation "com.firebaseui:firebase-ui-firestore:$firebase_ui_version"
+    implementation "com.firebaseui:firebase-ui-storage:$firebase_ui_version"
     implementation 'com.google.firebase:firebase-messaging:20.2.4'
 
     // Facebook

@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import dev.hankli.iamstar.R
-import dev.hankli.iamstar.utils.FirestoreUtil.auth
+import dev.hankli.iamstar.utils.FirebaseUtil.auth
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
