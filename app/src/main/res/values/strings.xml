@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">iamStar_Android</string>
+    <string name="app_name">iamStar</string>
     <string name="sign_in">Sign In</string>
     <string name="email_or_phone">Email or phone number</string>
     <string name="password">Password</string>

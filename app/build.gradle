@@ -6,6 +6,20 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'kotlin-kapt'
 
 android {
+    signingConfigs {
+        development {
+            storeFile file('/Users/hank/Programming/Android/keystore/iamstar/development.keystore')
+            storePassword 'android'
+            keyAlias 'androiddevelopmentkey'
+            keyPassword 'android'
+        }
+        release {
+            storeFile file('/Users/hank/Programming/Android/keystore/iamstar/release.keystore')
+            storePassword 'android'
+            keyAlias 'androidreleasekey'
+            keyPassword 'android'
+        }
+    }
     compileSdkVersion 30
 
     defaultConfig {
@@ -18,9 +32,21 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            debuggable true
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
+        development {
+            debuggable true
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+            signingConfig signingConfigs.development
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
