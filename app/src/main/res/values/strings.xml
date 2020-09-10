@@ -26,6 +26,8 @@
     <string name="malformed_email_error">This email address is badly formatted.</string>
     <string name="short_password_error">Password should be at least 6 characters.</string>
     <string name="creating_new_user">Creating new user</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
 
     <string name="facebook_application_id" translatable="false">247892093066632</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb247892093066632</string>

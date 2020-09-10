@@ -6,27 +6,25 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.kaopiz.kprogresshud.KProgressHUD
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.FirebaseUtil.auth
-import dev.hankli.iamstar.utils.FirebaseUtil.signOut
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private lateinit var navController: NavController
     private lateinit var hud: KProgressHUD
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        navController = findNavController(R.id.navHostFragment)
+        navController = findNavController(R.id.view_nav_host)
 
         if (auth.currentUser != null) {
             // already signed in
@@ -39,29 +37,34 @@ class MainActivity : AppCompatActivity() {
             navController.graph = navGraph
         }
 
+        view_bottom_nav.setupWithNavController(navController)
+
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            if (destination.id == R.id.authFragment) supportActionBar?.hide()
+            if (destination.id == R.id.authFragment) {
+                supportActionBar?.hide()
+                view_bottom_nav.isVisible = false
+            }
         }
 
         prepareDialogs()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.activity_main, menu)
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        val inflater: MenuInflater = menuInflater
+//        inflater.inflate(R.menu.activity_main, menu)
+//        return true
+//    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle item selection
-        return when (item.itemId) {
-            R.id.action_sign_out -> {
-                signOut(this) { restart() }
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        // Handle item selection
+//        return when (item.itemId) {
+//            R.id.action_sign_out -> {
+//                signOut(this) { restart() }
+//                true
+//            }
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 
     private fun prepareDialogs() {
         hud = KProgressHUD.create(this)

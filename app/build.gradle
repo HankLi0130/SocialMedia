@@ -73,6 +73,8 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
+    implementation 'com.google.android.material:material:1.2.1'
+
     // Firebase
     def firebase_ui_version = "6.3.0"
     implementation "com.firebaseui:firebase-ui-auth:$firebase_ui_version"

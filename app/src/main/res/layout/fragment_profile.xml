@@ -4,16 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.profile.ProfileFragment">
 
     <TextView
+        android:id="@+id/view_user_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="HOME"
-        android:textSize="48sp"
+        android:text="Profile"
+        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/view_sign_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/sign_out"
+        app:layout_constraintEnd_toEndOf="@+id/view_user_info"
+        app:layout_constraintStart_toStartOf="@+id/view_user_info"
+        app:layout_constraintTop_toBottomOf="@+id/view_user_info" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
