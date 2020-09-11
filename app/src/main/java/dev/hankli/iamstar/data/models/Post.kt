@@ -1,17 +1,19 @@
 package dev.hankli.iamstar.data.models
 
+import dev.hankli.iamstar.utils.Consts.EMPTY
+import dev.hankli.iamstar.utils.Consts.ZERO
 import java.util.*
 
 data class Post(
-    var id: String,
-    var authorID: String?,
-    var createdAt: Date?,
-    var location: String?,
+    var id: String = EMPTY,
+    var authorID: String = EMPTY,
+    var createdAt: Date? = null,
+    var location: String? = null,
     var latitude: Double? = null,
     var longitude: Double? = null,
-    var postComment: Int,
-    var postLikes: Int,
-    var postMedia: List<String>,
-    var postText: String,
-    var reactions: Map<String, Int>
+    var postComment: Int = ZERO,
+    var postLikes: Int = ZERO,
+    var postMedia: List<String> = emptyList(),
+    var postText: String = EMPTY,
+    var reactions: Map<String, Int> = emptyMap()
 )

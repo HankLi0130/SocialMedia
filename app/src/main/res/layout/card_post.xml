@@ -57,15 +57,22 @@
             app:layout_constraintTop_toBottomOf="@id/view_post_location"
             tools:text="Hello everyone, this is my post !" />
 
-        <ImageView
+        <com.synnapps.carouselview.CarouselView
             android:id="@+id/view_post_medias"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="200dp"
             android:layout_margin="10dp"
+            app:autoPlay="false"
+            app:fillColor="#FFFFFFFF"
             app:layout_constraintBottom_toTopOf="@id/view_post_reaction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_post_text" />
+            app:layout_constraintTop_toBottomOf="@id/view_post_text"
+            app:pageColor="#00000000"
+            app:radius="6dp"
+            app:slideInterval="3000"
+            app:strokeColor="#FF777777"
+            app:strokeWidth="1dp" />
 
         <ImageView
             android:id="@+id/view_post_reaction"

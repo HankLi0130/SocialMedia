@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="match_constraint">0dp</dimen>
+
+    <dimen name="distance_8_dp">8dp</dimen>
+    <dimen name="distance_12_dp">12dp</dimen>
+    <dimen name="distance_16_dp">16dp</dimen>
+    <dimen name="distance_20_dp">20dp</dimen>
+    <dimen name="distance_24_dp">24dp</dimen>
+    <dimen name="distance_36_dp">36dp</dimen>
+    <dimen name="distance_48_dp">48dp</dimen>
+    <dimen name="distance_72_dp">72dp</dimen>
+    <dimen name="distance_96_dp">96dp</dimen>
+
 </resources>
