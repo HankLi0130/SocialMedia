@@ -9,6 +9,8 @@ import com.google.firebase.storage.FirebaseStorage
 
 object FirebaseUtil {
 
+    const val COLLECTION_POSTS = "SocialNetwork_Posts"
+
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     val storage by lazy { FirebaseStorage.getInstance() }

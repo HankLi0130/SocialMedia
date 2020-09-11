@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/view_head_shot"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_person" />
+
+        <TextView
+            android:id="@+id/view_post_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/view_head_shot"
+            app:layout_constraintStart_toEndOf="@+id/view_head_shot"
+            tools:text="1 hours ago" />
+
+        <TextView
+            android:id="@+id/view_post_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/view_post_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/view_post_time"
+            tools:text="Toronto" />
+
+        <ImageView
+            android:id="@+id/view_post_more_options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_more_horiz"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/view_post_text"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_post_location"
+            tools:text="Hello everyone, this is my post !" />
+
+        <ImageView
+            android:id="@+id/view_post_medias"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="200dp"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toTopOf="@id/view_post_reaction"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_post_text" />
+
+        <ImageView
+            android:id="@+id/view_post_reaction"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_like"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/view_post_reaction_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/view_post_reaction"
+            app:layout_constraintStart_toEndOf="@id/view_post_reaction"
+            app:layout_constraintTop_toTopOf="@id/view_post_reaction"
+            tools:text="1" />
+
+        <ImageView
+            android:id="@+id/view_post_comment"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_comment"
+            app:layout_constraintBottom_toBottomOf="@id/view_post_reaction"
+            app:layout_constraintStart_toEndOf="@id/view_post_reaction_count"
+            app:layout_constraintTop_toTopOf="@id/view_post_reaction" />
+
+        <TextView
+            android:id="@+id/view_post_comment_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/view_post_comment"
+            app:layout_constraintStart_toEndOf="@id/view_post_comment"
+            app:layout_constraintTop_toTopOf="@id/view_post_comment"
+            tools:text="1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
