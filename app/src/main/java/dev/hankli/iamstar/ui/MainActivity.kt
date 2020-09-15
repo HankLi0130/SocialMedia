@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.kaopiz.kprogresshud.KProgressHUD
 import dev.hankli.iamstar.R
@@ -19,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var hud: KProgressHUD
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +41,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             navController.graph = navGraph
         }
 
+        // Action Bar
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment, R.id.profileFragment))
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        // Bottom Navigation
         view_bottom_nav.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
@@ -65,6 +74,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 //            else -> super.onOptionsItemSelected(item)
 //        }
 //    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
 
     private fun prepareDialogs() {
         hud = KProgressHUD.create(this)

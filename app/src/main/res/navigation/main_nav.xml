@@ -21,4 +21,10 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 
+    <fragment
+        android:id="@+id/editPostFragment"
+        android:name="dev.hankli.iamstar.ui.home.EditPostFragment"
+        android:label="EditPostFragment"
+        tools:layout="@layout/fragment_edit_post" />
+
 </navigation>
