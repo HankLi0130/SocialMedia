@@ -52,6 +52,7 @@
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            app:layout_constraintBottom_toTopOf="@id/view_post_medias"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_post_location"
@@ -82,7 +83,8 @@
             android:layout_marginBottom="10dp"
             android:src="@drawable/ic_like"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_post_medias" />
 
         <TextView
             android:id="@+id/view_post_reaction_count"

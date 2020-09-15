@@ -1,6 +1,7 @@
 package dev.hankli.iamstar.ui.home
 
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dev.hankli.iamstar.R
@@ -29,9 +30,12 @@ class PostCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             view_post_text.text = item.postText
 
-            view_post_medias.apply {
-                this.pageCount = item.postMedia.size
-                this.setImageListener { position, imageView ->
+            if (item.postMedia.isEmpty()) {
+                view_post_medias.isVisible = false
+            } else {
+                view_post_medias.isVisible = true
+                view_post_medias.pageCount = item.postMedia.size
+                view_post_medias.setImageListener { position, imageView ->
                     Glide.with(this@with).load(item.postMedia[position]).into(imageView)
                 }
             }
