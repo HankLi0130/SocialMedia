@@ -4,16 +4,16 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.IdpResponse
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.ui.MainActivity
+import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.Consts.SIGN_IN
 import dev.hankli.iamstar.utils.FirebaseUtil.getSignInIntent
 import dev.hankli.iamstar.utils.showDialog
 import kotlinx.android.synthetic.main.fragment_auth.*
 
-class AuthFragment : Fragment(R.layout.fragment_auth) {
+class AuthFragment : BaseFragment(R.layout.fragment_auth) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -3,6 +3,7 @@ package dev.hankli.iamstar.utils
 object Consts {
     const val EMPTY = ""
     const val ZERO = 0
+    const val NO_RESOURCE = ZERO
     const val PREFS_NAME = "myPrefs"
     const val USER_ID = "userID"
     const val HAS_COMPELETED_WALKTHROUGH = "hasCompletedWalkThrough"
