@@ -2,6 +2,15 @@
 <resources>
     <dimen name="match_constraint">0dp</dimen>
 
+    <dimen name="font_16_sp">16sp</dimen>
+    <dimen name="font_20_sp">20sp</dimen>
+    <dimen name="font_24_sp">24sp</dimen>
+    <dimen name="font_28_sp">28sp</dimen>
+    <dimen name="font_32_sp">32sp</dimen>
+    <dimen name="font_36_sp">36sp</dimen>
+    <dimen name="font_48_sp">48sp</dimen>
+    <dimen name="font_52_sp">52sp</dimen>
+
     <dimen name="distance_8_dp">8dp</dimen>
     <dimen name="distance_12_dp">12dp</dimen>
     <dimen name="distance_16_dp">16dp</dimen>
@@ -9,6 +18,7 @@
     <dimen name="distance_24_dp">24dp</dimen>
     <dimen name="distance_36_dp">36dp</dimen>
     <dimen name="distance_48_dp">48dp</dimen>
+    <dimen name="distance_64_dp">64dp</dimen>
     <dimen name="distance_72_dp">72dp</dimen>
     <dimen name="distance_96_dp">96dp</dimen>
 

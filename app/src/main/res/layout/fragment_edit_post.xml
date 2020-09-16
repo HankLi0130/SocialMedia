@@ -4,11 +4,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit Post"
+    <ImageView
+        android:id="@+id/view_head_shot"
+        android:layout_width="@dimen/distance_64_dp"
+        android:layout_height="@dimen/distance_64_dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_person"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/view_post_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="location not available"
+        app:layout_constraintBottom_toBottomOf="@+id/view_head_shot"
+        app:layout_constraintStart_toEndOf="@+id/view_head_shot"
+        app:layout_constraintTop_toTopOf="@+id/view_head_shot" />
+
+    <EditText
+        android:id="@+id/view_input_post_text"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="@dimen/match_constraint"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@id/view_bottom_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_head_shot" />
+
+    <View
+        android:id="@+id/view_bottom_background"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="60dp"
+        android:background="@color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/view_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/distance_8_dp"
+        android:text="Add to your Post"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/view_bottom_background"
+        app:layout_constraintStart_toStartOf="@id/view_bottom_background"
+        app:layout_constraintTop_toTopOf="@id/view_bottom_background" />
+
+    <ImageView
+        android:id="@+id/view_add_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/distance_8_dp"
+        android:src="@drawable/ic_add_location"
+        app:layout_constraintBottom_toBottomOf="@id/view_bottom_background"
+        app:layout_constraintEnd_toEndOf="@id/view_bottom_background"
+        app:layout_constraintTop_toTopOf="@id/view_bottom_background" />
+
+    <ImageView
+        android:id="@+id/view_add_photos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/distance_36_dp"
+        android:src="@drawable/ic_photo_camera"
+        app:layout_constraintBottom_toBottomOf="@id/view_add_location"
+        app:layout_constraintEnd_toStartOf="@id/view_add_location"
+        app:layout_constraintTop_toTopOf="@id/view_add_location" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

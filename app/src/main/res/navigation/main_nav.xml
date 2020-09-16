@@ -8,17 +8,19 @@
     <fragment
         android:id="@+id/authFragment"
         android:name="dev.hankli.iamstar.ui.auth.AuthFragment"
+        android:label="AuthFragment"
         tools:layout="@layout/fragment_auth" />
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="dev.hankli.iamstar.ui.home.HomeFragment"
+        android:label="HomeFragment"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/profileFragment"
         android:name="dev.hankli.iamstar.ui.profile.ProfileFragment"
-        android:label="fragment_profile"
+        android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile" />
 
     <fragment

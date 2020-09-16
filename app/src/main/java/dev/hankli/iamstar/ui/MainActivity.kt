@@ -42,17 +42,22 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
 
         // Action Bar
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment, R.id.profileFragment))
+        val topLevelDestinations = setOf(R.id.homeFragment, R.id.profileFragment)
+        appBarConfiguration = AppBarConfiguration(topLevelDestinations)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         // Bottom Navigation
         view_bottom_nav.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
+
+            // Action Bar
             if (destination.id == R.id.authFragment) {
                 supportActionBar?.hide()
-                view_bottom_nav.isVisible = false
             }
+
+            // Navigation
+            view_bottom_nav.isVisible = topLevelDestinations.contains(destination.id)
         }
 
         prepareDialogs()
