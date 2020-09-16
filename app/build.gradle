@@ -105,7 +105,7 @@ dependencies {
     // Blurr
     implementation 'jp.wasabeef:glide-transformations:4.0.0'
 
-    // carouselview
+    // Carousel View
     implementation 'com.synnapps:carouselview:0.1.5'
 
     // Testing

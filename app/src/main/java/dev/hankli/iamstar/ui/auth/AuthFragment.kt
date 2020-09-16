@@ -8,7 +8,7 @@ import com.firebase.ui.auth.IdpResponse
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.ui.MainActivity
 import dev.hankli.iamstar.utils.BaseFragment
-import dev.hankli.iamstar.utils.Consts.SIGN_IN
+import dev.hankli.iamstar.utils.Consts.REQUEST_SIGN_IN
 import dev.hankli.iamstar.utils.FirebaseUtil.getSignInIntent
 import dev.hankli.iamstar.utils.showDialog
 import kotlinx.android.synthetic.main.fragment_auth.*
@@ -19,13 +19,13 @@ class AuthFragment : BaseFragment(R.layout.fragment_auth) {
         super.onViewCreated(view, savedInstanceState)
 
         view_sign_in.setOnClickListener {
-            startActivityForResult(getSignInIntent(), SIGN_IN)
+            startActivityForResult(getSignInIntent(), REQUEST_SIGN_IN)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SIGN_IN) {
+        if (requestCode == REQUEST_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
 
             if (resultCode == RESULT_OK) {
