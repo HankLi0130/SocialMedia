@@ -1,5 +1,6 @@
 package dev.hankli.iamstar.ui.home
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
@@ -21,10 +22,21 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post) {
     override val menuRes: Int
         get() = R.menu.single_action_ok
 
+    private val neededPermissions = arrayOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view_add_photos.setOnClickListener {
-            showMediaPicker(this, REQUEST_PICK_MEDIAS)
+            askingPermissions(neededPermissions) {
+                showMediaPicker(this, REQUEST_PICK_MEDIAS)
+            }
         }
+    }
+
+    override fun onAllPermissionsGranted() {
+        showMediaPicker(this, REQUEST_PICK_MEDIAS)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -36,6 +48,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post) {
             }
         }
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
