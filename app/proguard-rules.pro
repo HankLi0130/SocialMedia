@@ -34,7 +34,10 @@
 }
 
 # for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+# -keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
 # https://github.com/sayyam/carouselview#if-using-proguard-add-this-line-to-your-proguard-rulespro
 -keep class com.synnapps.carouselview.** { *; }
+
+# https://github.com/zhihu/Matisse#proguard
+-dontwarn com.squareup.picasso.**

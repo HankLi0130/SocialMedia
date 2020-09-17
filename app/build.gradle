@@ -59,7 +59,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
@@ -107,6 +107,9 @@ dependencies {
 
     // Carousel View
     implementation 'com.synnapps:carouselview:0.1.5'
+
+    // Image Zoom
+    implementation 'it.sephiroth.android.library.imagezoom:imagezoom:2.3.0'
 
     // Testing
     testImplementation 'junit:junit:4.13'
