@@ -6,24 +6,28 @@ import androidx.fragment.app.Fragment
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
+import com.zhihu.matisse.internal.entity.CaptureStrategy
+import dev.hankli.iamstar.BuildConfig
 
 private val mimeTypes = setOf(MimeType.JPEG, MimeType.PNG, MimeType.MPEG, MimeType.MP4)
 private const val MAX_SELECTABLE = 5
 
-fun showPicker(fragment: Fragment, requestCode: Int) {
+fun showMediaPicker(fragment: Fragment, requestCode: Int) {
     Matisse.from(fragment)
         .choose(mimeTypes)
-        .countable(true)
         .maxSelectable(MAX_SELECTABLE)
-        //.addFilter(GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-        //.gridExpectedSize(resources.getDimensionPixelSize(R.dimen.grid_expected_size))
-        //.restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+        .countable(true)
+        .capture(true)
+        .captureStrategy(CaptureStrategy(false, "${BuildConfig.APPLICATION_ID}.fileprovider"))
         .thumbnailScale(0.85f)
         .imageEngine(GlideEngine())
-        .showPreview(false) // Default is `true`
         .forResult(requestCode)
 }
 
 fun obtainResult(data: Intent?): List<Uri> {
     return data?.let { Matisse.obtainResult(it) } ?: emptyList()
+}
+
+fun obtainPathResult(data: Intent?): List<String> {
+    return data?.let { Matisse.obtainPathResult(it) } ?: emptyList()
 }

@@ -10,7 +10,7 @@ import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.Consts.REQUEST_PICK_MEDIAS
 import dev.hankli.iamstar.utils.obtainResult
-import dev.hankli.iamstar.utils.showPicker
+import dev.hankli.iamstar.utils.showMediaPicker
 import kotlinx.android.synthetic.main.fragment_edit_post.*
 
 class EditPostFragment : BaseFragment(R.layout.fragment_edit_post) {
@@ -23,7 +23,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view_add_photos.setOnClickListener {
-            showPicker(this, REQUEST_PICK_MEDIAS)
+            showMediaPicker(this, REQUEST_PICK_MEDIAS)
         }
     }
 
