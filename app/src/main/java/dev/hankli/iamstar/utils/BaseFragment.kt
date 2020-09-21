@@ -1,5 +1,6 @@
 package dev.hankli.iamstar.utils
 
+import android.content.ContentResolver
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -7,8 +8,8 @@ import androidx.annotation.LayoutRes
 import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
-import dev.hankli.iamstar.utils.Consts.NO_RESOURCE
 import dev.hankli.iamstar.utils.Consts.REQUEST_PERMISSION
+import tw.hankli.brookray.constant.NO_RESOURCE
 
 abstract class BaseFragment : Fragment {
 
@@ -19,6 +20,9 @@ abstract class BaseFragment : Fragment {
     protected open val hasOptionsMenu = false
 
     protected open val menuRes = NO_RESOURCE
+
+    protected val contentResolver: ContentResolver
+        get() = requireContext().contentResolver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

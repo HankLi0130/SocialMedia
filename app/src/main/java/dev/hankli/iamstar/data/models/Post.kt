@@ -1,7 +1,7 @@
 package dev.hankli.iamstar.data.models
 
-import dev.hankli.iamstar.utils.Consts.EMPTY
-import dev.hankli.iamstar.utils.Consts.ZERO
+import tw.hankli.brookray.constant.EMPTY
+import tw.hankli.brookray.constant.ZERO
 import java.util.*
 
 data class Post(
