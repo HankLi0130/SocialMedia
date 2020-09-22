@@ -10,7 +10,7 @@ import dev.hankli.iamstar.utils.FirebaseUtil.COLLECTION_POSTS
 import dev.hankli.iamstar.utils.FirebaseUtil.auth
 import dev.hankli.iamstar.utils.FirebaseUtil.db
 
-class PostCardAdapter() : FirestoreRecyclerAdapter<Post, PostCardViewHolder>(options) {
+class PostCardAdapter : FirestoreRecyclerAdapter<Post, PostCardViewHolder>(options) {
 
     companion object {
         private val userId = auth.currentUser!!.uid

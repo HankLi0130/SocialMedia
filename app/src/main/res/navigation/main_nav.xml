@@ -15,7 +15,13 @@
         android:id="@+id/homeFragment"
         android:name="dev.hankli.iamstar.ui.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_homeFragment_to_editPostFragment"
+            app:destination="@id/editPostFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/profileFragment"

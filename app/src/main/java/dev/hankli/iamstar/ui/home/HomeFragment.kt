@@ -21,9 +21,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private val viewModel by viewModels<HomeViewModel>()
 
-    private val postCardAdapter = PostCardAdapter()
+    private lateinit var postCardAdapter: PostCardAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        postCardAdapter = PostCardAdapter()
+
         view_posts.apply {
             setHasFixedSize(true)
             adapter = postCardAdapter
