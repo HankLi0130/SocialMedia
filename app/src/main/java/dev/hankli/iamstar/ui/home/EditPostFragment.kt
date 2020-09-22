@@ -3,8 +3,10 @@ package dev.hankli.iamstar.ui.home
 import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Size
 import android.view.MenuItem
 import android.view.View
@@ -66,11 +68,34 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
         if (requestCode == REQUEST_PICK_MEDIAS) {
             if (resultCode == RESULT_OK) {
                 val selectedMediaItems = obtainResult(data).map { uri ->
+
                     val type = contentResolver.getType(uri) ?: EMPTY
+
                     val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         contentResolver.loadThumbnail(uri, Size(96, 96), null)
                     } else {
-                        TODO("get video and image thumbnail from uri")
+                        // get video and image thumbnail from uri
+                        when {
+                            type.contains("image") -> {
+                                MediaStore.Images.Thumbnails.getThumbnail(
+                                    contentResolver,
+                                    uri.lastPathSegment!!.toLong(),
+                                    MediaStore.Images.Thumbnails.MICRO_KIND,
+                                    BitmapFactory.Options()
+                                )
+                            }
+                            type.contains("video") -> {
+                                MediaStore.Video.Thumbnails.getThumbnail(
+                                    contentResolver,
+                                    uri.lastPathSegment!!.toLong(),
+                                    MediaStore.Video.Thumbnails.MICRO_KIND,
+                                    BitmapFactory.Options()
+                                )
+                            }
+                            else -> {
+                                BitmapFactory.decodeResource(resources, R.drawable.ic_broken_image)
+                            }
+                        }
                     }
                     MediaItem(uri, type, bitmap)
                 }
