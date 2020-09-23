@@ -1,5 +1,6 @@
 package dev.hankli.iamstar.utils
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -16,6 +17,10 @@ import dev.hankli.iamstar.R
 import kotlinx.android.synthetic.main.itemview_media.view.*
 import tw.hankli.brookray.extension.viewOf
 
+val mediaPickerPermissions = arrayOf(
+    Manifest.permission.CAMERA,
+    Manifest.permission.WRITE_EXTERNAL_STORAGE
+)
 private val mimeTypes = setOf(MimeType.JPEG, MimeType.PNG, MimeType.MPEG, MimeType.MP4)
 private const val MAX_SELECTABLE = 5
 

@@ -1,6 +1,5 @@
 package dev.hankli.iamstar.ui.home
 
-import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -28,11 +27,6 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
     override val menuRes: Int
         get() = R.menu.single_action_ok
 
-    private val neededPermissions = arrayOf(
-        Manifest.permission.CAMERA,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-    )
-
     private val viewModel by viewModels<EditPostViewModel>()
 
     private val mediaAdapter = MediaAdapter(this)
@@ -46,9 +40,13 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
         }
 
         view_add_photos.setOnClickListener {
-            askingPermissions(neededPermissions) {
+            askingPermissions(mediaPickerPermissions) {
                 showMediaPicker(this, REQUEST_PICK_MEDIAS)
             }
+        }
+
+        view_add_location.setOnClickListener {
+            
         }
 
         viewModel.mediaItemsData.observe(viewLifecycleOwner, Observer { mediaItems ->
@@ -71,10 +69,10 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
 
                     val type = contentResolver.getType(uri) ?: EMPTY
 
+                    // get video and image thumbnail from uri
                     val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         contentResolver.loadThumbnail(uri, Size(96, 96), null)
                     } else {
-                        // get video and image thumbnail from uri
                         when {
                             type.contains("image") -> {
                                 MediaStore.Images.Thumbnails.getThumbnail(
