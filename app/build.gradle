@@ -36,6 +36,10 @@ android {
             debuggable true
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
+
+            resValue "string", "places_api_key", "AIzaSyC1JDDxa4t1nkbGPUkY_rpi2mtV9-4LCdg"
+            resValue "string", "facebook_application_id", "247892093066632"
+            resValue "string", "facebook_login_protocol_scheme", "fb247892093066632"
         }
         development {
             debuggable true
@@ -74,6 +78,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.libraries.places:places:2.4.0'
 
     // Firebase
     def firebase_ui_version = "6.3.0"
