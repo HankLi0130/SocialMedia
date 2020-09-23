@@ -2,7 +2,6 @@ package dev.hankli.iamstar.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
@@ -13,7 +12,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.kaopiz.kprogresshud.KProgressHUD
 import dev.hankli.iamstar.R
-import dev.hankli.iamstar.utils.FirebaseUtil.auth
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
@@ -26,17 +24,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
 
         navController = findNavController(R.id.view_nav_host)
-
-        if (auth.currentUser != null) {
-            // already signed in
-            val user = auth.currentUser!!
-            Log.i("test", "user id: ${user.uid}")
-        } else {
-            // not signed in
-            val navGraph = navController.graph
-            navGraph.startDestination = R.id.authFragment
-            navController.graph = navGraph
-        }
 
         // Action Bar
         val topLevelDestinations = setOf(R.id.homeFragment, R.id.profileFragment)
@@ -51,6 +38,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             // Action Bar
             if (destination.id == R.id.authFragment) {
                 supportActionBar?.hide()
+            } else {
+                supportActionBar?.show()
             }
 
             // Navigation
