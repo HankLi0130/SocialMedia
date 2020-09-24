@@ -28,21 +28,21 @@ class PostCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 view_post_location.text = it
             }
 
-            view_post_text.text = item.postText
+            view_post_text.text = item.content
 
-            if (item.postMedia.isEmpty()) {
+            if (item.medias.isEmpty()) {
                 view_post_medias.isVisible = false
             } else {
                 view_post_medias.isVisible = true
-                view_post_medias.pageCount = item.postMedia.size
+                view_post_medias.pageCount = item.medias.size
                 view_post_medias.setImageListener { position, imageView ->
-                    Glide.with(this@with).load(item.postMedia[position]).into(imageView)
+                    Glide.with(this@with).load(item.medias[position]).into(imageView)
                 }
             }
 
-            view_post_reaction_count.text = item.postLikes.toString()
+            view_post_reaction_count.text = item.reactionCount.toString()
 
-            view_post_comment_count.text = item.postComment.toString()
+            view_post_comment_count.text = item.commentCount.toString()
         }
     }
 }

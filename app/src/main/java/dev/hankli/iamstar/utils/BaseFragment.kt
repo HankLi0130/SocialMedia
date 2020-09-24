@@ -8,7 +8,6 @@ import androidx.annotation.LayoutRes
 import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
-import dev.hankli.iamstar.utils.Consts.REQUEST_PERMISSION
 import tw.hankli.brookray.constant.NO_RESOURCE
 
 abstract class BaseFragment : Fragment {
@@ -34,11 +33,11 @@ abstract class BaseFragment : Fragment {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    protected fun askingPermissions(permissions: Array<out String>, doOnAllGranted: () -> Unit) {
+    protected fun askingPermissions(permissions: Array<out String>, requestCode: Int) {
         val deniedPermissions = getDeniedPermissions(permissions)
 
-        if (deniedPermissions.isEmpty()) doOnAllGranted()
-        else requestPermissions(deniedPermissions, REQUEST_PERMISSION)
+        if (deniedPermissions.isEmpty()) onAllPermissionsGranted(requestCode)
+        else requestPermissions(deniedPermissions, requestCode)
     }
 
     override fun onRequestPermissionsResult(
@@ -46,12 +45,10 @@ abstract class BaseFragment : Fragment {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode == REQUEST_PERMISSION) {
-            if (!grantResults.contains(PERMISSION_DENIED)) onAllPermissionsGranted()
-        }
+        if (!grantResults.contains(PERMISSION_DENIED)) onAllPermissionsGranted(requestCode)
     }
 
-    protected open fun onAllPermissionsGranted() {
+    protected open fun onAllPermissionsGranted(requestCode: Int) {
         /* override it when you need */
     }
 

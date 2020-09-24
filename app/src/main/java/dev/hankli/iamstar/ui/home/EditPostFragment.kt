@@ -18,6 +18,7 @@ import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.*
+import dev.hankli.iamstar.utils.Consts.REQUEST_MEDIA_PERMISSION
 import dev.hankli.iamstar.utils.Consts.REQUEST_PICK_MEDIAS
 import dev.hankli.iamstar.utils.Consts.REQUEST_PLACES
 import kotlinx.android.synthetic.main.fragment_edit_post.*
@@ -44,9 +45,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
         }
 
         view_add_photos.setOnClickListener {
-            askingPermissions(mediaPickerPermissions) {
-                showMediaPicker(this, REQUEST_PICK_MEDIAS)
-            }
+            askingPermissions(mediaPickerPermissions, REQUEST_MEDIA_PERMISSION)
         }
 
         view_add_location.setOnClickListener {
@@ -61,8 +60,10 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
         })
     }
 
-    override fun onAllPermissionsGranted() {
-        showMediaPicker(this, REQUEST_PICK_MEDIAS)
+    override fun onAllPermissionsGranted(requestCode: Int) {
+        when (requestCode) {
+            REQUEST_MEDIA_PERMISSION -> showMediaPicker(this, REQUEST_PICK_MEDIAS)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
