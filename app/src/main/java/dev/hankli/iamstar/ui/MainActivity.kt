@@ -23,16 +23,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        navController = findNavController(R.id.view_nav_host)
-
-        // Action Bar
         val topLevelDestinations = setOf(R.id.homeFragment, R.id.profileFragment)
         appBarConfiguration = AppBarConfiguration(topLevelDestinations)
-        setupActionBarWithNavController(navController, appBarConfiguration)
 
-        // Bottom Navigation
-        view_bottom_nav.setupWithNavController(navController)
-
+        navController = findNavController(R.id.view_nav_host)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
 
             // Action Bar
@@ -46,11 +40,21 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             view_bottom_nav.isVisible = topLevelDestinations.contains(destination.id)
         }
 
+        // Action Bar
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        // Bottom Navigation
+        view_bottom_nav.setupWithNavController(navController)
+
         prepareDialogs()
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    private fun getNavController(): NavController {
+        return findNavController(R.id.view_nav_host)
     }
 
     private fun prepareDialogs() {
