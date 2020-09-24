@@ -29,6 +29,7 @@
         android:id="@+id/view_input_post_text"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="@dimen/match_constraint"
+        android:layout_margin="@dimen/distance_8_dp"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@id/view_list_media"
         app:layout_constraintEnd_toEndOf="parent"

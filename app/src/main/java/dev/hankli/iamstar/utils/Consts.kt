@@ -7,6 +7,6 @@ object Consts {
     const val REQUEST_PLACES = 300
 
     // Permissions
-    const val REQUEST_MEDIA_PERMISSION = 400
-
+    const val REQUEST_PERMISSION_MEDIA = 400
+    const val REQUEST_PERMISSION_PLACES = 401
 }
