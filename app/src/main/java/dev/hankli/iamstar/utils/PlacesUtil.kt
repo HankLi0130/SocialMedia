@@ -11,7 +11,7 @@ val placesPermission = arrayOf(
     Manifest.permission.ACCESS_FINE_LOCATION
 )
 
-private val fields = listOf(Place.Field.ID, Place.Field.NAME)
+private val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)
 
 fun getPlacesIntent(context: Context): Intent {
     return Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)

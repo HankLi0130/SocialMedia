@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.util.Size
 import android.view.MenuItem
 import android.view.View
@@ -124,7 +125,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
                 data?.let {
                     val place = Autocomplete.getPlaceFromIntent(it)
                     view_post_location.text = place.name
-                    // Log.i(TAG, "Place: ${place.name}, ${place.id}")
+                    Log.i("test", "Place: ${place.name}, ${place.id}")
                 }
             }
             AutocompleteActivity.RESULT_ERROR -> {
