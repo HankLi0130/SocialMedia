@@ -53,10 +53,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun getNavController(): NavController {
-        return findNavController(R.id.view_nav_host)
-    }
-
     private fun prepareDialogs() {
         hud = KProgressHUD.create(this)
             .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
