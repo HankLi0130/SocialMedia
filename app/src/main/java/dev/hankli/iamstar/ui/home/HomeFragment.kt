@@ -5,11 +5,11 @@ import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.MarginItemDecoration
 import kotlinx.android.synthetic.main.fragment_home.*
+import tw.hankli.brookray.constant.EMPTY
 
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
@@ -36,8 +36,19 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(item, findNavController())
-                || super.onOptionsItemSelected(item)
+        return when (item.itemId) {
+            R.id.action_add_post -> {
+                toEditPostFragment()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun toEditPostFragment(postId: String = EMPTY) {
+        findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragmentToEditPostFragment(postId)
+        )
     }
 
     override fun onStart() {

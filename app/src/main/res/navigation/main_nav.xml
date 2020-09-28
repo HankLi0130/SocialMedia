@@ -42,6 +42,12 @@
         android:id="@+id/editPostFragment"
         android:name="dev.hankli.iamstar.ui.home.EditPostFragment"
         android:label="EditPostFragment"
-        tools:layout="@layout/fragment_edit_post" />
+        tools:layout="@layout/fragment_edit_post">
+
+        <argument
+            android:name="postId"
+            app:argType="string" />
+
+    </fragment>
 
 </navigation>

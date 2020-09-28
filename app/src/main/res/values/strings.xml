@@ -29,4 +29,5 @@
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="add_post">Add post</string>
+    <string name="location_not_available">location not available</string>
 </resources>

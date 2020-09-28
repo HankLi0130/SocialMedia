@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/editPostFragment"
+        android:id="@+id/action_add_post"
         android:icon="@drawable/ic_post_add"
         android:title="@string/add_post"
         app:showAsAction="always" />

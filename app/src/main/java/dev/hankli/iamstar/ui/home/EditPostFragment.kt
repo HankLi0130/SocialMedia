@@ -14,6 +14,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
@@ -33,11 +34,22 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
     override val menuRes: Int
         get() = R.menu.single_action_ok
 
+    private val args: EditPostFragmentArgs by navArgs()
+
     private val viewModel by viewModels<EditPostViewModel>()
 
     private val mediaAdapter = MediaAdapter(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        viewModel.loadPost(args.postId) { post ->
+            view_post_location.text =
+                if (post.location.isNullOrEmpty()) getString(R.string.location_not_available) else post.location
+
+            view_input_post_text.setText(post.content)
+
+            // TODO set photos
+        }
 
         view_list_media.run {
             (this.layoutManager as GridLayoutManager).spanCount = 3
