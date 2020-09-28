@@ -7,13 +7,14 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.util.Size
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.libraries.places.widget.Autocomplete
@@ -42,19 +43,16 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        viewModel.loadPost(args.postId) { post ->
-            view_post_location.text =
-                if (post.location.isNullOrEmpty()) getString(R.string.location_not_available) else post.location
-
-            view_input_post_text.setText(post.content)
-
-            // TODO set photos
-        }
+        viewModel.loadPost(args.postId)
 
         view_list_media.run {
             (this.layoutManager as GridLayoutManager).spanCount = 3
             setHasFixedSize(true)
             adapter = mediaAdapter
+        }
+
+        view_input_post_text.doOnTextChanged { text, _, _, _ ->
+            viewModel.setContent(text)
         }
 
         view_add_photos.setOnClickListener {
@@ -66,11 +64,25 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
             startActivityForResult(getPlacesIntent(requireContext()), REQUEST_PLACES)
         }
 
+        viewModel.contentData.observe(viewLifecycleOwner, Observer { content ->
+            view_input_post_text.setText(content)
+        })
+
         viewModel.mediaItemsData.observe(viewLifecycleOwner, Observer { mediaItems ->
             view_list_media.isVisible = mediaItems.isNotEmpty()
 
             mediaAdapter.items = mediaItems
             mediaAdapter.notifyDataSetChanged()
+        })
+
+        viewModel.locationData.observe(viewLifecycleOwner, Observer { location ->
+            view_post_location.text =
+                if (location.isNullOrEmpty()) getText(R.string.location_not_available)
+                else location
+        })
+
+        viewModel.popUp.observe(viewLifecycleOwner, Observer { shouldPopUp ->
+            if (shouldPopUp) findNavController().popBackStack()
         })
     }
 
@@ -136,8 +148,11 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
             RESULT_OK -> {
                 data?.let {
                     val place = Autocomplete.getPlaceFromIntent(it)
-                    view_post_location.text = place.name
-                    Log.i("test", "Place: ${place.name}, ${place.id}")
+                    viewModel.setLocation(
+                        place.name,
+                        place.latLng?.latitude,
+                        place.latLng?.longitude
+                    )
                 }
             }
             AutocompleteActivity.RESULT_ERROR -> {
@@ -157,6 +172,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_ok -> {
+                viewModel.submit()
                 true
             }
             else -> super.onOptionsItemSelected(item)
