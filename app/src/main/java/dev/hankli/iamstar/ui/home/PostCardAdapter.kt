@@ -16,7 +16,7 @@ class PostCardAdapter : FirestoreRecyclerAdapter<Post, PostCardViewHolder>(optio
         private val userId = auth.currentUser!!.uid
 
         private val query = db.collection(COLLECTION_POSTS)
-            .whereEqualTo("authorID", userId)
+            .whereEqualTo("authorId", userId)
             .orderBy("createdAt", Query.Direction.DESCENDING)
 
         private val options = FirestoreRecyclerOptions.Builder<Post>()

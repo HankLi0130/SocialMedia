@@ -23,18 +23,18 @@
             android:id="@+id/view_post_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/view_head_shot"
+            app:layout_constraintBottom_toTopOf="@id/view_post_location"
             app:layout_constraintStart_toEndOf="@+id/view_head_shot"
+            app:layout_constraintTop_toTopOf="@+id/view_head_shot"
             tools:text="1 hours ago" />
 
         <TextView
             android:id="@+id/view_post_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/view_post_time"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/view_post_time"
+            app:layout_constraintBottom_toBottomOf="@+id/view_head_shot"
+            app:layout_constraintStart_toEndOf="@+id/view_head_shot"
+            app:layout_constraintTop_toBottomOf="@id/view_post_time"
             tools:text="Toronto" />
 
         <ImageView

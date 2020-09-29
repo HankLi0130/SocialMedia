@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import dev.hankli.iamstar.data.models.Post
-import tw.hankli.brookray.constant.EMPTY
+import java.util.*
 
 object FirebaseUtil {
 
@@ -35,15 +35,18 @@ object FirebaseUtil {
         AuthUI.getInstance().signOut(context).addOnCompleteListener { onCompleted() }
     }
 
-    fun setPost(post: Post, listener: OnCompleteListener<Void>) {
-        val posts = db.collection(COLLECTION_POSTS)
+    fun addPost(post: Post, listener: OnCompleteListener<Void>) {
+        val doc = db.collection(COLLECTION_POSTS).document()
+        post.objectId = doc.id
+        post.createdAt = Date()
+        doc.set(post).addOnCompleteListener(listener)
+    }
 
-        val document = if (post.objectId == EMPTY) {
-            val doc = posts.document()
-            post.objectId = doc.id
-            doc
-        } else posts.document(post.objectId)
-
-        document.set(post).addOnCompleteListener(listener)
+    fun updatePost(post: Post, listener: OnCompleteListener<Void>) {
+        post.updatedAt = Date()
+        db.collection(COLLECTION_POSTS)
+            .document(post.objectId)
+            .set(post)
+            .addOnCompleteListener(listener)
     }
 }

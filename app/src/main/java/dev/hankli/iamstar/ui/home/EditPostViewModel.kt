@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.OnCompleteListener
 import dev.hankli.iamstar.data.models.Post
-import dev.hankli.iamstar.utils.FirebaseUtil.setPost
+import dev.hankli.iamstar.utils.FirebaseUtil.addPost
+import dev.hankli.iamstar.utils.FirebaseUtil.auth
+import dev.hankli.iamstar.utils.FirebaseUtil.updatePost
 import dev.hankli.iamstar.utils.MediaItem
 import tw.hankli.brookray.constant.EMPTY
 
@@ -68,8 +70,12 @@ class EditPostViewModel : ViewModel() {
     }
 
     fun submit() {
-        setPost(post, OnCompleteListener {
-            _popUp.postValue(it.isSuccessful)
-        })
+        // TODO check validation of the post
+        val listener = OnCompleteListener<Void> { _popUp.postValue(it.isSuccessful) }
+        if (post.objectId == EMPTY) {
+            post.authorId = auth.currentUser!!.uid
+            post.influencerId = auth.currentUser!!.uid
+            addPost(post, listener)
+        } else updatePost(post, listener)
     }
 }
