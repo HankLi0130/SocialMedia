@@ -34,17 +34,20 @@ class EditPostViewModel : ViewModel() {
     fun loadPost(postId: String) {
         if (postId == EMPTY) {
             post = Post()
+            setDefaultValues()
         } else {
             // TODO loading from Firestore
         }
     }
 
-    fun setContent(text: CharSequence?) {
+    private fun setDefaultValues() {
+        _locationData.postValue(post.location)
+        _contentData.postValue(post.content)
+    }
+
+    fun onContentChanged(text: CharSequence?) {
         val content = text?.toString() ?: EMPTY
-        if (post.content != content) {
-            post.content = content
-            _contentData.value = post.content
-        }
+        post.content = content
     }
 
     fun addToMediaItems(list: List<MediaItem>) {

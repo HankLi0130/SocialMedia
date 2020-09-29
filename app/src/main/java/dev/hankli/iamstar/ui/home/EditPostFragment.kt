@@ -52,7 +52,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
         }
 
         view_input_post_text.doOnTextChanged { text, _, _, _ ->
-            viewModel.setContent(text)
+            viewModel.onContentChanged(text)
         }
 
         view_add_photos.setOnClickListener {
@@ -66,6 +66,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
 
         viewModel.contentData.observe(viewLifecycleOwner, Observer { content ->
             view_input_post_text.setText(content)
+            view_input_post_text.setSelection(content.length)
         })
 
         viewModel.mediaItemsData.observe(viewLifecycleOwner, Observer { mediaItems ->
