@@ -28,10 +28,9 @@
     <EditText
         android:id="@+id/view_input_post_text"
         android:layout_width="@dimen/match_constraint"
-        android:layout_height="@dimen/match_constraint"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/distance_8_dp"
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toTopOf="@id/view_list_media"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view_head_shot" />
@@ -45,7 +44,6 @@
         app:layout_constraintBottom_toTopOf="@id/view_bottom_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_input_post_text"
         tools:listitem="@layout/itemview_media" />
 
     <View
@@ -55,8 +53,7 @@
         android:background="@color/darker_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_list_media" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/view_hint"
