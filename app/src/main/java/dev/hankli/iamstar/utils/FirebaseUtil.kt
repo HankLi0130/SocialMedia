@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.Intent
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import dev.hankli.iamstar.data.models.Post
@@ -48,5 +51,17 @@ object FirebaseUtil {
             .document(post.objectId)
             .set(post)
             .addOnCompleteListener(listener)
+    }
+
+    fun fetchPost(
+        objectId: String,
+        onSuccessListener: OnSuccessListener<in DocumentSnapshot>,
+        onFailureListener: OnFailureListener
+    ) {
+        db.collection(COLLECTION_POSTS)
+            .document(objectId)
+            .get()
+            .addOnSuccessListener(onSuccessListener)
+            .addOnFailureListener(onFailureListener)
     }
 }

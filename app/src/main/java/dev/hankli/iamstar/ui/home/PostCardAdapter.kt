@@ -12,6 +12,8 @@ import dev.hankli.iamstar.utils.FirebaseUtil.db
 
 class PostCardAdapter : FirestoreRecyclerAdapter<Post, PostCardViewHolder>(options) {
 
+    var onItemOptionsClick: (objectId: String) -> Unit = {}
+
     companion object {
         private val userId = auth.currentUser!!.uid
 
@@ -31,6 +33,6 @@ class PostCardAdapter : FirestoreRecyclerAdapter<Post, PostCardViewHolder>(optio
     }
 
     override fun onBindViewHolder(holderCard: PostCardViewHolder, position: Int, model: Post) {
-        holderCard.bind(position, model)
+        holderCard.bind(position, model, onItemOptionsClick)
     }
 }

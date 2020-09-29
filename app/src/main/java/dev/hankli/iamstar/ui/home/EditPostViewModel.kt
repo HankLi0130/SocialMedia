@@ -4,9 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.firestore.DocumentSnapshot
 import dev.hankli.iamstar.data.models.Post
 import dev.hankli.iamstar.utils.FirebaseUtil.addPost
 import dev.hankli.iamstar.utils.FirebaseUtil.auth
+import dev.hankli.iamstar.utils.FirebaseUtil.fetchPost
 import dev.hankli.iamstar.utils.FirebaseUtil.updatePost
 import dev.hankli.iamstar.utils.MediaItem
 import tw.hankli.brookray.constant.EMPTY
@@ -38,7 +42,16 @@ class EditPostViewModel : ViewModel() {
             post = Post()
             setDefaultValues()
         } else {
-            // TODO loading from Firestore
+            val onSuccess = OnSuccessListener<DocumentSnapshot> {
+                post = it.toObject(Post::class.java)!!
+                setDefaultValues()
+            }
+
+            val onFailure = OnFailureListener {
+                // TODO Alert message and pop up
+            }
+
+            fetchPost(postId, onSuccess, onFailure)
         }
     }
 

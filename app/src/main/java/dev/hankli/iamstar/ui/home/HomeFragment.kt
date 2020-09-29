@@ -1,6 +1,7 @@
 package dev.hankli.iamstar.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -24,7 +25,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private lateinit var postCardAdapter: PostCardAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        postCardAdapter = PostCardAdapter()
+        postCardAdapter = PostCardAdapter().apply {
+            onItemOptionsClick = this@HomeFragment::showItemOptions
+        }
 
         view_posts.apply {
             setHasFixedSize(true)
@@ -49,6 +52,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         findNavController().navigate(
             HomeFragmentDirections.actionHomeFragmentToEditPostFragment(postId)
         )
+    }
+
+    fun showItemOptions(objectId: String): Unit {
+        Log.i("test", objectId)
     }
 
     override fun onStart() {

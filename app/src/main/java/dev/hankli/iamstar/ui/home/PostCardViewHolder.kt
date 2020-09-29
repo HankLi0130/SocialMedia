@@ -15,7 +15,7 @@ class PostCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         const val layoutRes = R.layout.card_post
     }
 
-    fun bind(position: Int, item: Post) {
+    fun bind(position: Int, item: Post, onItemOptionsClick: (objectId: String) -> Unit) {
         with(itemView) {
             view_head_shot.setImageResource(R.drawable.ic_person)
 
@@ -43,6 +43,8 @@ class PostCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             view_post_reaction_count.text = item.reactionCount.toString()
 
             view_post_comment_count.text = item.commentCount.toString()
+
+            view_post_more_options.setOnClickListener { onItemOptionsClick(item.objectId) }
         }
     }
 }
