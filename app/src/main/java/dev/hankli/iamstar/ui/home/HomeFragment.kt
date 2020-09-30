@@ -1,7 +1,6 @@
 package dev.hankli.iamstar.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -11,6 +10,7 @@ import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.MarginItemDecoration
 import kotlinx.android.synthetic.main.fragment_home.*
 import tw.hankli.brookray.constant.EMPTY
+import tw.hankli.brookray.extension.getListDialog
 
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
@@ -48,14 +48,23 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         }
     }
 
-    private fun toEditPostFragment(postId: String = EMPTY) {
+    private fun toEditPostFragment(objectId: String = EMPTY) {
         findNavController().navigate(
-            HomeFragmentDirections.actionHomeFragmentToEditPostFragment(postId)
+            HomeFragmentDirections.actionHomeFragmentToEditPostFragment(objectId)
         )
     }
 
-    fun showItemOptions(objectId: String): Unit {
-        Log.i("test", objectId)
+    fun showItemOptions(objectId: String) {
+        requireContext().getListDialog(
+            R.string.post_options_title,
+            R.array.post_options
+        ) { dialogInterface, index ->
+            when (index) {
+                0 -> toEditPostFragment(objectId)
+                1 -> TODO("Delete this post")
+                else -> dialogInterface.cancel()
+            }
+        }.show()
     }
 
     override fun onStart() {

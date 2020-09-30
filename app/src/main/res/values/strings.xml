@@ -30,4 +30,10 @@
     <string name="profile">Profile</string>
     <string name="add_post">Add post</string>
     <string name="location_not_available">location not available</string>
+
+    <string name="post_options_title">Options</string>
+    <string-array name="post_options">
+        <item>update</item>
+        <item>delete</item>
+    </string-array>
 </resources>

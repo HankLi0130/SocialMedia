@@ -1,5 +1,6 @@
 package dev.hankli.iamstar.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -84,7 +85,10 @@ class EditPostViewModel : ViewModel() {
 
     fun submit() {
         // TODO check validation of the post
-        val listener = OnCompleteListener<Void> { _popUp.postValue(it.isSuccessful) }
+        val listener = OnCompleteListener<Void> {
+            Log.i("test", "on complete")
+            _popUp.postValue(it.isSuccessful)
+        }
         if (post.objectId == EMPTY) {
             post.authorId = auth.currentUser!!.uid
             post.influencerId = auth.currentUser!!.uid
