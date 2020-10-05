@@ -95,4 +95,19 @@ class EditPostViewModel : ViewModel() {
             addPost(post, listener)
         } else updatePost(post, listener)
     }
+
+    private fun uploadPhotos() {
+//        val storageRef = storage.reference
+//        for (item in mediaItems) {
+//            storageRef
+//                .child("Post/${item.uri.lastPathSegment}")
+//                .putFile(item.uri)
+//                .addOnSuccessListener {
+//                    Log.i("test", "upload successful")
+//                }
+//                .addOnFailureListener {
+//                    Log.i("test", "upload failed")
+//                }
+//        }
+    }
 }

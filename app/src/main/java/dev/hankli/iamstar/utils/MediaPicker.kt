@@ -1,13 +1,19 @@
 package dev.hankli.iamstar.utils
 
 import android.Manifest
+import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import android.util.Size
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
@@ -44,8 +50,70 @@ fun obtainPathResult(data: Intent?): List<String> {
     return data?.let { Matisse.obtainPathResult(it) } ?: emptyList()
 }
 
-// Model
-data class MediaItem(val uri: Uri, val type: String, val bitmap: Bitmap)
+const val IMAGE = "image"
+const val VIDEO = "video"
+const val TYPE = "mime_type"
+const val WIDTH = "width"
+const val HEIGHT = "height"
+
+fun ContentResolver.toMediaItem(uri: Uri): MediaItem? {
+    val cursor = this.query(
+        uri,
+        arrayOf(TYPE, WIDTH, HEIGHT),
+        null,
+        null,
+        null,
+        null
+    )
+
+    return cursor?.let {
+        it.moveToFirst()
+        val type = it.getString(it.getColumnIndex(TYPE))
+        val width = it.getInt(it.getColumnIndex(WIDTH))
+        val height = it.getInt(it.getColumnIndex(HEIGHT))
+        val thumbnail = getThumbnail(uri, type)
+        it.close()
+
+        MediaItem(uri, thumbnail, type, width, height)
+    }
+}
+
+fun ContentResolver.getThumbnail(uri: Uri, type: String): Bitmap? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        loadThumbnail(uri, Size(96, 96), null)
+    } else {
+        when {
+            type.contains(IMAGE) -> {
+                MediaStore.Images.Thumbnails.getThumbnail(
+                    this,
+                    uri.lastPathSegment!!.toLong(),
+                    MediaStore.Images.Thumbnails.MICRO_KIND,
+                    BitmapFactory.Options()
+                )
+            }
+            type.contains(VIDEO) -> {
+                MediaStore.Video.Thumbnails.getThumbnail(
+                    this,
+                    uri.lastPathSegment!!.toLong(),
+                    MediaStore.Video.Thumbnails.MICRO_KIND,
+                    BitmapFactory.Options()
+                )
+            }
+            else -> null
+        }
+    }
+}
+
+// Model item, which can be local item or online item
+data class MediaItem(
+    val uri: Uri? = null,
+    val thumbnail: Bitmap? = null,
+    val type: String,
+    val width: Int,
+    val height: Int,
+    val objectId: String? = null,
+    val url: String? = null
+)
 
 // RecyclerView Adapter
 class MediaAdapter(private val listener: Listener) :
@@ -68,7 +136,16 @@ class MediaAdapter(private val listener: Listener) :
 
         fun bind(item: MediaItem, listener: Listener) {
             with(itemView) {
-                view_media_thumbnail.setImageBitmap(item.bitmap)
+
+                when {
+                    item.thumbnail != null -> Glide.with(itemView).load(item.thumbnail)
+                        .into(view_media_thumbnail)
+                    item.url != null -> Glide.with(itemView).load(item.uri)
+                        .into(view_media_thumbnail)
+                    else -> Glide.with(itemView).load(R.drawable.ic_broken_image)
+                        .into(view_media_thumbnail)
+                }
+
                 view_cancel.setOnClickListener { listener.onItemCancel(adapterPosition) }
             }
         }

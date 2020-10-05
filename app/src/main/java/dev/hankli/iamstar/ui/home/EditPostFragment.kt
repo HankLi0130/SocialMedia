@@ -3,11 +3,7 @@ package dev.hankli.iamstar.ui.home
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Size
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
@@ -25,7 +21,6 @@ import dev.hankli.iamstar.utils.Consts.REQUEST_PERMISSION_MEDIA
 import dev.hankli.iamstar.utils.Consts.REQUEST_PICK_MEDIAS
 import dev.hankli.iamstar.utils.Consts.REQUEST_PLACES
 import kotlinx.android.synthetic.main.fragment_edit_post.*
-import tw.hankli.brookray.constant.EMPTY
 
 class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter.Listener {
 
@@ -107,39 +102,9 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
 
     private fun handleMedias(resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK) {
-            val selectedMediaItems = obtainResult(data).map { uri ->
-
-                val type = contentResolver.getType(uri) ?: EMPTY
-
-                // get video and image thumbnail from uri
-                val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    contentResolver.loadThumbnail(uri, Size(96, 96), null)
-                } else {
-                    when {
-                        type.contains("image") -> {
-                            MediaStore.Images.Thumbnails.getThumbnail(
-                                contentResolver,
-                                uri.lastPathSegment!!.toLong(),
-                                MediaStore.Images.Thumbnails.MICRO_KIND,
-                                BitmapFactory.Options()
-                            )
-                        }
-                        type.contains("video") -> {
-                            MediaStore.Video.Thumbnails.getThumbnail(
-                                contentResolver,
-                                uri.lastPathSegment!!.toLong(),
-                                MediaStore.Video.Thumbnails.MICRO_KIND,
-                                BitmapFactory.Options()
-                            )
-                        }
-                        else -> {
-                            BitmapFactory.decodeResource(resources, R.drawable.ic_broken_image)
-                        }
-                    }
-                }
-                MediaItem(uri, type, bitmap)
+            val selectedMediaItems = obtainResult(data).mapNotNull { uri ->
+                contentResolver.toMediaItem(uri)
             }
-
             viewModel.addToMediaItems(selectedMediaItems)
         }
     }

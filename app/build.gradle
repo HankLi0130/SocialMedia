@@ -85,7 +85,7 @@ dependencies {
     implementation "com.firebaseui:firebase-ui-auth:$firebase_ui_version"
     implementation "com.firebaseui:firebase-ui-firestore:$firebase_ui_version"
     implementation "com.firebaseui:firebase-ui-storage:$firebase_ui_version"
-    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    implementation 'com.google.firebase:firebase-messaging:20.3.0'
 
     // Facebook
     implementation 'com.facebook.android:facebook-android-sdk:5.0.0'
