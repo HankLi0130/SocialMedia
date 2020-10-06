@@ -3,12 +3,12 @@ package dev.hankli.iamstar.ui.home
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.firestore.DocumentSnapshot
 import dev.hankli.iamstar.data.models.Post
+import dev.hankli.iamstar.utils.BaseViewModel
 import dev.hankli.iamstar.utils.FirebaseUtil.addPost
 import dev.hankli.iamstar.utils.FirebaseUtil.auth
 import dev.hankli.iamstar.utils.FirebaseUtil.fetchPost
@@ -16,7 +16,7 @@ import dev.hankli.iamstar.utils.FirebaseUtil.updatePost
 import dev.hankli.iamstar.utils.MediaItem
 import tw.hankli.brookray.constant.EMPTY
 
-class EditPostViewModel : ViewModel() {
+class EditPostViewModel : BaseViewModel() {
 
     private lateinit var post: Post
 
@@ -90,24 +90,10 @@ class EditPostViewModel : ViewModel() {
             _popUp.postValue(it.isSuccessful)
         }
         if (post.objectId == EMPTY) {
+            //uploadMedia(mediaItems[0])
             post.authorId = auth.currentUser!!.uid
             post.influencerId = auth.currentUser!!.uid
             addPost(post, listener)
         } else updatePost(post, listener)
-    }
-
-    private fun uploadPhotos() {
-//        val storageRef = storage.reference
-//        for (item in mediaItems) {
-//            storageRef
-//                .child("Post/${item.uri.lastPathSegment}")
-//                .putFile(item.uri)
-//                .addOnSuccessListener {
-//                    Log.i("test", "upload successful")
-//                }
-//                .addOnFailureListener {
-//                    Log.i("test", "upload failed")
-//                }
-//        }
     }
 }

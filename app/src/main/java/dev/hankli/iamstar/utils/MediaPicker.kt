@@ -17,10 +17,9 @@ import com.bumptech.glide.Glide
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
-import com.zhihu.matisse.internal.entity.CaptureStrategy
-import dev.hankli.iamstar.BuildConfig
 import dev.hankli.iamstar.R
 import kotlinx.android.synthetic.main.itemview_media.view.*
+import tw.hankli.brookray.constant.ZERO
 import tw.hankli.brookray.extension.viewOf
 
 val mediaPickerPermissions = arrayOf(
@@ -35,8 +34,8 @@ fun showMediaPicker(fragment: Fragment, requestCode: Int) {
         .choose(mimeTypes)
         .maxSelectable(MAX_SELECTABLE)
         .countable(true)
-        .capture(true)
-        .captureStrategy(CaptureStrategy(false, "${BuildConfig.APPLICATION_ID}.fileprovider"))
+        .capture(false)
+//        .captureStrategy(CaptureStrategy(false, "${BuildConfig.APPLICATION_ID}.fileprovider"))
         .thumbnailScale(0.85f)
         .imageEngine(GlideEngine())
         .forResult(requestCode)
@@ -52,14 +51,15 @@ fun obtainPathResult(data: Intent?): List<String> {
 
 const val IMAGE = "image"
 const val VIDEO = "video"
-const val TYPE = "mime_type"
+const val DISPLAY_NAME = "_display_name"
+const val MIME_TYPE = "mime_type"
 const val WIDTH = "width"
 const val HEIGHT = "height"
 
 fun ContentResolver.toMediaItem(uri: Uri): MediaItem? {
     val cursor = this.query(
         uri,
-        arrayOf(TYPE, WIDTH, HEIGHT),
+        arrayOf(DISPLAY_NAME, MIME_TYPE, WIDTH, HEIGHT),
         null,
         null,
         null,
@@ -68,13 +68,22 @@ fun ContentResolver.toMediaItem(uri: Uri): MediaItem? {
 
     return cursor?.let {
         it.moveToFirst()
-        val type = it.getString(it.getColumnIndex(TYPE))
+        val name = it.getString(it.getColumnIndex(DISPLAY_NAME))
+        val mimeType = it.getString(it.getColumnIndex(MIME_TYPE))
         val width = it.getInt(it.getColumnIndex(WIDTH))
         val height = it.getInt(it.getColumnIndex(HEIGHT))
-        val thumbnail = getThumbnail(uri, type)
         it.close()
 
-        MediaItem(uri, thumbnail, type, width, height)
+        // extension name
+        val ext = name.split('.')[1]
+
+        // type (image, video)
+        val type = mimeType.split('/')[0]
+
+        // Thumbnail
+        val thumbnail = getThumbnail(uri, type)
+
+        MediaItem(uri, thumbnail, type, ext, width, height)
     }
 }
 
@@ -82,8 +91,8 @@ fun ContentResolver.getThumbnail(uri: Uri, type: String): Bitmap? {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         loadThumbnail(uri, Size(96, 96), null)
     } else {
-        when {
-            type.contains(IMAGE) -> {
+        when (type) {
+            IMAGE -> {
                 MediaStore.Images.Thumbnails.getThumbnail(
                     this,
                     uri.lastPathSegment!!.toLong(),
@@ -91,7 +100,7 @@ fun ContentResolver.getThumbnail(uri: Uri, type: String): Bitmap? {
                     BitmapFactory.Options()
                 )
             }
-            type.contains(VIDEO) -> {
+            VIDEO -> {
                 MediaStore.Video.Thumbnails.getThumbnail(
                     this,
                     uri.lastPathSegment!!.toLong(),
@@ -109,8 +118,9 @@ data class MediaItem(
     val uri: Uri? = null,
     val thumbnail: Bitmap? = null,
     val type: String,
-    val width: Int,
-    val height: Int,
+    val ext: String,
+    val width: Int = ZERO,
+    val height: Int = ZERO,
     val objectId: String? = null,
     val url: String? = null
 )

@@ -93,9 +93,6 @@ dependencies {
     // Google Auth
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
 
-    // ProgressHUD
-    implementation 'com.kaopiz:kprogresshud:1.2.0'
-
     // round image view
     implementation 'com.mikhaellopez:circularimageview:4.0.2'
 

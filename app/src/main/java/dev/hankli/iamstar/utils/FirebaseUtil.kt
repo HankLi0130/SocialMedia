@@ -2,6 +2,7 @@ package dev.hankli.iamstar.utils
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
@@ -16,6 +17,7 @@ import java.util.*
 object FirebaseUtil {
 
     const val COLLECTION_POSTS = "Post"
+    const val BUCKET_POSTS = COLLECTION_POSTS
 
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
@@ -63,5 +65,28 @@ object FirebaseUtil {
             .get()
             .addOnSuccessListener(onSuccessListener)
             .addOnFailureListener(onFailureListener)
+    }
+
+    // https://firebase.google.com/docs/storage/android/upload-files
+    fun uploadMedia(media: MediaItem) {
+        val name = "${UUID.randomUUID()}.${media.ext}"
+        val ref = storage.reference.child("$BUCKET_POSTS/$name")
+        val task = ref.putFile(media.uri!!)
+            .continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                ref.downloadUrl
+            }
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val downloadUri = task.result
+                    Log.i("test", downloadUri.path ?: "path not found!")
+                } else {
+                    // TODO handle failure
+                }
+            }
     }
 }

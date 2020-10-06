@@ -8,6 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
+import dev.hankli.iamstar.ui.MainActivity
 import tw.hankli.brookray.constant.NO_RESOURCE
 
 abstract class BaseFragment : Fragment {
@@ -65,4 +66,6 @@ abstract class BaseFragment : Fragment {
 
         return deniedPermissions.toTypedArray()
     }
+
+    protected fun mainActivity(): MainActivity = requireActivity() as MainActivity
 }
