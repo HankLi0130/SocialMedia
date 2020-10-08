@@ -1,16 +1,12 @@
 package dev.hankli.iamstar.utils
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 abstract class BaseViewModel : ViewModel() {
 
-    private val _progressData = MutableLiveData<Boolean>()
-    val progressData: LiveData<Boolean>
-        get() = _progressData
+    // TODO Show progress
 
-    fun showProgress(toShow: Boolean = true) {
-        _progressData.value = toShow
-    }
+    // TODO Show message dialog
+
+    // TODO Popup
 }

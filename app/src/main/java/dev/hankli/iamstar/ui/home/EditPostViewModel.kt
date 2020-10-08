@@ -3,20 +3,22 @@ package dev.hankli.iamstar.ui.home
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.tasks.OnCompleteListener
+import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.firestore.DocumentSnapshot
+import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Post
-import dev.hankli.iamstar.utils.BaseViewModel
 import dev.hankli.iamstar.utils.FirebaseUtil.addPost
 import dev.hankli.iamstar.utils.FirebaseUtil.auth
 import dev.hankli.iamstar.utils.FirebaseUtil.fetchPost
-import dev.hankli.iamstar.utils.FirebaseUtil.updatePost
+import dev.hankli.iamstar.utils.FirebaseUtil.getPostMediaIds
+import dev.hankli.iamstar.utils.FirebaseUtil.updatePostMedia
+import dev.hankli.iamstar.utils.FirebaseUtil.uploadPostMedia
 import dev.hankli.iamstar.utils.MediaItem
 import tw.hankli.brookray.constant.EMPTY
 
-class EditPostViewModel : BaseViewModel() {
+class EditPostViewModel : ViewModel() {
 
     private lateinit var post: Post
 
@@ -84,16 +86,53 @@ class EditPostViewModel : BaseViewModel() {
     }
 
     fun submit() {
-        // TODO check validation of the post
-        val listener = OnCompleteListener<Void> {
-            Log.i("test", "on complete")
-            _popUp.postValue(it.isSuccessful)
+        if (!isValid()) {
+            // TODO show alert
+            return
         }
+
         if (post.objectId == EMPTY) {
-            //uploadMedia(mediaItems[0])
             post.authorId = auth.currentUser!!.uid
             post.influencerId = auth.currentUser!!.uid
-            addPost(post, listener)
-        } else updatePost(post, listener)
+            // addPost(post, mediaItems)
+
+            addPost(post, { // success
+                val mediaIds = getPostMediaIds(post.objectId, mediaItems.size)
+                for ((index, id) in mediaIds.withIndex()) {
+                    val mediaItem = mediaItems[index]
+                    val name = "$id.${mediaItem.ext}"
+                    uploadPostMedia(name, mediaItem.uri!!,
+                        { url ->    // success
+                            updatePostMedia(
+                                post.objectId,
+                                Media(
+                                    id,
+                                    url,
+                                    mediaItem.type,
+                                    mediaItem.height,
+                                    mediaItem.width
+                                ),
+                                {   // success
+                                    _popUp.value = true
+                                }, { ex ->
+                                    Log.e("test", "fail on updatePostMedia", ex)
+                                })
+
+                        }, { ex ->
+                            Log.e("test", "fail on uploadPostMedia", ex)
+                        })
+                }
+
+            }, { ex ->
+                Log.e("test", "fail on addPost", ex)
+            })
+        } else {
+            // updatePost(post, listener)
+        }
+    }
+
+    private fun isValid(): Boolean {
+        if (post.content.isEmpty()) return false
+        return true
     }
 }

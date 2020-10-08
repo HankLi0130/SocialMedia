@@ -2,21 +2,22 @@ package dev.hankli.iamstar.utils
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
+import android.net.Uri
 import com.firebase.ui.auth.AuthUI
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Post
 import java.util.*
 
 object FirebaseUtil {
 
     const val COLLECTION_POSTS = "Post"
+    const val COLLECTION_MEDIAS = "Medias"
     const val BUCKET_POSTS = COLLECTION_POSTS
 
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -40,19 +41,58 @@ object FirebaseUtil {
         AuthUI.getInstance().signOut(context).addOnCompleteListener { onCompleted() }
     }
 
-    fun addPost(post: Post, listener: OnCompleteListener<Void>) {
-        val doc = db.collection(COLLECTION_POSTS).document()
-        post.objectId = doc.id
+    fun addPost(post: Post, onSuccess: () -> Unit, onFailure: (e: Exception) -> Unit) {
+        val postDoc = db.collection(COLLECTION_POSTS).document()
+        post.objectId = postDoc.id
         post.createdAt = Date()
-        doc.set(post).addOnCompleteListener(listener)
+        postDoc.set(post)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { onFailure(it) }
     }
 
-    fun updatePost(post: Post, listener: OnCompleteListener<Void>) {
+    fun getPostMediaIds(
+        postId: String,
+        mediaCount: Int
+    ): Array<String> {
+        val path = "$COLLECTION_POSTS/$postId/$COLLECTION_MEDIAS"
+        val mediaCollection = db.collection(path)
+        return Array(mediaCount) { mediaCollection.document().id }
+    }
+
+    // https://firebase.google.com/docs/storage/android/upload-files
+    fun uploadPostMedia(
+        name: String,
+        uri: Uri,
+        onSuccess: (url: String) -> Unit,
+        onFailure: (e: Exception) -> Unit
+    ) {
+        val ref = storage.reference.child("$BUCKET_POSTS/$name")
+        ref.putFile(uri)
+            .continueWithTask { ref.downloadUrl }
+            .addOnSuccessListener { onSuccess(it.toString()) }
+            .addOnFailureListener { onFailure(it) }
+    }
+
+    fun updatePostMedia(
+        postId: String,
+        media: Media,
+        onSuccess: () -> Unit,
+        onFailure: (e: Exception) -> Unit
+    ) {
+        val mediaDoc = db.collection("$COLLECTION_POSTS/$postId/$COLLECTION_MEDIAS")
+            .document(media.objectId)
+        mediaDoc.set(media)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { onFailure(it) }
+    }
+
+    fun updatePost(post: Post, onSuccess: () -> Unit, onFailure: (e: Exception) -> Unit) {
         post.updatedAt = Date()
         db.collection(COLLECTION_POSTS)
             .document(post.objectId)
             .set(post)
-            .addOnCompleteListener(listener)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { onFailure(it) }
     }
 
     fun fetchPost(
@@ -65,28 +105,5 @@ object FirebaseUtil {
             .get()
             .addOnSuccessListener(onSuccessListener)
             .addOnFailureListener(onFailureListener)
-    }
-
-    // https://firebase.google.com/docs/storage/android/upload-files
-    fun uploadMedia(media: MediaItem) {
-        val name = "${UUID.randomUUID()}.${media.ext}"
-        val ref = storage.reference.child("$BUCKET_POSTS/$name")
-        val task = ref.putFile(media.uri!!)
-            .continueWithTask { task ->
-                if (!task.isSuccessful) {
-                    task.exception?.let {
-                        throw it
-                    }
-                }
-                ref.downloadUrl
-            }
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val downloadUri = task.result
-                    Log.i("test", downloadUri.path ?: "path not found!")
-                } else {
-                    // TODO handle failure
-                }
-            }
     }
 }
