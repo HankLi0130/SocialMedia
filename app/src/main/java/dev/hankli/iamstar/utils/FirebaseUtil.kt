@@ -50,40 +50,31 @@ object FirebaseUtil {
             .addOnFailureListener { onFailure(it) }
     }
 
-    fun getPostMediaIds(
+    fun addPostMedia(
         postId: String,
-        mediaCount: Int
-    ): Array<String> {
-        val path = "$COLLECTION_POSTS/$postId/$COLLECTION_MEDIAS"
-        val mediaCollection = db.collection(path)
-        return Array(mediaCount) { mediaCollection.document().id }
-    }
-
-    // https://firebase.google.com/docs/storage/android/upload-files
-    fun uploadPostMedia(
-        name: String,
-        uri: Uri,
-        onSuccess: (url: String) -> Unit,
-        onFailure: (e: Exception) -> Unit
-    ) {
-        val ref = storage.reference.child("$BUCKET_POSTS/$name")
-        ref.putFile(uri)
-            .continueWithTask { ref.downloadUrl }
-            .addOnSuccessListener { onSuccess(it.toString()) }
-            .addOnFailureListener { onFailure(it) }
-    }
-
-    fun updatePostMedia(
-        postId: String,
-        media: Media,
+        mediaItem: MediaItem,
         onSuccess: () -> Unit,
         onFailure: (e: Exception) -> Unit
     ) {
-        val mediaDoc = db.collection("$COLLECTION_POSTS/$postId/$COLLECTION_MEDIAS")
-            .document(media.objectId)
-        mediaDoc.set(media)
-            .addOnSuccessListener { onSuccess() }
-            .addOnFailureListener { onFailure(it) }
+        // get id
+        val mediaCollectionPath = "$COLLECTION_POSTS/$postId/$COLLECTION_MEDIAS"
+        val mediaDoc = db.collection(mediaCollectionPath).document()
+        val mediaId = mediaDoc.id
+
+        // upload file
+        val fileName = "$mediaId.${mediaItem.ext}"
+        val mediaStoragePath = "$BUCKET_POSTS/$fileName"
+        uploadFile(mediaStoragePath, mediaItem.uri!!,
+            // Success
+            { url ->
+                // update media
+                val media = Media(mediaId, url, mediaItem.type, mediaItem.height, mediaItem.width)
+                mediaDoc.set(media)
+                    .addOnSuccessListener { onSuccess() }
+                    .addOnFailureListener { ex -> onFailure(ex) }
+            },
+            // Failure
+            { ex -> onFailure(ex) })
     }
 
     fun updatePost(post: Post, onSuccess: () -> Unit, onFailure: (e: Exception) -> Unit) {
@@ -105,5 +96,19 @@ object FirebaseUtil {
             .get()
             .addOnSuccessListener(onSuccessListener)
             .addOnFailureListener(onFailureListener)
+    }
+
+    // https://firebase.google.com/docs/storage/android/upload-files
+    fun uploadFile(
+        path: String,
+        uri: Uri,
+        onSuccess: (url: String) -> Unit,
+        onFailure: (e: Exception) -> Unit
+    ) {
+        val ref = storage.reference.child(path)
+        ref.putFile(uri)
+            .continueWithTask { ref.downloadUrl }
+            .addOnSuccessListener { onSuccess(it.toString()) }
+            .addOnFailureListener { onFailure(it) }
     }
 }

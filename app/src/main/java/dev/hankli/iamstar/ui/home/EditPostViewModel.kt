@@ -7,14 +7,11 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.firestore.DocumentSnapshot
-import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Post
 import dev.hankli.iamstar.utils.FirebaseUtil.addPost
+import dev.hankli.iamstar.utils.FirebaseUtil.addPostMedia
 import dev.hankli.iamstar.utils.FirebaseUtil.auth
 import dev.hankli.iamstar.utils.FirebaseUtil.fetchPost
-import dev.hankli.iamstar.utils.FirebaseUtil.getPostMediaIds
-import dev.hankli.iamstar.utils.FirebaseUtil.updatePostMedia
-import dev.hankli.iamstar.utils.FirebaseUtil.uploadPostMedia
 import dev.hankli.iamstar.utils.MediaItem
 import tw.hankli.brookray.constant.EMPTY
 
@@ -94,40 +91,29 @@ class EditPostViewModel : ViewModel() {
         if (post.objectId == EMPTY) {
             post.authorId = auth.currentUser!!.uid
             post.influencerId = auth.currentUser!!.uid
-            // addPost(post, mediaItems)
 
-            addPost(post, { // success
-                val mediaIds = getPostMediaIds(post.objectId, mediaItems.size)
-                for ((index, id) in mediaIds.withIndex()) {
-                    val mediaItem = mediaItems[index]
-                    val name = "$id.${mediaItem.ext}"
-                    uploadPostMedia(name, mediaItem.uri!!,
-                        { url ->    // success
-                            updatePostMedia(
-                                post.objectId,
-                                Media(
-                                    id,
-                                    url,
-                                    mediaItem.type,
-                                    mediaItem.height,
-                                    mediaItem.width
-                                ),
-                                {   // success
-                                    _popUp.value = true
-                                }, { ex ->
-                                    Log.e("test", "fail on updatePostMedia", ex)
-                                })
+            addPost(post,
+                // Add post successful in Firestore
+                {
+                    mediaItems.forEach { mediaItem ->
+                        addPostMedia(post.objectId, mediaItem,
+                            // Add post media successful in Firestore and storage
+                            {
+                                Log.i("test", "add post media successful")
+                            },
+                            // Add post media failed
+                            { ex ->
+                                Log.e("test", "add post media failed", ex)
+                            })
+                    }
+                },
+                // Add post failed in Firestore
+                { ex ->
+                    Log.e("test", "add post failed", ex)
+                })
 
-                        }, { ex ->
-                            Log.e("test", "fail on uploadPostMedia", ex)
-                        })
-                }
-
-            }, { ex ->
-                Log.e("test", "fail on addPost", ex)
-            })
         } else {
-            // updatePost(post, listener)
+
         }
     }
 
