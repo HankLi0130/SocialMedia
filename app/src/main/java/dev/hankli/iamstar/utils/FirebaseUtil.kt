@@ -4,14 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.firebase.ui.auth.AuthUI
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Post
+import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 import java.util.*
 
 object FirebaseUtil {
@@ -86,16 +85,38 @@ object FirebaseUtil {
             .addOnFailureListener { onFailure(it) }
     }
 
-    fun fetchPost(
-        objectId: String,
-        onSuccessListener: OnSuccessListener<in DocumentSnapshot>,
-        onFailureListener: OnFailureListener
-    ) {
-        db.collection(COLLECTION_POSTS)
-            .document(objectId)
-            .get()
-            .addOnSuccessListener(onSuccessListener)
-            .addOnFailureListener(onFailureListener)
+    fun fetchPostAndMedias(objectId: String): Single<Post> {
+        return Single.zip(
+            fetchPost(objectId),
+            fetchPostMedias(objectId),
+            BiFunction { post, medias ->
+                post.medias = medias
+                return@BiFunction post
+            })
+    }
+
+    private fun fetchPost(objectId: String): Single<Post> {
+        return Single.create { emitter ->
+            // get post
+            db.collection(COLLECTION_POSTS)
+                .document(objectId)
+                .get()
+                .addOnSuccessListener {
+                    val post = it.toObject(Post::class.java)
+                    if (post != null) emitter.onSuccess(post)
+                    else emitter.onError(Throwable("Post is null."))
+                }
+                .addOnFailureListener { emitter.onError(it) }
+        }
+    }
+
+    private fun fetchPostMedias(objectId: String): Single<List<Media>> {
+        return Single.create { emitter ->
+            db.collection("$COLLECTION_POSTS/$objectId/$COLLECTION_MEDIAS")
+                .get()
+                .addOnSuccessListener { emitter.onSuccess(it.toObjects(Media::class.java)) }
+                .addOnFailureListener { emitter.onError(it) }
+        }
     }
 
     // https://firebase.google.com/docs/storage/android/upload-files

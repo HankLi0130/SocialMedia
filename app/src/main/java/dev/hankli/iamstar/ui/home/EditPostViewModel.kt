@@ -3,19 +3,19 @@ package dev.hankli.iamstar.ui.home
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.firestore.DocumentSnapshot
 import dev.hankli.iamstar.data.models.Post
+import dev.hankli.iamstar.utils.BaseViewModel
 import dev.hankli.iamstar.utils.FirebaseUtil.addPost
 import dev.hankli.iamstar.utils.FirebaseUtil.addPostMedia
 import dev.hankli.iamstar.utils.FirebaseUtil.auth
-import dev.hankli.iamstar.utils.FirebaseUtil.fetchPost
+import dev.hankli.iamstar.utils.FirebaseUtil.fetchPostAndMedias
+import dev.hankli.iamstar.utils.FirebaseUtil.updatePost
 import dev.hankli.iamstar.utils.MediaItem
+import dev.hankli.iamstar.utils.toMediaItem
+import io.reactivex.rxkotlin.addTo
 import tw.hankli.brookray.constant.EMPTY
 
-class EditPostViewModel : ViewModel() {
+class EditPostViewModel : BaseViewModel() {
 
     private lateinit var post: Post
 
@@ -40,24 +40,22 @@ class EditPostViewModel : ViewModel() {
     fun loadPost(postId: String) {
         if (postId == EMPTY) {
             post = Post()
-            setDefaultValues()
         } else {
-            val onSuccess = OnSuccessListener<DocumentSnapshot> {
-                post = it.toObject(Post::class.java)!!
-                setDefaultValues()
-            }
-
-            val onFailure = OnFailureListener {
-                // TODO Alert message and pop up
-            }
-
-            fetchPost(postId, onSuccess, onFailure)
+            fetchPostAndMedias(postId).subscribe(
+                { post ->
+                    this.post = post
+                    setDefaultValues()
+                },
+                { ex -> }
+            ).addTo(disposables)
         }
     }
 
     private fun setDefaultValues() {
         _locationData.postValue(post.location)
         _contentData.postValue(post.content)
+
+        addToMediaItems(post.medias.map { it.toMediaItem() })
     }
 
     fun onContentChanged(text: CharSequence?) {
@@ -95,6 +93,7 @@ class EditPostViewModel : ViewModel() {
             addPost(post,
                 // Add post successful in Firestore
                 {
+                    // TODO fix with RxKotlin
                     mediaItems.forEach { mediaItem ->
                         addPostMedia(post.objectId, mediaItem,
                             // Add post media successful in Firestore and storage
@@ -113,7 +112,15 @@ class EditPostViewModel : ViewModel() {
                 })
 
         } else {
+            updatePost(post,
+                // Update post successful in Firestore
+                {
 
+                },
+                // Update post failed in Firestore
+                { ex ->
+                    Log.e("test", "update post failed", ex)
+                })
         }
     }
 

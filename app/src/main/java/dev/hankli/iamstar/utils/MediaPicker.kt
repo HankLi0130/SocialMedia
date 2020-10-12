@@ -18,7 +18,9 @@ import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
 import dev.hankli.iamstar.R
+import dev.hankli.iamstar.data.models.Media
 import kotlinx.android.synthetic.main.itemview_media.view.*
+import tw.hankli.brookray.constant.EMPTY
 import tw.hankli.brookray.constant.ZERO
 import tw.hankli.brookray.extension.viewOf
 
@@ -117,13 +119,23 @@ fun ContentResolver.getThumbnail(uri: Uri, type: String): Bitmap? {
 data class MediaItem(
     val uri: Uri? = null,
     val thumbnail: Bitmap? = null,
-    val type: String,
-    val ext: String,
+    val type: String = EMPTY,
+    val ext: String = EMPTY,
     val width: Int = ZERO,
     val height: Int = ZERO,
-    val objectId: String? = null,
-    val url: String? = null
+    val objectId: String = EMPTY,
+    val url: String = EMPTY
 )
+
+fun Media.toMediaItem(): MediaItem {
+    return MediaItem(
+        objectId = this.objectId,
+        type = this.type,
+        url = this.url,
+        width = this.width,
+        height = this.height
+    )
+}
 
 // RecyclerView Adapter
 class MediaAdapter(private val listener: Listener) :
@@ -150,7 +162,7 @@ class MediaAdapter(private val listener: Listener) :
                 when {
                     item.thumbnail != null -> Glide.with(itemView).load(item.thumbnail)
                         .into(view_media_thumbnail)
-                    item.url != null -> Glide.with(itemView).load(item.uri)
+                    item.url.isNotEmpty() -> Glide.with(itemView).load(item.url)
                         .into(view_media_thumbnail)
                     else -> Glide.with(itemView).load(R.drawable.ic_broken_image)
                         .into(view_media_thumbnail)

@@ -6,6 +6,7 @@ import tw.hankli.brookray.constant.EMPTY
 import tw.hankli.brookray.constant.ZERO
 import java.util.*
 
+// https://stackoverflow.com/a/40117301/8361227
 @IgnoreExtraProperties
 data class Post(
     var objectId: String = EMPTY,
@@ -19,6 +20,6 @@ data class Post(
     var commentCount: Int = ZERO,
     var reactionCount: Int = ZERO,
     var content: String = EMPTY,
-    @Exclude var medias: List<Media> = emptyList(),
+    @Exclude @set:Exclude @get:Exclude var medias: List<Media> = emptyList(),
     var reactions: Map<String, Int> = emptyMap()
 )
