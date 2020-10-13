@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import dev.hankli.iamstar.data.models.Post
 import dev.hankli.iamstar.utils.BaseViewModel
 import dev.hankli.iamstar.utils.FirebaseUtil.addPost
-import dev.hankli.iamstar.utils.FirebaseUtil.addPostMedia
 import dev.hankli.iamstar.utils.FirebaseUtil.auth
 import dev.hankli.iamstar.utils.FirebaseUtil.fetchPostAndMedias
 import dev.hankli.iamstar.utils.FirebaseUtil.updatePost
@@ -90,26 +89,14 @@ class EditPostViewModel : BaseViewModel() {
             post.authorId = auth.currentUser!!.uid
             post.influencerId = auth.currentUser!!.uid
 
-            addPost(post,
-                // Add post successful in Firestore
-                {
-                    // TODO fix with RxKotlin
-                    mediaItems.forEach { mediaItem ->
-                        addPostMedia(post.objectId, mediaItem,
-                            // Add post media successful in Firestore and storage
-                            {
-                                Log.i("test", "add post media successful")
-                            },
-                            // Add post media failed
-                            { ex ->
-                                Log.e("test", "add post media failed", ex)
-                            })
-                    }
-                },
-                // Add post failed in Firestore
-                { ex ->
+            addPost(post, mediaItems)
+                .doOnComplete { }
+                .subscribe({
+                    Log.i("test", "add post successful")
+                }, { ex ->
                     Log.e("test", "add post failed", ex)
                 })
+                .addTo(disposables)
 
         } else {
             updatePost(post,

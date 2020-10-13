@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Post
+import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import java.util.*
@@ -40,40 +41,46 @@ object FirebaseUtil {
         AuthUI.getInstance().signOut(context).addOnCompleteListener { onCompleted() }
     }
 
-    fun addPost(post: Post, onSuccess: () -> Unit, onFailure: (e: Exception) -> Unit) {
-        val postDoc = db.collection(COLLECTION_POSTS).document()
-        post.objectId = postDoc.id
-        post.createdAt = Date()
-        postDoc.set(post)
-            .addOnSuccessListener { onSuccess() }
-            .addOnFailureListener { onFailure(it) }
+    fun getPostMediaPath(objectId: String) = "$COLLECTION_POSTS/$objectId/$COLLECTION_MEDIAS"
+
+    fun addPost(post: Post, mediaItems: List<MediaItem>): Completable {
+        return addPost(post)
+            .flatMapCompletable { objectId ->
+                val actions = mediaItems.map { addPostMedia(objectId, it) }
+                Completable.merge(actions)
+            }
     }
 
-    fun addPostMedia(
-        postId: String,
-        mediaItem: MediaItem,
-        onSuccess: () -> Unit,
-        onFailure: (e: Exception) -> Unit
-    ) {
-        // get id
-        val mediaCollectionPath = "$COLLECTION_POSTS/$postId/$COLLECTION_MEDIAS"
-        val mediaDoc = db.collection(mediaCollectionPath).document()
+    private fun addPost(post: Post): Single<String> {
+        return Single.create { emitter ->
+            val postDoc = db.collection(COLLECTION_POSTS).document()
+            post.objectId = postDoc.id
+            post.createdAt = Date()
+            postDoc.set(post)
+                .addOnSuccessListener { emitter.onSuccess(post.objectId) }
+                .addOnFailureListener { emitter.onError(it) }
+        }
+    }
+
+    private fun addPostMedia(objectId: String, mediaItem: MediaItem): Completable {
+        // get media id from Firestore
+        val mediaDoc = db.collection(getPostMediaPath(objectId)).document()
         val mediaId = mediaDoc.id
 
-        // upload file
+        // upload file to Firebase Storage
         val fileName = "$mediaId.${mediaItem.ext}"
         val mediaStoragePath = "$BUCKET_POSTS/$fileName"
-        uploadFile(mediaStoragePath, mediaItem.uri!!,
-            // Success
-            { url ->
-                // update media
-                val media = Media(mediaId, url, mediaItem.type, mediaItem.height, mediaItem.width)
-                mediaDoc.set(media)
-                    .addOnSuccessListener { onSuccess() }
-                    .addOnFailureListener { ex -> onFailure(ex) }
-            },
-            // Failure
-            { ex -> onFailure(ex) })
+        return uploadFile(mediaStoragePath, mediaItem.uri!!)
+            .map { url ->
+                Media(mediaId, url, mediaItem.type, mediaItem.height, mediaItem.width)
+            }
+            .flatMapCompletable { media ->
+                Completable.create { emitter ->
+                    mediaDoc.set(media)
+                        .addOnSuccessListener { emitter.onComplete() }
+                        .addOnFailureListener { emitter.onError(it) }
+                }
+            }
     }
 
     fun updatePost(post: Post, onSuccess: () -> Unit, onFailure: (e: Exception) -> Unit) {
@@ -112,7 +119,7 @@ object FirebaseUtil {
 
     private fun fetchPostMedias(objectId: String): Single<List<Media>> {
         return Single.create { emitter ->
-            db.collection("$COLLECTION_POSTS/$objectId/$COLLECTION_MEDIAS")
+            db.collection(getPostMediaPath(objectId))
                 .get()
                 .addOnSuccessListener { emitter.onSuccess(it.toObjects(Media::class.java)) }
                 .addOnFailureListener { emitter.onError(it) }
@@ -122,14 +129,14 @@ object FirebaseUtil {
     // https://firebase.google.com/docs/storage/android/upload-files
     fun uploadFile(
         path: String,
-        uri: Uri,
-        onSuccess: (url: String) -> Unit,
-        onFailure: (e: Exception) -> Unit
-    ) {
-        val ref = storage.reference.child(path)
-        ref.putFile(uri)
-            .continueWithTask { ref.downloadUrl }
-            .addOnSuccessListener { onSuccess(it.toString()) }
-            .addOnFailureListener { onFailure(it) }
+        uri: Uri
+    ): Single<String> {
+        return Single.create { emitter ->
+            val ref = storage.reference.child(path)
+            ref.putFile(uri)
+                .continueWithTask { ref.downloadUrl }
+                .addOnSuccessListener { emitter.onSuccess(it.toString()) }
+                .addOnFailureListener { emitter.onError(it) }
+        }
     }
 }
