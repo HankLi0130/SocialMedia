@@ -99,15 +99,14 @@ class EditPostViewModel : BaseViewModel() {
                 .addTo(disposables)
 
         } else {
-            updatePost(post,
-                // Update post successful in Firestore
-                {
-
-                },
-                // Update post failed in Firestore
-                { ex ->
+            updatePost(post, mediaItems)
+                .doOnComplete { }
+                .subscribe({
+                    Log.i("test", "update post successful")
+                }, { ex ->
                     Log.e("test", "update post failed", ex)
                 })
+                .addTo(disposables)
         }
     }
 
