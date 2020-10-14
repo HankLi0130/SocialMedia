@@ -51,17 +51,16 @@ fun obtainPathResult(data: Intent?): List<String> {
     return data?.let { Matisse.obtainPathResult(it) } ?: emptyList()
 }
 
-const val IMAGE = "image"
-const val VIDEO = "video"
-const val DISPLAY_NAME = "_display_name"
-const val MIME_TYPE = "mime_type"
-const val WIDTH = "width"
-const val HEIGHT = "height"
+private const val IMAGE = "image"
+private const val VIDEO = "video"
+private const val MIME_TYPE = "mime_type"
+private const val WIDTH = "width"
+private const val HEIGHT = "height"
 
 fun ContentResolver.toMediaItem(uri: Uri): MediaItem? {
     val cursor = this.query(
         uri,
-        arrayOf(DISPLAY_NAME, MIME_TYPE, WIDTH, HEIGHT),
+        arrayOf(MIME_TYPE, WIDTH, HEIGHT),
         null,
         null,
         null,
@@ -70,14 +69,10 @@ fun ContentResolver.toMediaItem(uri: Uri): MediaItem? {
 
     return cursor?.let {
         it.moveToFirst()
-        val name = it.getString(it.getColumnIndex(DISPLAY_NAME))
         val mimeType = it.getString(it.getColumnIndex(MIME_TYPE))
         val width = it.getInt(it.getColumnIndex(WIDTH))
         val height = it.getInt(it.getColumnIndex(HEIGHT))
         it.close()
-
-        // extension name
-        val ext = name.split('.')[1]
 
         // type (image, video)
         val type = mimeType.split('/')[0]
@@ -85,7 +80,7 @@ fun ContentResolver.toMediaItem(uri: Uri): MediaItem? {
         // Thumbnail
         val thumbnail = getThumbnail(uri, type)
 
-        MediaItem(uri, thumbnail, type, ext, width, height)
+        MediaItem(uri, thumbnail, type, width, height)
     }
 }
 
@@ -120,7 +115,6 @@ data class MediaItem(
     val uri: Uri? = null,
     val thumbnail: Bitmap? = null,
     val type: String = EMPTY,
-    val ext: String = EMPTY,
     val width: Int = ZERO,
     val height: Int = ZERO,
     val objectId: String = EMPTY,

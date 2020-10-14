@@ -68,8 +68,7 @@ object FirebaseUtil {
         val mediaId = mediaDoc.id
 
         // upload file to Firebase Storage
-        val fileName = "$mediaId.${mediaItem.ext}"
-        val mediaStoragePath = "$BUCKET_POSTS/$fileName"
+        val mediaStoragePath = "$BUCKET_POSTS/$mediaId"
         return uploadFile(mediaStoragePath, mediaItem.uri!!)
             .map { url ->
                 Media(mediaId, url, mediaItem.type, mediaItem.height, mediaItem.width)
