@@ -10,7 +10,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.libraries.places.widget.Autocomplete
@@ -77,8 +76,14 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
                 else location
         })
 
-        viewModel.popUp.observe(viewLifecycleOwner, Observer { shouldPopUp ->
-            if (shouldPopUp) findNavController().popBackStack()
+        viewModel.uiEvents.observe(viewLifecycleOwner, Observer { event ->
+            event.getContentIfNotHandle()?.let { action ->
+                when (action) {
+                    UIAction.SHOW_PROGRESS -> showProgressDialog()
+                    UIAction.DISMISS_PROGRESS -> dismissProgressDialog()
+                    UIAction.POP_BACK -> popBack()
+                }
+            }
         })
     }
 

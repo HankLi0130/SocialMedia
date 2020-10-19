@@ -1,14 +1,20 @@
 package dev.hankli.iamstar.utils
 
+import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.ContentResolver
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import dev.hankli.iamstar.R
 import dev.hankli.iamstar.ui.MainActivity
+import tw.hankli.brookray.constant.EMPTY
 import tw.hankli.brookray.constant.NO_RESOURCE
 
 abstract class BaseFragment : Fragment {
@@ -23,6 +29,10 @@ abstract class BaseFragment : Fragment {
 
     protected val contentResolver: ContentResolver
         get() = requireContext().contentResolver
+
+    protected lateinit var progressDialog: Dialog
+
+    protected lateinit var messageDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,4 +78,30 @@ abstract class BaseFragment : Fragment {
     }
 
     protected fun mainActivity(): MainActivity = requireActivity() as MainActivity
+
+    protected fun showProgressDialog() {
+        progressDialog = ProgressDialog(requireContext())
+        progressDialog.show()
+    }
+
+    protected fun dismissProgressDialog() {
+        progressDialog.dismiss()
+    }
+
+    protected fun showMessageDialog(
+        title: String = EMPTY,
+        message: String,
+        onSubmit: () -> Unit,
+        onCancel: () -> Unit
+    ) {
+        messageDialog = AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(R.string.ok) { _, _ -> onSubmit() }
+            .setNegativeButton(R.string.cancel) { _, _ -> onCancel() }
+            .create()
+        messageDialog.show()
+    }
+
+    protected fun popBack(): Boolean = findNavController().popBackStack()
 }

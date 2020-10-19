@@ -32,27 +32,26 @@ class EditPostViewModel : BaseViewModel() {
     val locationData: LiveData<String?>
         get() = _locationData
 
-    private val _popUp = MutableLiveData<Boolean>()
-    val popUp: LiveData<Boolean>
-        get() = _popUp
-
     fun loadPost(postId: String) {
         if (postId == EMPTY) {
             post = Post()
         } else {
-            fetchPostAndMedias(postId).subscribe(
-                { post ->
-                    this.post = post
-                    setDefaultValues()
-                },
-                { ex -> }
-            ).addTo(disposables)
+            showProgress()
+            fetchPostAndMedias(postId)
+                .doAfterSuccess { dismissProgress() }
+                .subscribe(
+                    { post ->
+                        this.post = post
+                        setDefaultValues()
+                    },
+                    { ex -> }
+                ).addTo(disposables)
         }
     }
 
     private fun setDefaultValues() {
-        _locationData.postValue(post.location)
-        _contentData.postValue(post.content)
+        _locationData.value = post.location
+        _contentData.value = post.content
 
         addToMediaItems(post.medias.map { it.toMediaItem() })
     }
@@ -85,14 +84,18 @@ class EditPostViewModel : BaseViewModel() {
             return
         }
 
+        showProgress()
+
         if (post.objectId == EMPTY) {
             post.authorId = auth.currentUser!!.uid
             post.influencerId = auth.currentUser!!.uid
 
             addPost(post, mediaItems)
-                .doOnComplete { }
+                .doOnComplete {
+                    dismissProgress()
+                }
                 .subscribe({
-                    Log.i("test", "add post successful")
+                    popBack()
                 }, { ex ->
                     Log.e("test", "add post failed", ex)
                 })
@@ -100,9 +103,11 @@ class EditPostViewModel : BaseViewModel() {
 
         } else {
             updatePost(post, mediaItems)
-                .doOnComplete { }
+                .doOnComplete {
+                    dismissProgress()
+                }
                 .subscribe({
-                    Log.i("test", "update post successful")
+                    popBack()
                 }, { ex ->
                     Log.e("test", "update post failed", ex)
                 })
