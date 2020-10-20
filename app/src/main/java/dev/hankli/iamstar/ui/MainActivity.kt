@@ -10,7 +10,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import dev.hankli.iamstar.MainNavDirections
 import dev.hankli.iamstar.R
+import dev.hankli.iamstar.utils.FirebaseUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
@@ -36,6 +38,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
             // Navigation
             view_bottom_nav.isVisible = topLevelDestinations.contains(destination.id)
+        }
+
+        // Auth
+        if (FirebaseUtil.auth.currentUser == null) {
+            navController.navigate(MainNavDirections.actionGlobalAuthFragment())
         }
 
         // Action Bar

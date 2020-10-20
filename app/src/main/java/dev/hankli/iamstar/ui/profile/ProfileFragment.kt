@@ -3,7 +3,6 @@ package dev.hankli.iamstar.ui.profile
 import android.os.Bundle
 import android.view.View
 import dev.hankli.iamstar.R
-import dev.hankli.iamstar.ui.MainActivity
 import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.FirebaseUtil.auth
 import dev.hankli.iamstar.utils.FirebaseUtil.signOut
@@ -18,7 +17,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
 
         view_sign_out.setOnClickListener {
             signOut(requireContext()) {
-                (requireActivity() as MainActivity).restart()
+                mainActivity().restart()
             }
         }
     }
