@@ -91,14 +91,12 @@ abstract class BaseFragment : Fragment {
     protected fun showMessageDialog(
         title: String = EMPTY,
         message: String,
-        onSubmit: () -> Unit,
-        onCancel: () -> Unit
+        onSubmit: () -> Unit
     ) {
         messageDialog = AlertDialog.Builder(requireContext())
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(R.string.ok) { _, _ -> onSubmit() }
-            .setNegativeButton(R.string.cancel) { _, _ -> onCancel() }
             .create()
         messageDialog.show()
     }
