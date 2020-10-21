@@ -10,7 +10,6 @@ import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.Consts.REQUEST_SIGN_IN
 import dev.hankli.iamstar.utils.FirebaseUtil.getSignInIntent
-import dev.hankli.iamstar.utils.showDialog
 import kotlinx.android.synthetic.main.fragment_auth.*
 
 class AuthFragment : BaseFragment(R.layout.fragment_auth) {
@@ -42,7 +41,7 @@ class AuthFragment : BaseFragment(R.layout.fragment_auth) {
                         it.printStackTrace()
                         message.append(" ${it.message}")
                     }
-                    showDialog(requireContext(), message.toString())
+                    showMessageDialog(message = message.toString())
                 }
             }
         }

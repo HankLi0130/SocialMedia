@@ -89,12 +89,18 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
 
     override fun onAllPermissionsGranted(requestCode: Int) {
         when (requestCode) {
-            REQUEST_PERMISSION_MEDIA -> showMediaPicker(this, REQUEST_PICK_MEDIAS)
+            REQUEST_PERMISSION_MEDIA -> selectTypeOfMedia()
 //            REQUEST_PERMISSION_PLACES -> startActivityForResult(
 //                getPlacesIntent(requireContext()),
 //                REQUEST_PLACES
 //            )
         }
+    }
+
+    private fun selectTypeOfMedia() {
+
+
+        //showMediaPicker(this, REQUEST_PICK_MEDIAS)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -130,7 +136,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
                 data?.let {
                     val status = Autocomplete.getStatusFromIntent(it)
                     status.statusMessage?.let { message ->
-                        showDialog(requireContext(), message)
+                        showMessageDialog(message = message)
                     }
                 }
             }
