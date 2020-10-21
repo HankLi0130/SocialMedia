@@ -98,9 +98,20 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
     }
 
     private fun selectTypeOfMedia() {
-
-
-        //showMediaPicker(this, REQUEST_PICK_MEDIAS)
+        if (viewModel.isMediaItemsEmpty()) {
+            showListDialog(itemsId = R.array.media_types) { which ->
+                when (which) {
+                    0 -> showImagePicker(this, 12, REQUEST_PICK_MEDIAS)
+                    1 -> showVideoPicker(this, 1, REQUEST_PICK_MEDIAS)
+                }
+            }
+        } else {
+            when (viewModel.getMediaItemsType()) {
+                IMAGE -> showImagePicker(this, 12, REQUEST_PICK_MEDIAS)
+                VIDEO -> showVideoPicker(this, 1, REQUEST_PICK_MEDIAS)
+                else -> TODO("Call alert")
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -10,7 +10,6 @@ import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.MarginItemDecoration
 import kotlinx.android.synthetic.main.fragment_home.*
 import tw.hankli.brookray.constant.EMPTY
-import tw.hankli.brookray.extension.getListDialog
 
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
@@ -55,16 +54,12 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     fun showItemOptions(objectId: String) {
-        requireContext().getListDialog(
-            R.string.post_options_title,
-            R.array.post_options
-        ) { dialogInterface, index ->
-            when (index) {
+        showListDialog(itemsId = R.array.post_options) { which ->
+            when (which) {
                 0 -> toEditPostFragment(objectId)
                 1 -> TODO("Delete this post")
-                else -> dialogInterface.cancel()
             }
-        }.show()
+        }
     }
 
     override fun onStart() {

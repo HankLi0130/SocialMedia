@@ -28,13 +28,27 @@ val mediaPickerPermissions = arrayOf(
     Manifest.permission.CAMERA,
     Manifest.permission.WRITE_EXTERNAL_STORAGE
 )
-private val mimeTypes = setOf(MimeType.JPEG, MimeType.PNG, MimeType.MPEG, MimeType.MP4)
+
+private val imageTypes = setOf(MimeType.JPEG, MimeType.PNG)
+private val videoTypes = setOf(MimeType.MPEG, MimeType.MP4)
 private const val MAX_SELECTABLE = 5
 
-fun showMediaPicker(fragment: Fragment, requestCode: Int) {
+fun showImagePicker(fragment: Fragment, maxSelectable: Int, requestCode: Int) {
     Matisse.from(fragment)
-        .choose(mimeTypes)
-        .maxSelectable(MAX_SELECTABLE)
+        .choose(imageTypes)
+        .maxSelectable(maxSelectable)
+        .countable(true)
+        .capture(false)
+//        .captureStrategy(CaptureStrategy(false, "${BuildConfig.APPLICATION_ID}.fileprovider"))
+        .thumbnailScale(0.85f)
+        .imageEngine(GlideEngine())
+        .forResult(requestCode)
+}
+
+fun showVideoPicker(fragment: Fragment, maxSelectable: Int, requestCode: Int) {
+    Matisse.from(fragment)
+        .choose(videoTypes)
+        .maxSelectable(maxSelectable)
         .countable(true)
         .capture(false)
 //        .captureStrategy(CaptureStrategy(false, "${BuildConfig.APPLICATION_ID}.fileprovider"))
@@ -51,8 +65,8 @@ fun obtainPathResult(data: Intent?): List<String> {
     return data?.let { Matisse.obtainPathResult(it) } ?: emptyList()
 }
 
-private const val IMAGE = "image"
-private const val VIDEO = "video"
+const val IMAGE = "image"
+const val VIDEO = "video"
 private const val MIME_TYPE = "mime_type"
 private const val WIDTH = "width"
 private const val HEIGHT = "height"

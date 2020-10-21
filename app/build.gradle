@@ -118,7 +118,7 @@ dependencies {
     implementation 'it.sephiroth.android.library.imagezoom:imagezoom:2.3.0'
 
     // BrookRay
-    implementation 'com.github.HankLi0130.BrookRay:core:0.1.4'
+    implementation 'com.github.HankLi0130.BrookRay:core:0.1.5'
 
     // Testing
     testImplementation 'junit:junit:4.13.1'

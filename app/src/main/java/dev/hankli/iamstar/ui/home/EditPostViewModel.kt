@@ -119,4 +119,11 @@ class EditPostViewModel : BaseViewModel() {
         if (post.content.isEmpty()) return false
         return true
     }
+
+    fun isMediaItemsEmpty() = mediaItems.isEmpty()
+
+    fun getMediaItemsType(): String? {
+        val media = mediaItems.getOrNull(0)
+        return media?.type
+    }
 }

@@ -6,16 +6,17 @@ import android.content.ContentResolver
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import androidx.annotation.ArrayRes
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.ui.MainActivity
-import tw.hankli.brookray.constant.EMPTY
 import tw.hankli.brookray.constant.NO_RESOURCE
+import tw.hankli.brookray.extension.showListDialog
+import tw.hankli.brookray.extension.showMessageDialog
 
 abstract class BaseFragment : Fragment {
 
@@ -89,16 +90,25 @@ abstract class BaseFragment : Fragment {
     }
 
     protected fun showMessageDialog(
-        title: String = EMPTY,
+        title: String? = null,
+        cancelable: Boolean = true,
         message: String,
         onSubmit: (() -> Unit)? = null
     ) {
-        messageDialog = AlertDialog.Builder(requireContext())
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(R.string.ok) { _, _ -> onSubmit?.invoke() }
-            .create()
-        messageDialog.show()
+        requireContext().showMessageDialog(title, message, cancelable, R.string.ok) { _, _ ->
+            onSubmit?.invoke()
+        }
+    }
+
+    protected fun showListDialog(
+        title: String? = null,
+        cancelable: Boolean = true,
+        @ArrayRes itemsId: Int,
+        onSubmit: ((which: Int) -> Unit)? = null
+    ) {
+        requireContext().showListDialog(title, cancelable, itemsId) { _, which ->
+            onSubmit?.invoke(which)
+        }
     }
 
     protected fun popBack(): Boolean = findNavController().popBackStack()
