@@ -9,6 +9,7 @@
     <string name="browse_and_post_anything">Stay in touch with your best friends.</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_out">Sign Out</string>
+    <string name="error_title">Oh!</string>
     <string name="error_message">An error occurred, Please try again later.</string>
     <string name="create_new_account">Create new account</string>
     <string name="fullName">Full Name</string>
@@ -30,12 +31,16 @@
     <string name="profile">Profile</string>
     <string name="add_post">Add post</string>
     <string name="location_not_available">location not available</string>
+    <string name="up_to_image_maximum">Only 12 images can be selected</string>
+    <string name="up_to_video_maximum">Only 1 video can be selected</string>
 
-    <string-array name="post_options">
+    <string name="post_actions_title">Actions</string>
+    <string-array name="post_actions">
         <item>update</item>
         <item>delete</item>
     </string-array>
 
+    <string name="media_types_title">Media Types</string>
     <string-array name="media_types">
         <item>Image</item>
         <item>Video</item>

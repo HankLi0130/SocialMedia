@@ -31,7 +31,6 @@ val mediaPickerPermissions = arrayOf(
 
 private val imageTypes = setOf(MimeType.JPEG, MimeType.PNG)
 private val videoTypes = setOf(MimeType.MPEG, MimeType.MP4)
-private const val MAX_SELECTABLE = 5
 
 fun showImagePicker(fragment: Fragment, maxSelectable: Int, requestCode: Int) {
     Matisse.from(fragment)

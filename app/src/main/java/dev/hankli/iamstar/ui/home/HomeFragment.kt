@@ -54,7 +54,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     fun showItemOptions(objectId: String) {
-        showListDialog(itemsId = R.array.post_options) { which ->
+        showListDialog(R.string.post_actions_title, R.array.post_actions) { which ->
             when (which) {
                 0 -> toEditPostFragment(objectId)
                 1 -> TODO("Delete this post")

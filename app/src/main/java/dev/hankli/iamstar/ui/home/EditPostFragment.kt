@@ -35,6 +35,10 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
 
     private val mediaAdapter = MediaAdapter(this)
 
+    private val maxImageSelectable = 12
+
+    private val maxVideoSelectable = 1
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         viewModel.loadPost(args.postId)
@@ -99,16 +103,29 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
 
     private fun selectTypeOfMedia() {
         if (viewModel.isMediaItemsEmpty()) {
-            showListDialog(itemsId = R.array.media_types) { which ->
+            showListDialog(R.string.media_types_title, R.array.media_types) { which ->
                 when (which) {
-                    0 -> showImagePicker(this, 12, REQUEST_PICK_MEDIAS)
-                    1 -> showVideoPicker(this, 1, REQUEST_PICK_MEDIAS)
+                    0 -> showImagePicker(this, maxImageSelectable, REQUEST_PICK_MEDIAS)
+                    1 -> showVideoPicker(this, maxVideoSelectable, REQUEST_PICK_MEDIAS)
                 }
             }
         } else {
+            val mediaItemCount = viewModel.getMediaItemCount()
             when (viewModel.getMediaItemsType()) {
-                IMAGE -> showImagePicker(this, 12, REQUEST_PICK_MEDIAS)
-                VIDEO -> showVideoPicker(this, 1, REQUEST_PICK_MEDIAS)
+                IMAGE -> {
+                    if (mediaItemCount < maxImageSelectable) {
+                        showImagePicker(
+                            this,
+                            maxImageSelectable - mediaItemCount,
+                            REQUEST_PICK_MEDIAS
+                        )
+                    } else {
+                        showMessageDialog(R.string.error_title, R.string.up_to_image_maximum)
+                    }
+                }
+                VIDEO -> {
+                    showMessageDialog(R.string.error_title, R.string.up_to_video_maximum)
+                }
                 else -> TODO("Call alert")
             }
         }
@@ -147,9 +164,10 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
                 data?.let {
                     val status = Autocomplete.getStatusFromIntent(it)
                     status.statusMessage?.let { message ->
-                        showMessageDialog(message = message)
+                        // TODO handle message
                     }
                 }
+                showMessageDialog(R.string.error_title, R.string.error_message)
             }
             RESULT_CANCELED -> {
                 // The user canceled the operation.

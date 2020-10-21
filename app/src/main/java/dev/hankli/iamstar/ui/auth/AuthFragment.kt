@@ -36,12 +36,8 @@ class AuthFragment : BaseFragment(R.layout.fragment_auth) {
                 // response.getError().getErrorCode() and handle the error.
 
                 if (response != null) {
-                    val message = StringBuilder(getString(R.string.error_message))
-                    response.error?.let {
-                        it.printStackTrace()
-                        message.append(" ${it.message}")
-                    }
-                    showMessageDialog(message = message.toString())
+                    response.error?.printStackTrace()
+                    showMessageDialog(R.string.error_title, R.string.error_message)
                 }
             }
         }

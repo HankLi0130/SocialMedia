@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import androidx.annotation.ArrayRes
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
 import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
@@ -90,23 +91,23 @@ abstract class BaseFragment : Fragment {
     }
 
     protected fun showMessageDialog(
-        title: String? = null,
+        @StringRes titleId: Int,
+        @StringRes messageId: Int,
         cancelable: Boolean = true,
-        message: String,
         onSubmit: (() -> Unit)? = null
     ) {
-        requireContext().showMessageDialog(title, message, cancelable, R.string.ok) { _, _ ->
+        requireContext().showMessageDialog(titleId, messageId, R.string.ok, cancelable) { _, _ ->
             onSubmit?.invoke()
         }
     }
 
     protected fun showListDialog(
-        title: String? = null,
-        cancelable: Boolean = true,
+        @StringRes titleId: Int,
         @ArrayRes itemsId: Int,
+        cancelable: Boolean = true,
         onSubmit: ((which: Int) -> Unit)? = null
     ) {
-        requireContext().showListDialog(title, cancelable, itemsId) { _, which ->
+        requireContext().showListDialog(titleId, itemsId, cancelable) { _, which ->
             onSubmit?.invoke(which)
         }
     }

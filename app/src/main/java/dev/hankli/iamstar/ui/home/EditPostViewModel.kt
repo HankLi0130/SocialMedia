@@ -122,6 +122,8 @@ class EditPostViewModel : BaseViewModel() {
 
     fun isMediaItemsEmpty() = mediaItems.isEmpty()
 
+    fun getMediaItemCount(): Int = mediaItems.size
+
     fun getMediaItemsType(): String? {
         val media = mediaItems.getOrNull(0)
         return media?.type
