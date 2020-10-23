@@ -7,7 +7,7 @@ import dev.hankli.iamstar.data.models.Post
 import dev.hankli.iamstar.utils.BaseViewModel
 import dev.hankli.iamstar.utils.FirebaseUtil.addPost
 import dev.hankli.iamstar.utils.FirebaseUtil.auth
-import dev.hankli.iamstar.utils.FirebaseUtil.fetchPostAndMedias
+import dev.hankli.iamstar.utils.FirebaseUtil.fetchPost
 import dev.hankli.iamstar.utils.FirebaseUtil.updatePost
 import dev.hankli.iamstar.utils.MediaItem
 import dev.hankli.iamstar.utils.toMediaItem
@@ -37,7 +37,7 @@ class EditPostViewModel : BaseViewModel() {
             post = Post()
         } else {
             showProgress()
-            fetchPostAndMedias(postId)
+            fetchPost(postId)
                 .doAfterSuccess { dismissProgress() }
                 .subscribe(
                     { post ->
@@ -91,7 +91,7 @@ class EditPostViewModel : BaseViewModel() {
             post.influencerId = auth.currentUser!!.uid
 
             addPost(post, mediaItems)
-                .doOnComplete {
+                .doOnSuccess {
                     dismissProgress()
                 }
                 .subscribe({

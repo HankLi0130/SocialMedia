@@ -1,13 +1,10 @@
 package dev.hankli.iamstar.data.models
 
-import com.google.firebase.firestore.Exclude
-import com.google.firebase.firestore.IgnoreExtraProperties
 import tw.hankli.brookray.constant.EMPTY
 import tw.hankli.brookray.constant.ZERO
 import java.util.*
 
 // https://stackoverflow.com/a/40117301/8361227
-@IgnoreExtraProperties
 data class Post(
     var objectId: String = EMPTY,
     var influencerId: String = EMPTY,
@@ -20,6 +17,6 @@ data class Post(
     var commentCount: Int = ZERO,
     var reactionCount: Int = ZERO,
     var content: String = EMPTY,
-    @Exclude @set:Exclude @get:Exclude var medias: List<Media> = emptyList(),
+    var medias: List<Media> = emptyList(),
     var reactions: Map<String, Int> = emptyMap()
 )

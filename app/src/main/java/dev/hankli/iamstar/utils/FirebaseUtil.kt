@@ -11,9 +11,8 @@ import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Post
 import io.reactivex.Completable
 import io.reactivex.Single
-import io.reactivex.functions.BiFunction
-import tw.hankli.brookray.constant.EMPTY
 import java.util.*
+
 
 object FirebaseUtil {
 
@@ -42,14 +41,31 @@ object FirebaseUtil {
         AuthUI.getInstance().signOut(context).addOnCompleteListener { onCompleted() }
     }
 
-    fun addPost(post: Post, mediaItems: List<MediaItem>): Completable {
-        return addPost(post)
-            .flatMapCompletable { postObjectId ->
-                val actions = mediaItems.map { addPostMedia(postObjectId, it) }
-                Completable.merge(actions)
+    /**
+     * return Post Object Id
+     */
+    fun addPost(post: Post, mediaItems: List<MediaItem>): Single<String> {
+        val uploadActions = mediaItems.map { uploadPostMedia(it) }
+        return Single.merge(uploadActions)
+            .toList()
+            .flatMap { medias ->
+                post.medias = medias
+                addPost(post)
             }
     }
 
+    private fun uploadPostMedia(mediaItem: MediaItem): Single<Media> {
+        val mediaId = UUID.randomUUID().toString()
+        val mediaStoragePath = "$BUCKET_POSTS/$mediaId"
+        return uploadFile(mediaStoragePath, mediaItem.uri!!)
+            .map { url ->
+                Media(mediaId, url, mediaItem.type, mediaItem.height, mediaItem.width)
+            }
+    }
+
+    /**
+     * return Post Object Id
+     */
     private fun addPost(post: Post): Single<String> {
         return Single.create { emitter ->
             val postDoc = db.collection(COLLECTION_POSTS).document()
@@ -61,39 +77,20 @@ object FirebaseUtil {
         }
     }
 
-    private fun addPostMedia(postId: String, mediaItem: MediaItem): Completable {
-        // get media id from Firestore
-        val mediaDoc = db.collection("$COLLECTION_POSTS/$postId/$COLLECTION_MEDIAS").document()
-        val mediaId = mediaDoc.id
-
-        // upload file to Firebase Storage
-        val mediaStoragePath = "$BUCKET_POSTS/$mediaId"
-        return uploadFile(mediaStoragePath, mediaItem.uri!!)
-            .map { url ->
-                Media(mediaId, url, mediaItem.type, mediaItem.height, mediaItem.width)
-            }
-            .flatMapCompletable { media ->
-                Completable.create { emitter ->
-                    mediaDoc.set(media)
-                        .addOnSuccessListener { emitter.onComplete() }
-                        .addOnFailureListener { emitter.onError(it) }
-                }
-            }
-    }
-
     fun updatePost(post: Post, mediaItems: List<MediaItem>): Completable {
 
-        val mediasForUploading = mediaItems.filter { it.objectId == EMPTY }
-        val uploadActions = mediasForUploading.map { addPostMedia(post.objectId, it) }
-
-        val originIds = post.medias.map { it.objectId }
-        val updatedIds = mediaItems.map { it.objectId }
-        val idsForRemoving = originIds.subtract(updatedIds)
-        val removeActions = idsForRemoving.map { removePostMedia(post.objectId, it) }
-
-        return updatePost(post)
-            .andThen(Completable.merge(uploadActions))
-            .andThen(Completable.merge(removeActions))
+//        val mediasForUploading = mediaItems.filter { it.objectId == EMPTY }
+//        val uploadActions = mediasForUploading.map { uploadPostMedia(it) }
+//
+//        val originIds = post.medias.map { it.objectId }
+//        val updatedIds = mediaItems.map { it.objectId }
+//        val idsForRemoving = originIds.subtract(updatedIds)
+//        val removeActions = idsForRemoving.map { removePostMedia(post.objectId, it) }
+//
+//        return updatePost(post)
+//            .andThen(Completable.merge(uploadActions))
+//            .andThen(Completable.merge(removeActions))
+        return TODO(" rewrite updatePost")
     }
 
     private fun updatePost(post: Post): Completable {
@@ -118,36 +115,17 @@ object FirebaseUtil {
             })
     }
 
-    fun fetchPostAndMedias(postId: String): Single<Post> {
-        return Single.zip(
-            fetchPost(postId),
-            fetchPostMedias(postId),
-            BiFunction { post, medias ->
-                post.medias = medias
-                return@BiFunction post
-            })
-    }
-
-    private fun fetchPost(postId: String): Single<Post> {
+    fun fetchPost(postId: String): Single<Post> {
         return Single.create { emitter ->
             // get post
             db.collection(COLLECTION_POSTS)
                 .document(postId)
                 .get()
-                .addOnSuccessListener {
-                    val post = it.toObject(Post::class.java)
-                    if (post != null) emitter.onSuccess(post)
-                    else emitter.onError(Throwable("Post is null."))
+                .addOnSuccessListener { doc ->
+                    doc.toObject(Post::class.java)?.let { post ->
+                        emitter.onSuccess(post)
+                    } ?: emitter.onError(Throwable("Post is null."))
                 }
-                .addOnFailureListener { emitter.onError(it) }
-        }
-    }
-
-    private fun fetchPostMedias(postId: String): Single<List<Media>> {
-        return Single.create { emitter ->
-            db.collection("$COLLECTION_POSTS/$postId/$COLLECTION_MEDIAS")
-                .get()
-                .addOnSuccessListener { emitter.onSuccess(it.toObjects(Media::class.java)) }
                 .addOnFailureListener { emitter.onError(it) }
         }
     }
