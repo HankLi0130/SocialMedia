@@ -11,7 +11,9 @@ import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Post
 import io.reactivex.Completable
 import io.reactivex.Single
+import tw.hankli.brookray.constant.EMPTY
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 object FirebaseUtil {
@@ -79,18 +81,25 @@ object FirebaseUtil {
 
     fun updatePost(post: Post, mediaItems: List<MediaItem>): Completable {
 
-//        val mediasForUploading = mediaItems.filter { it.objectId == EMPTY }
-//        val uploadActions = mediasForUploading.map { uploadPostMedia(it) }
-//
-//        val originIds = post.medias.map { it.objectId }
-//        val updatedIds = mediaItems.map { it.objectId }
-//        val idsForRemoving = originIds.subtract(updatedIds)
-//        val removeActions = idsForRemoving.map { removePostMedia(post.objectId, it) }
-//
-//        return updatePost(post)
-//            .andThen(Completable.merge(uploadActions))
-//            .andThen(Completable.merge(removeActions))
-        return TODO(" rewrite updatePost")
+        val mediasForUploading = mediaItems.filter { it.objectId == EMPTY }
+        val uploadActions = mediasForUploading.map { uploadPostMedia(it) }
+
+        val originIds = post.medias.map { it.objectId }
+        val updatedIds = mediaItems.map { it.objectId }
+        val idsForRemoving = originIds.subtract(updatedIds)
+        val removeActions = idsForRemoving.map { removePostMedia(it) }
+
+        val newMedias = ArrayList<Media>().apply { this.addAll(post.medias) }
+
+        return Completable.merge(removeActions)
+            .andThen(Single.merge(uploadActions))
+            .toList()
+            .flatMapCompletable { medias ->
+                newMedias.addAll(medias)
+                newMedias.removeAll { idsForRemoving.contains(it.objectId) }
+                post.medias = newMedias
+                updatePost(post)
+            }
     }
 
     private fun updatePost(post: Post): Completable {
@@ -104,15 +113,9 @@ object FirebaseUtil {
         }
     }
 
-    private fun removePostMedia(postId: String, mediaId: String): Completable {
+    private fun removePostMedia(mediaId: String): Completable {
         val mediaStoragePath = "$BUCKET_POSTS/$mediaId"
         return deleteFile(mediaStoragePath)
-            .andThen(Completable.create { emitter ->
-                db.collection("$COLLECTION_POSTS/$postId/$COLLECTION_MEDIAS").document(mediaId)
-                    .delete()
-                    .addOnSuccessListener { emitter.onComplete() }
-                    .addOnFailureListener { emitter.onError(it) }
-            })
     }
 
     fun fetchPost(postId: String): Single<Post> {
