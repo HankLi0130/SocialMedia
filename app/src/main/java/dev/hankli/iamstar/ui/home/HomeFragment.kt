@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.MarginItemDecoration
+import dev.hankli.iamstar.utils.UIAction
 import kotlinx.android.synthetic.main.fragment_home.*
 import tw.hankli.brookray.constant.EMPTY
 
@@ -35,6 +37,22 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 MarginItemDecoration(resources.getDimension(R.dimen.distance_12_dp).toInt())
             )
         }
+
+        viewModel.uiEvents.observe(viewLifecycleOwner, Observer { event ->
+            event.getContentIfNotHandle()?.let { action ->
+                when (action) {
+                    UIAction.SHOW_PROGRESS -> showProgressDialog()
+                    UIAction.DISMISS_PROGRESS -> dismissProgressDialog()
+                    UIAction.POP_BACK -> popBack()
+                }
+            }
+        })
+
+        viewModel.uiAlertEvents.observe(viewLifecycleOwner, Observer { event ->
+            event.getContentIfNotHandle()?.let { messageId ->
+                showAlert(messageId)
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -57,7 +75,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         showListDialog(R.string.post_actions_title, R.array.post_actions) { which ->
             when (which) {
                 0 -> toEditPostFragment(objectId)
-                1 -> TODO("Delete this post")
+                1 -> viewModel.deletePost(objectId)
             }
         }
     }

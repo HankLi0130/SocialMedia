@@ -37,6 +37,7 @@
     <string name="alert_title">Alert</string>
     <string name="alert_message">Message: %s</string>
     <string name="alert_post_is_invalid">Post is invalid !</string>
+    <string name="alert_delete_post_failed">Delete post failed !</string>
     <string name="alert_unknown_type">Unknown type</string>
 
     <string name="post_actions_title">Actions</string>

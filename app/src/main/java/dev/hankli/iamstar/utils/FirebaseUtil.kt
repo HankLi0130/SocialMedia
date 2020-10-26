@@ -133,6 +133,21 @@ object FirebaseUtil {
         }
     }
 
+    fun deletePost(postId: String): Completable {
+        return fetchPost(postId)
+            .flatMapCompletable { post ->
+                val deleteActions = post.medias.map { removePostMedia(it.objectId) }
+                Completable.merge(deleteActions)
+            }
+            .andThen(Completable.create { emitter ->
+                db.collection(COLLECTION_POSTS)
+                    .document(postId)
+                    .delete()
+                    .addOnSuccessListener { emitter.onComplete() }
+                    .addOnFailureListener { emitter.onError(it) }
+            })
+    }
+
     // https://firebase.google.com/docs/storage/android/upload-files
     fun uploadFile(path: String, uri: Uri): Single<String> {
         return Single.create { emitter ->
