@@ -3,6 +3,7 @@ package dev.hankli.iamstar.ui.home
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Post
 import dev.hankli.iamstar.utils.BaseViewModel
 import dev.hankli.iamstar.utils.FirebaseUtil.addPost
@@ -80,7 +81,7 @@ class EditPostViewModel : BaseViewModel() {
 
     fun submit() {
         if (!isValid()) {
-            // TODO show alert
+            showAlert(R.string.alert_post_is_invalid)
             return
         }
 

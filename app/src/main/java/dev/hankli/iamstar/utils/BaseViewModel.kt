@@ -1,5 +1,6 @@
 package dev.hankli.iamstar.utils
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,7 +29,13 @@ abstract class BaseViewModel : ViewModel() {
         _uiEvents.value = Event(UIAction.DISMISS_PROGRESS)
     }
 
-    // TODO Show message dialog
+    private val _uiAlertEvents = MutableLiveData<Event<Int>>()
+    val uiAlertEvents: LiveData<Event<Int>>
+        get() = _uiAlertEvents
+
+    protected fun showAlert(@StringRes messageId: Int) {
+        _uiAlertEvents.value = Event(messageId)
+    }
 
     protected fun popBack() {
         _uiEvents.value = Event(UIAction.POP_BACK)

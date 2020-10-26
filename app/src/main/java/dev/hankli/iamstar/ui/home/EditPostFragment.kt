@@ -89,6 +89,12 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
                 }
             }
         })
+
+        viewModel.uiAlertEvents.observe(viewLifecycleOwner, Observer { event ->
+            event.getContentIfNotHandle()?.let { messageId ->
+                showAlert(messageId)
+            }
+        })
     }
 
     override fun onAllPermissionsGranted(requestCode: Int) {
@@ -126,7 +132,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
                 VIDEO -> {
                     showMessageDialog(R.string.error_title, R.string.up_to_video_maximum)
                 }
-                else -> TODO("Call alert")
+                else -> showAlert(R.string.alert_unknown_type)
             }
         }
     }
@@ -164,10 +170,9 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
                 data?.let {
                     val status = Autocomplete.getStatusFromIntent(it)
                     status.statusMessage?.let { message ->
-                        // TODO handle message
+                        showAlert(message)
                     }
                 }
-                showMessageDialog(R.string.error_title, R.string.error_message)
             }
             RESULT_CANCELED -> {
                 // The user canceled the operation.

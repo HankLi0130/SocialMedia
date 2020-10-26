@@ -32,9 +32,7 @@ abstract class BaseFragment : Fragment {
     protected val contentResolver: ContentResolver
         get() = requireContext().contentResolver
 
-    protected lateinit var progressDialog: Dialog
-
-    protected lateinit var messageDialog: Dialog
+    private lateinit var progressDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,6 +95,36 @@ abstract class BaseFragment : Fragment {
         onSubmit: (() -> Unit)? = null
     ) {
         requireContext().showMessageDialog(titleId, messageId, R.string.ok, cancelable) { _, _ ->
+            onSubmit?.invoke()
+        }
+    }
+
+    protected fun showAlert(
+        @StringRes messageId: Int,
+        cancelable: Boolean = true,
+        onSubmit: (() -> Unit)? = null
+    ) {
+        requireContext().showMessageDialog(
+            R.string.alert_title,
+            messageId,
+            R.string.ok,
+            cancelable
+        ) { _, _ ->
+            onSubmit?.invoke()
+        }
+    }
+
+    protected fun showAlert(
+        message: String,
+        cancelable: Boolean = true,
+        onSubmit: (() -> Unit)? = null
+    ) {
+        requireContext().showMessageDialog(
+            getString(R.string.alert_title),
+            getString(R.string.alert_message, message),
+            getString(R.string.ok),
+            cancelable
+        ) { _, _ ->
             onSubmit?.invoke()
         }
     }

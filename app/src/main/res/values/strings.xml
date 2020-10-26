@@ -34,6 +34,11 @@
     <string name="up_to_image_maximum">Only 12 images can be selected</string>
     <string name="up_to_video_maximum">Only 1 video can be selected</string>
 
+    <string name="alert_title">Alert</string>
+    <string name="alert_message">Message: %s</string>
+    <string name="alert_post_is_invalid">Post is invalid !</string>
+    <string name="alert_unknown_type">Unknown type</string>
+
     <string name="post_actions_title">Actions</string>
     <string-array name="post_actions">
         <item>update</item>
