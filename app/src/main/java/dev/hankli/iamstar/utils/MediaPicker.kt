@@ -93,7 +93,7 @@ fun ContentResolver.toMediaItem(uri: Uri): MediaItem? {
         // Thumbnail
         val thumbnail = getThumbnail(uri, type)
 
-        MediaItem(uri, thumbnail, type, width, height)
+        MediaItem(type = type, width = width, height = height, uri = uri, thumbnail = thumbnail)
     }
 }
 
@@ -125,22 +125,24 @@ fun ContentResolver.getThumbnail(uri: Uri, type: String): Bitmap? {
 
 // Model item, which can be local item or online item
 data class MediaItem(
-    val uri: Uri? = null,
-    val thumbnail: Bitmap? = null,
+    val objectId: String = EMPTY,
+    val url: String = EMPTY,
     val type: String = EMPTY,
     val width: Int = ZERO,
     val height: Int = ZERO,
-    val objectId: String = EMPTY,
-    val url: String = EMPTY
+    var thumbnailUrl: String = EMPTY,
+    val uri: Uri? = null,
+    val thumbnail: Bitmap? = null,
 )
 
 fun Media.toMediaItem(): MediaItem {
     return MediaItem(
         objectId = this.objectId,
-        type = this.type,
         url = this.url,
+        type = this.type,
         width = this.width,
-        height = this.height
+        height = this.height,
+        thumbnailUrl = this.thumbnailUrl
     )
 }
 
