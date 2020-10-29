@@ -159,6 +159,17 @@ object FirebaseUtil {
         }
     }
 
+    // https://firebase.google.com/docs/storage/android/upload-files#upload_from_data_in_memory
+    fun uploadFile(path: String, bytes: ByteArray): Single<String> {
+        return Single.create { emitter ->
+            val ref = storage.reference.child(path)
+            ref.putBytes(bytes)
+                .continueWithTask { ref.downloadUrl }
+                .addOnSuccessListener { emitter.onSuccess(it.toString()) }
+                .addOnFailureListener { emitter.onError(it) }
+        }
+    }
+
     // https://firebase.google.com/docs/storage/android/delete-files#kotlin+ktx
     fun deleteFile(path: String): Completable {
         return Completable.create { emitter ->

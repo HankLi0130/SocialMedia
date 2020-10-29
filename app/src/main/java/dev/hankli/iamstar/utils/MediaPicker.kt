@@ -130,8 +130,9 @@ data class MediaItem(
     val type: String = EMPTY,
     val width: Int = ZERO,
     val height: Int = ZERO,
-    var thumbnailUrl: String = EMPTY,
+    val thumbnailUrl: String = EMPTY,
     val uri: Uri? = null,
+    val image: Bitmap? = null,
     val thumbnail: Bitmap? = null,
 )
 
