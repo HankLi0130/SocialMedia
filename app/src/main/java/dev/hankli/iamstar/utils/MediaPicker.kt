@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -66,14 +65,28 @@ fun obtainPathResult(data: Intent?): List<String> {
 
 const val IMAGE = "image"
 const val VIDEO = "video"
-private const val MIME_TYPE = "mime_type"
 private const val WIDTH = "width"
 private const val HEIGHT = "height"
+private const val MAX_THUMBNAIL_PIXEL = 320
+private const val MAX_IMAGE_PIXEL = 1440
 
-fun ContentResolver.toMediaItem(uri: Uri): MediaItem? {
-    val cursor = this.query(
+fun getMediaItem(resolver: ContentResolver, uri: Uri): MediaItem? {
+    val mimeType = resolver.getType(uri) ?: EMPTY
+    return when {
+        mimeType.contains(IMAGE) -> getImageItem(resolver, uri)
+        mimeType.contains(VIDEO) -> getVideoItem(resolver, uri)
+        else -> null
+    }
+}
+
+fun getImageItem(resolver: ContentResolver, uri: Uri): MediaItem? {
+    return null
+}
+
+private fun getVideoItem(resolver: ContentResolver, uri: Uri): MediaItem? {
+    val cursor = resolver.query(
         uri,
-        arrayOf(MIME_TYPE, WIDTH, HEIGHT),
+        arrayOf(WIDTH, HEIGHT),
         null,
         null,
         null,
@@ -82,46 +95,44 @@ fun ContentResolver.toMediaItem(uri: Uri): MediaItem? {
 
     return cursor?.let {
         it.moveToFirst()
-        val mimeType = it.getString(it.getColumnIndex(MIME_TYPE))
         val width = it.getInt(it.getColumnIndex(WIDTH))
         val height = it.getInt(it.getColumnIndex(HEIGHT))
         it.close()
 
-        // type (image, video)
-        val type = mimeType.split('/')[0]
-
         // Thumbnail
-        val thumbnail = getThumbnail(uri, type)
+        val thumbnail = resolver.getVideoThumbnail(uri)
 
-        MediaItem(type = type, width = width, height = height, uri = uri, thumbnail = thumbnail)
+        MediaItem(type = VIDEO, width = width, height = height, uri = uri, thumbnail = thumbnail)
     }
 }
 
-fun ContentResolver.getThumbnail(uri: Uri, type: String): Bitmap? {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        loadThumbnail(uri, Size(96, 96), null)
+fun ContentResolver.getVideoThumbnail(uri: Uri): Bitmap {
+    val thumbnail = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        loadThumbnail(uri, Size(MAX_THUMBNAIL_PIXEL, MAX_THUMBNAIL_PIXEL), null)
     } else {
-        when (type) {
-            IMAGE -> {
-                MediaStore.Images.Thumbnails.getThumbnail(
-                    this,
-                    uri.lastPathSegment!!.toLong(),
-                    MediaStore.Images.Thumbnails.MICRO_KIND,
-                    BitmapFactory.Options()
-                )
-            }
-            VIDEO -> {
-                MediaStore.Video.Thumbnails.getThumbnail(
-                    this,
-                    uri.lastPathSegment!!.toLong(),
-                    MediaStore.Video.Thumbnails.MICRO_KIND,
-                    BitmapFactory.Options()
-                )
-            }
-            else -> null
-        }
+        MediaStore.Video.Thumbnails.getThumbnail(
+            this,
+            uri.lastPathSegment!!.toLong(),
+            MediaStore.Video.Thumbnails.MICRO_KIND,
+            null
+        )
     }
+    // TODO The thumbnail isn't the same as the picture user selected, find the way to figure out.
+    return thumbnail.scale(MAX_THUMBNAIL_PIXEL, true)
 }
+
+//fun ContentResolver.getImageThumbnail(uri: Uri): Bitmap {
+//    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//        loadThumbnail(uri, Size(MAX_THUMBNAIL_PIXEL, MAX_THUMBNAIL_PIXEL), null)
+//    } else {
+//        MediaStore.Images.Thumbnails.getThumbnail(
+//            this,
+//            uri.lastPathSegment!!.toLong(),
+//            MediaStore.Images.Thumbnails.MICRO_KIND,
+//            BitmapFactory.Options()
+//        )
+//    }
+//}
 
 // Model item, which can be local item or online item
 data class MediaItem(

@@ -148,7 +148,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
     private fun handleMedias(resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK) {
             val selectedMediaItems = obtainResult(data).mapNotNull { uri ->
-                contentResolver.toMediaItem(uri)
+                getMediaItem(contentResolver, uri)
             }
             viewModel.addToMediaItems(selectedMediaItems)
         }
