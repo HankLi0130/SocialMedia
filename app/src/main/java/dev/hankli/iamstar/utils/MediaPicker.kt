@@ -3,11 +3,7 @@ package dev.hankli.iamstar.utils
 import android.Manifest
 import android.content.ContentResolver
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
-import android.util.Size
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -65,28 +61,17 @@ fun obtainPathResult(data: Intent?): List<String> {
 
 const val IMAGE = "image"
 const val VIDEO = "video"
+private const val MIME_TYPE = "mime_type"
 private const val WIDTH = "width"
 private const val HEIGHT = "height"
-private const val MAX_THUMBNAIL_PIXEL = 320
-private const val MAX_IMAGE_PIXEL = 1440
+
+const val MAX_THUMBNAIL_PIXEL = 320
+const val MAX_IMAGE_PIXEL = 1440
 
 fun getMediaItem(resolver: ContentResolver, uri: Uri): MediaItem? {
-    val mimeType = resolver.getType(uri) ?: EMPTY
-    return when {
-        mimeType.contains(IMAGE) -> getImageItem(resolver, uri)
-        mimeType.contains(VIDEO) -> getVideoItem(resolver, uri)
-        else -> null
-    }
-}
-
-fun getImageItem(resolver: ContentResolver, uri: Uri): MediaItem? {
-    return null
-}
-
-private fun getVideoItem(resolver: ContentResolver, uri: Uri): MediaItem? {
     val cursor = resolver.query(
         uri,
-        arrayOf(WIDTH, HEIGHT),
+        arrayOf(MIME_TYPE, WIDTH, HEIGHT),
         null,
         null,
         null,
@@ -95,43 +80,34 @@ private fun getVideoItem(resolver: ContentResolver, uri: Uri): MediaItem? {
 
     return cursor?.let {
         it.moveToFirst()
+        val mimeType = it.getString(it.getColumnIndex(MIME_TYPE))
         val width = it.getInt(it.getColumnIndex(WIDTH))
         val height = it.getInt(it.getColumnIndex(HEIGHT))
         it.close()
 
-        // Thumbnail
-        val thumbnail = resolver.getVideoThumbnail(uri)
+        val type = when {
+            mimeType.contains(IMAGE) -> IMAGE
+            mimeType.contains(VIDEO) -> VIDEO
+            else -> return null
+        }
 
-        MediaItem(type = VIDEO, width = width, height = height, uri = uri, thumbnail = thumbnail)
+        MediaItem(type = type, width = width, height = height, uri = uri)
     }
 }
 
-fun ContentResolver.getVideoThumbnail(uri: Uri): Bitmap {
-    val thumbnail = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        loadThumbnail(uri, Size(MAX_THUMBNAIL_PIXEL, MAX_THUMBNAIL_PIXEL), null)
-    } else {
-        MediaStore.Video.Thumbnails.getThumbnail(
-            this,
-            uri.lastPathSegment!!.toLong(),
-            MediaStore.Video.Thumbnails.MICRO_KIND,
-            null
-        )
-    }
-    // TODO The thumbnail isn't the same as the picture user selected, find the way to figure out.
-    return thumbnail.scale(MAX_THUMBNAIL_PIXEL, true)
-}
-
-//fun ContentResolver.getImageThumbnail(uri: Uri): Bitmap {
-//    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//fun ContentResolver.getVideoThumbnail(uri: Uri): Bitmap {
+//    val thumbnail = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 //        loadThumbnail(uri, Size(MAX_THUMBNAIL_PIXEL, MAX_THUMBNAIL_PIXEL), null)
 //    } else {
-//        MediaStore.Images.Thumbnails.getThumbnail(
+//        MediaStore.Video.Thumbnails.getThumbnail(
 //            this,
 //            uri.lastPathSegment!!.toLong(),
-//            MediaStore.Images.Thumbnails.MICRO_KIND,
-//            BitmapFactory.Options()
+//            MediaStore.Video.Thumbnails.MICRO_KIND,
+//            null
 //        )
 //    }
+//    // TODO The thumbnail isn't the same as the picture user selected, find the way to figure out.
+//    return thumbnail.scale(MAX_THUMBNAIL_PIXEL, true)
 //}
 
 // Model item, which can be local item or online item
@@ -142,9 +118,7 @@ data class MediaItem(
     val width: Int = ZERO,
     val height: Int = ZERO,
     val thumbnailUrl: String = EMPTY,
-    val uri: Uri? = null,
-    val image: Bitmap? = null,
-    val thumbnail: Bitmap? = null,
+    val uri: Uri? = null
 )
 
 fun Media.toMediaItem(): MediaItem {
@@ -181,7 +155,7 @@ class MediaAdapter(private val listener: Listener) :
             with(itemView) {
 
                 when {
-                    item.thumbnail != null -> Glide.with(itemView).load(item.thumbnail)
+                    item.uri != null -> Glide.with(itemView).load(item.uri)
                         .into(view_media_thumbnail)
                     item.url.isNotEmpty() -> Glide.with(itemView).load(item.url)
                         .into(view_media_thumbnail)
