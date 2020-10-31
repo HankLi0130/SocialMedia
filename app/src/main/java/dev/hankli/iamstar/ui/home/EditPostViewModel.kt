@@ -10,8 +10,11 @@ import dev.hankli.iamstar.utils.FirebaseUtil.addPost
 import dev.hankli.iamstar.utils.FirebaseUtil.auth
 import dev.hankli.iamstar.utils.FirebaseUtil.fetchPost
 import dev.hankli.iamstar.utils.FirebaseUtil.updatePost
-import dev.hankli.iamstar.utils.MediaItem
-import dev.hankli.iamstar.utils.toMediaItem
+import dev.hankli.iamstar.utils.media.MediaForBrowse
+import dev.hankli.iamstar.utils.media.MediaForUpload
+import dev.hankli.iamstar.utils.media.toForBrowse
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import tw.hankli.brookray.constant.EMPTY
 
@@ -23,10 +26,10 @@ class EditPostViewModel : BaseViewModel() {
     val contentData: LiveData<String>
         get() = _contentData
 
-    private val mediaItems = mutableListOf<MediaItem>()
+    private val mediaItems = mutableListOf<MediaForBrowse>()
 
-    private val _mediaItemsData = MutableLiveData<List<MediaItem>>()
-    val mediaItemsData: LiveData<List<MediaItem>>
+    private val _mediaItemsData = MutableLiveData<List<MediaForBrowse>>()
+    val mediaItemsData: LiveData<List<MediaForBrowse>>
         get() = _mediaItemsData
 
     private val _locationData = MutableLiveData<String?>()
@@ -54,7 +57,7 @@ class EditPostViewModel : BaseViewModel() {
         _locationData.value = post.location
         _contentData.value = post.content
 
-        addToMediaItems(post.medias.map { it.toMediaItem() })
+        addToMediaItems(post.medias.map { it.toForBrowse() })
     }
 
     fun onContentChanged(text: CharSequence?) {
@@ -62,7 +65,7 @@ class EditPostViewModel : BaseViewModel() {
         post.content = content
     }
 
-    fun addToMediaItems(list: List<MediaItem>) {
+    fun addToMediaItems(list: List<MediaForBrowse>) {
         mediaItems.addAll(list)
         _mediaItemsData.value = mediaItems
     }
@@ -79,7 +82,7 @@ class EditPostViewModel : BaseViewModel() {
         _locationData.value = post.location
     }
 
-    fun submit() {
+    fun submit(transfer: (List<MediaForBrowse>) -> Single<List<MediaForUpload>>) {
         if (!isValid()) {
             showAlert(R.string.alert_post_is_invalid)
             return
@@ -87,11 +90,17 @@ class EditPostViewModel : BaseViewModel() {
 
         showProgress()
 
+        // If the post doesn't have objectId, create a new one
+        // Instead of, update the post
         if (post.objectId == EMPTY) {
             post.authorId = auth.currentUser!!.uid
             post.influencerId = auth.currentUser!!.uid
 
-            addPost(post, mediaItems)
+            transfer(mediaItems)
+                .flatMap {
+                    addPost(post, it)
+                }
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess {
                     dismissProgress()
                 }

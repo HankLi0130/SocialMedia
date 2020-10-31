@@ -36,7 +36,7 @@ class PostCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 view_post_medias.isVisible = true
                 view_post_medias.pageCount = item.medias.size
                 view_post_medias.setImageListener { position, imageView ->
-                    Glide.with(this@with).load(item.medias[position].url).into(imageView)
+                    Glide.with(this@with).load(item.medias[position].thumbnailUrl).into(imageView)
                 }
             }
 

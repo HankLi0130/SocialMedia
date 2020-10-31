@@ -9,11 +9,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Post
+import dev.hankli.iamstar.utils.media.MediaForBrowse
+import dev.hankli.iamstar.utils.media.MediaForUpload
 import io.reactivex.Completable
 import io.reactivex.Single
-import tw.hankli.brookray.constant.EMPTY
+import java.io.InputStream
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 object FirebaseUtil {
@@ -46,9 +47,8 @@ object FirebaseUtil {
     /**
      * return Post Object Id
      */
-    fun addPost(post: Post, mediaItems: List<MediaItem>): Single<String> {
-        val uploadActions = mediaItems.map { uploadPostMedia(it) }
-        return Single.merge(uploadActions)
+    fun addPost(post: Post, mediasForUpload: List<MediaForUpload>): Single<String> {
+        return Single.merge(mediasForUpload.map { uploadPostMedia(it) })
             .toList()
             .flatMap { medias ->
                 post.medias = medias
@@ -56,13 +56,15 @@ object FirebaseUtil {
             }
     }
 
-    private fun uploadPostMedia(mediaItem: MediaItem): Single<Media> {
-        val mediaId = UUID.randomUUID().toString()
-        val mediaStoragePath = "$BUCKET_POSTS/$mediaId"
-        return uploadFile(mediaStoragePath, mediaItem.uri!!)
-            .map { url ->
-                Media(mediaId, url, mediaItem.type, mediaItem.height, mediaItem.width)
-            }
+    private fun uploadPostMedia(media: MediaForUpload): Single<Media> {
+        val filePath = "$BUCKET_POSTS/${media.objectId}"
+        val thumbnailPath = filePath + "_thumbnail"
+        return Single.zip<String, String, Media>(
+            uploadFile(filePath, media.file),
+            uploadFile(thumbnailPath, media.thumbnail)
+        ) { fileUrl, thumbnailUrl ->
+            Media(media.objectId, fileUrl, media.type, media.width, media.height, thumbnailUrl)
+        }
     }
 
     /**
@@ -79,27 +81,28 @@ object FirebaseUtil {
         }
     }
 
-    fun updatePost(post: Post, mediaItems: List<MediaItem>): Completable {
+    fun updatePost(post: Post, mediaItems: List<MediaForBrowse>): Completable {
 
-        val mediasForUploading = mediaItems.filter { it.objectId == EMPTY }
-        val uploadActions = mediasForUploading.map { uploadPostMedia(it) }
-
-        val originIds = post.medias.map { it.objectId }
-        val updatedIds = mediaItems.map { it.objectId }
-        val idsForRemoving = originIds.subtract(updatedIds)
-        val removeActions = idsForRemoving.map { removePostMedia(it) }
-
-        val newMedias = ArrayList<Media>().apply { this.addAll(post.medias) }
-
-        return Completable.merge(removeActions)
-            .andThen(Single.merge(uploadActions))
-            .toList()
-            .flatMapCompletable { medias ->
-                newMedias.addAll(medias)
-                newMedias.removeAll { idsForRemoving.contains(it.objectId) }
-                post.medias = newMedias
-                updatePost(post)
-            }
+//        val mediasForUploading = mediaItems.filter { it.objectId == EMPTY }
+//        val uploadActions = mediasForUploading.map { uploadPostMedia(it) }
+//
+//        val originIds = post.medias.map { it.objectId }
+//        val updatedIds = mediaItems.map { it.objectId }
+//        val idsForRemoving = originIds.subtract(updatedIds)
+//        val removeActions = idsForRemoving.map { removePostMedia(it) }
+//
+//        val newMedias = ArrayList<Media>().apply { this.addAll(post.medias) }
+//
+//        return Completable.merge(removeActions)
+//            .andThen(Single.merge(uploadActions))
+//            .toList()
+//            .flatMapCompletable { medias ->
+//                newMedias.addAll(medias)
+//                newMedias.removeAll { idsForRemoving.contains(it.objectId) }
+//                post.medias = newMedias
+//                updatePost(post)
+//            }
+        return Completable.complete()
     }
 
     private fun updatePost(post: Post): Completable {
@@ -159,11 +162,20 @@ object FirebaseUtil {
         }
     }
 
-    // https://firebase.google.com/docs/storage/android/upload-files#upload_from_data_in_memory
     fun uploadFile(path: String, bytes: ByteArray): Single<String> {
         return Single.create { emitter ->
             val ref = storage.reference.child(path)
             ref.putBytes(bytes)
+                .continueWithTask { ref.downloadUrl }
+                .addOnSuccessListener { emitter.onSuccess(it.toString()) }
+                .addOnFailureListener { emitter.onError(it) }
+        }
+    }
+
+    fun uploadFile(path: String, stream: InputStream): Single<String> {
+        return Single.create { emitter ->
+            val ref = storage.reference.child(path)
+            ref.putStream(stream)
                 .continueWithTask { ref.downloadUrl }
                 .addOnSuccessListener { emitter.onSuccess(it.toString()) }
                 .addOnFailureListener { emitter.onError(it) }

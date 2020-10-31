@@ -15,10 +15,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import dev.hankli.iamstar.R
-import dev.hankli.iamstar.utils.*
+import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.Consts.REQUEST_PERMISSION_MEDIA
 import dev.hankli.iamstar.utils.Consts.REQUEST_PICK_MEDIAS
 import dev.hankli.iamstar.utils.Consts.REQUEST_PLACES
+import dev.hankli.iamstar.utils.UIAction
+import dev.hankli.iamstar.utils.getPlacesIntent
+import dev.hankli.iamstar.utils.media.*
+import io.reactivex.Single
 import kotlinx.android.synthetic.main.fragment_edit_post.*
 
 class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter.Listener {
@@ -70,7 +74,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
         viewModel.mediaItemsData.observe(viewLifecycleOwner, Observer { mediaItems ->
             view_list_media.isVisible = mediaItems.isNotEmpty()
 
-            mediaAdapter.items = mediaItems
+            mediaAdapter.forBrowses = mediaItems
             mediaAdapter.notifyDataSetChanged()
         })
 
@@ -183,7 +187,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_ok -> {
-                viewModel.submit()
+                viewModel.submit(this::transfer)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -192,5 +196,17 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
 
     override fun onItemCancel(position: Int) {
         viewModel.removeMediaItemAt(position)
+    }
+
+    private fun transfer(mediasForBrowse: List<MediaForBrowse>): Single<List<MediaForUpload>> {
+        val actions = mediasForBrowse.mapNotNull {
+            when (it.type) {
+                IMAGE -> imageForUpload(contentResolver, it)
+                //VIDEO -> videoForUpload(contentResolver, it)
+                else -> null
+            }
+        }
+
+        return Single.merge(actions).toList()
     }
 }
