@@ -202,7 +202,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
         val actions = mediasForBrowse.mapNotNull {
             when (it.type) {
                 IMAGE -> imageForUpload(contentResolver, it)
-                //VIDEO -> videoForUpload(contentResolver, it)
+                VIDEO -> videoForUpload(requireContext(), it)
                 else -> null
             }
         }

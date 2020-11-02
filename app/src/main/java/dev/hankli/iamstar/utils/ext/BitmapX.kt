@@ -14,7 +14,7 @@ fun Bitmap.scale(maxSize: Int, filter: Boolean): Bitmap {
 
 fun Bitmap.toByteArray(
     format: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG,
-    quality: Int = 90
+    quality: Int = 99
 ): ByteArray {
     ByteArrayOutputStream().apply {
         compress(format, quality, this)

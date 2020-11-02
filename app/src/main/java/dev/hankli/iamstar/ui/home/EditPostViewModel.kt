@@ -101,7 +101,7 @@ class EditPostViewModel : BaseViewModel() {
                     addPost(post, it)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess {
+                .doAfterTerminate {
                     dismissProgress()
                 }
                 .subscribe({

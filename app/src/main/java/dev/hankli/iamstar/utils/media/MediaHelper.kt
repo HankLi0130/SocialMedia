@@ -1,8 +1,10 @@
 package dev.hankli.iamstar.utils.media
 
 import android.content.ContentResolver
+import android.content.Context
 import android.net.Uri
-import android.util.Log
+import android.os.Environment
+import com.iceteck.silicompressorr.SiliCompressor
 import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.utils.ext.getBitmap
 import dev.hankli.iamstar.utils.ext.scale
@@ -11,6 +13,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import tw.hankli.brookray.constant.EMPTY
 import tw.hankli.brookray.constant.ZERO
+import java.io.File
 import java.util.*
 
 /**
@@ -65,7 +68,6 @@ fun imageForUpload(
     resolver: ContentResolver,
     mediaForBrowse: MediaForBrowse
 ): Single<MediaForUpload> {
-    Log.i("compress", "compress")
     return Single.create<MediaForUpload> { emitter ->
         val objectId = getObjectId()
         val bitmap = resolver.getBitmap(mediaForBrowse.uri!!)
@@ -92,10 +94,37 @@ fun imageForUpload(
     }.subscribeOn(Schedulers.computation())
 }
 
-//fun videoForUpload(resolver: ContentResolver, mediaForBrowse: MediaForBrowse): MediaForUpload {
-//
-//    return MediaForUpload()
-//}
+fun videoForUpload(
+    context: Context,
+    mediaForBrowse: MediaForBrowse
+): Single<MediaForUpload> {
+    return Single.create<MediaForUpload> { emitter ->
+        val objectId = getObjectId()
+        val videoDir = File(context.getExternalFilesDir(Environment.DIRECTORY_MOVIES), "videos")
+        var video = ByteArray(0)
+        if (videoDir.mkdirs() || videoDir.isDirectory) {
+            val videoPath = SiliCompressor.with(context)
+                .compressVideo(mediaForBrowse.uri!!, videoDir.path)
+            video = File(videoPath).readBytes()
+        }
+
+        if (video.isEmpty()) {
+            emitter.onError(Throwable("Video compression was failed !"))
+            return@create
+        }
+
+        emitter.onSuccess(
+            MediaForUpload(
+                objectId,
+                video,
+                mediaForBrowse.type,
+                0,
+                0,
+                ByteArray(0)
+            )
+        )
+    }.subscribeOn(Schedulers.computation())
+}
 
 private fun getObjectId(): String = UUID.randomUUID().toString()
 

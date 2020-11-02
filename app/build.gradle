@@ -120,6 +120,9 @@ dependencies {
     // Image Compression
     implementation 'id.zelory:compressor:3.0.0'
 
+    // Video Compression
+    implementation 'com.iceteck.silicompressorr:silicompressor:2.2.4'
+
     // BrookRay
     implementation 'com.github.HankLi0130.BrookRay:core:0.1.7'
 

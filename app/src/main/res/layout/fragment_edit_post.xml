@@ -38,12 +38,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/view_list_media"
         android:layout_width="@dimen/match_constraint"
-        android:layout_height="150dp"
-        android:visibility="gone"
+        android:layout_height="@dimen/match_constraint"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/view_bottom_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_input_post_text"
         tools:listitem="@layout/itemview_media" />
 
     <View
