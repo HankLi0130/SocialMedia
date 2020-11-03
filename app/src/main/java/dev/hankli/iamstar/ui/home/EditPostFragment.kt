@@ -39,7 +39,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
 
     private val mediaAdapter = MediaAdapter(this)
 
-    private val maxImageSelectable = 12
+    private val maxImageSelectable = 6
 
     private val maxVideoSelectable = 1
 

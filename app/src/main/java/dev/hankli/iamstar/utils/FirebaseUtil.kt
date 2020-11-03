@@ -22,6 +22,7 @@ object FirebaseUtil {
     const val COLLECTION_POSTS = "Post"
     const val COLLECTION_MEDIAS = "Medias"
     const val BUCKET_POSTS = COLLECTION_POSTS
+    const val THUMBNAIL = "thumbnail"
 
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
@@ -58,7 +59,7 @@ object FirebaseUtil {
 
     private fun uploadPostMedia(media: MediaForUpload): Single<Media> {
         val filePath = "$BUCKET_POSTS/${media.objectId}"
-        val thumbnailPath = filePath + "_thumbnail"
+        val thumbnailPath = "${filePath}_${THUMBNAIL}"
         return Single.zip<String, String, Media>(
             uploadFile(filePath, media.file),
             uploadFile(thumbnailPath, media.thumbnail)
@@ -139,8 +140,17 @@ object FirebaseUtil {
     fun deletePost(postId: String): Completable {
         return fetchPost(postId)
             .flatMapCompletable { post ->
-                val deleteActions = post.medias.map { removePostMedia(it.objectId) }
-                Completable.merge(deleteActions)
+                val deleteActions = post.medias.map {
+                    removePostMedia(it.objectId)
+                }
+                val deleteThumbnailActions = post.medias.map {
+                    removePostMedia("${it.objectId}_${THUMBNAIL}")
+                }
+                val actions = mutableListOf<Completable>().apply {
+                    addAll(deleteActions)
+                    addAll(deleteThumbnailActions)
+                }
+                Completable.merge(actions)
             }
             .andThen(Completable.create { emitter ->
                 db.collection(COLLECTION_POSTS)

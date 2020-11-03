@@ -31,7 +31,7 @@
     <string name="profile">Profile</string>
     <string name="add_post">Add post</string>
     <string name="location_not_available">location not available</string>
-    <string name="up_to_image_maximum">Only 12 images can be selected</string>
+    <string name="up_to_image_maximum">Only 6 images can be selected</string>
     <string name="up_to_video_maximum">Only 1 video can be selected</string>
 
     <string name="alert_title">Alert</string>
