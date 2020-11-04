@@ -33,7 +33,7 @@ abstract class BaseViewModel : ViewModel() {
     val uiAlertEvents: LiveData<Event<Int>>
         get() = _uiAlertEvents
 
-    protected fun showAlert(@StringRes messageId: Int) {
+    fun showAlert(@StringRes messageId: Int) {
         _uiAlertEvents.value = Event(messageId)
     }
 

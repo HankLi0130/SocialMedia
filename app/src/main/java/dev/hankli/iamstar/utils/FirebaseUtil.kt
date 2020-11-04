@@ -96,12 +96,6 @@ object FirebaseUtil {
                 post.medias = newMedias
                 updatePost(post)
             }
-
-//        val mediasForUploading = mediaItems.filter { it.objectId == EMPTY }
-//        val uploadActions = mediasForUploading.map { uploadPostMedia(it) }
-//
-//
-//        val removeActions = idsForRemoving.map { removePostMedia(it) }
     }
 
     private fun updatePost(post: Post): Completable {

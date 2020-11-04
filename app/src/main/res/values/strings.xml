@@ -33,6 +33,7 @@
     <string name="location_not_available">location not available</string>
     <string name="up_to_image_maximum">Only 6 images can be selected</string>
     <string name="up_to_video_maximum">Only 1 video can be selected</string>
+    <string name="no_internet">there is no internet connect</string>
 
     <string name="alert_title">Alert</string>
     <string name="alert_message">Message: %s</string>

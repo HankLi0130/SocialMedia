@@ -20,6 +20,7 @@ import dev.hankli.iamstar.utils.Consts.REQUEST_PERMISSION_MEDIA
 import dev.hankli.iamstar.utils.Consts.REQUEST_PICK_MEDIAS
 import dev.hankli.iamstar.utils.Consts.REQUEST_PLACES
 import dev.hankli.iamstar.utils.UIAction
+import dev.hankli.iamstar.utils.ext.isInternetConnected
 import dev.hankli.iamstar.utils.getPlacesIntent
 import dev.hankli.iamstar.utils.media.*
 import io.reactivex.Single
@@ -187,7 +188,9 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_ok -> {
-                viewModel.submit(this::transfer)
+                if (requireContext().isInternetConnected()) {
+                    viewModel.submit(this::transfer)
+                } else viewModel.showAlert(R.string.no_internet)
                 true
             }
             else -> super.onOptionsItemSelected(item)
