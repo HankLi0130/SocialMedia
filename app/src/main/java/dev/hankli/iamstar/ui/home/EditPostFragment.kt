@@ -74,7 +74,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
         viewModel.mediaItemsData.observe(viewLifecycleOwner, Observer { mediaItems ->
             view_list_media.isVisible = mediaItems.isNotEmpty()
 
-            mediaAdapter.forBrowses = mediaItems
+            mediaAdapter.forBrows = mediaItems
             mediaAdapter.notifyDataSetChanged()
         })
 
@@ -198,11 +198,11 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
         viewModel.removeMediaItemAt(position)
     }
 
-    private fun transfer(mediasForBrowse: List<MediaForBrowse>): Single<List<MediaForUpload>> {
-        val actions = mediasForBrowse.mapNotNull {
+    private fun transfer(mediasForBrowsing: List<MediaForBrowsing>): Single<List<MediaForUploading>> {
+        val actions = mediasForBrowsing.mapNotNull {
             when (it.type) {
-                IMAGE -> imageForUpload(contentResolver, it)
-                VIDEO -> videoForUpload(requireContext(), it)
+                IMAGE -> imageForUploading(contentResolver, it)
+                VIDEO -> videoForUploading(requireContext(), it)
                 else -> null
             }
         }

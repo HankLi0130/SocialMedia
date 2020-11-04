@@ -9,8 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Post
-import dev.hankli.iamstar.utils.media.MediaForBrowse
-import dev.hankli.iamstar.utils.media.MediaForUpload
+import dev.hankli.iamstar.utils.media.MediaForUploading
 import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.InputStream
@@ -48,8 +47,8 @@ object FirebaseUtil {
     /**
      * return Post Object Id
      */
-    fun addPost(post: Post, mediasForUpload: List<MediaForUpload>): Single<String> {
-        return Single.merge(mediasForUpload.map { uploadPostMedia(it) })
+    fun addPost(post: Post, mediasForUploading: List<MediaForUploading>): Single<String> {
+        return Single.merge(mediasForUploading.map { uploadPostMedia(it) })
             .toList()
             .flatMap { medias ->
                 post.medias = medias
@@ -57,7 +56,7 @@ object FirebaseUtil {
             }
     }
 
-    private fun uploadPostMedia(media: MediaForUpload): Single<Media> {
+    private fun uploadPostMedia(media: MediaForUploading): Single<Media> {
         val filePath = "$BUCKET_POSTS/${media.objectId}"
         val thumbnailPath = "${filePath}_${THUMBNAIL}"
         return Single.zip<String, String, Media>(
@@ -82,28 +81,27 @@ object FirebaseUtil {
         }
     }
 
-    fun updatePost(post: Post, mediaItems: List<MediaForBrowse>): Completable {
+    fun updatePost(
+        post: Post,
+        mediasForUploading: List<MediaForUploading>,
+        idsForRemoving: Collection<String>
+    ): Completable {
+        val newMedias = ArrayList<Media>().apply { this.addAll(post.medias) }
+        return Completable.merge(idsForRemoving.map { removePostMedia(it) })
+            .andThen(Single.merge(mediasForUploading.map { uploadPostMedia(it) }))
+            .toList()
+            .flatMapCompletable { medias ->
+                newMedias.removeAll { idsForRemoving.contains(it.objectId) }
+                newMedias.addAll(medias)
+                post.medias = newMedias
+                updatePost(post)
+            }
 
 //        val mediasForUploading = mediaItems.filter { it.objectId == EMPTY }
 //        val uploadActions = mediasForUploading.map { uploadPostMedia(it) }
 //
-//        val originIds = post.medias.map { it.objectId }
-//        val updatedIds = mediaItems.map { it.objectId }
-//        val idsForRemoving = originIds.subtract(updatedIds)
+//
 //        val removeActions = idsForRemoving.map { removePostMedia(it) }
-//
-//        val newMedias = ArrayList<Media>().apply { this.addAll(post.medias) }
-//
-//        return Completable.merge(removeActions)
-//            .andThen(Single.merge(uploadActions))
-//            .toList()
-//            .flatMapCompletable { medias ->
-//                newMedias.addAll(medias)
-//                newMedias.removeAll { idsForRemoving.contains(it.objectId) }
-//                post.medias = newMedias
-//                updatePost(post)
-//            }
-        return Completable.complete()
     }
 
     private fun updatePost(post: Post): Completable {
@@ -118,8 +116,9 @@ object FirebaseUtil {
     }
 
     private fun removePostMedia(mediaId: String): Completable {
-        val mediaStoragePath = "$BUCKET_POSTS/$mediaId"
-        return deleteFile(mediaStoragePath)
+        val filePath = "$BUCKET_POSTS/$mediaId"
+        val thumbnailPath = "${filePath}_${THUMBNAIL}"
+        return Completable.mergeArray(deleteFile(filePath), deleteFile(thumbnailPath))
     }
 
     fun fetchPost(postId: String): Single<Post> {
@@ -140,17 +139,7 @@ object FirebaseUtil {
     fun deletePost(postId: String): Completable {
         return fetchPost(postId)
             .flatMapCompletable { post ->
-                val deleteActions = post.medias.map {
-                    removePostMedia(it.objectId)
-                }
-                val deleteThumbnailActions = post.medias.map {
-                    removePostMedia("${it.objectId}_${THUMBNAIL}")
-                }
-                val actions = mutableListOf<Completable>().apply {
-                    addAll(deleteActions)
-                    addAll(deleteThumbnailActions)
-                }
-                Completable.merge(actions)
+                Completable.merge(post.medias.map { removePostMedia(it.objectId) })
             }
             .andThen(Completable.create { emitter ->
                 db.collection(COLLECTION_POSTS)

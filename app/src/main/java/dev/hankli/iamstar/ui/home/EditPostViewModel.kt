@@ -10,9 +10,9 @@ import dev.hankli.iamstar.utils.FirebaseUtil.addPost
 import dev.hankli.iamstar.utils.FirebaseUtil.auth
 import dev.hankli.iamstar.utils.FirebaseUtil.fetchPost
 import dev.hankli.iamstar.utils.FirebaseUtil.updatePost
-import dev.hankli.iamstar.utils.media.MediaForBrowse
-import dev.hankli.iamstar.utils.media.MediaForUpload
-import dev.hankli.iamstar.utils.media.toForBrowse
+import dev.hankli.iamstar.utils.media.MediaForBrowsing
+import dev.hankli.iamstar.utils.media.MediaForUploading
+import dev.hankli.iamstar.utils.media.toForBrowsing
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -26,10 +26,10 @@ class EditPostViewModel : BaseViewModel() {
     val contentData: LiveData<String>
         get() = _contentData
 
-    private val mediaItems = mutableListOf<MediaForBrowse>()
+    private val mediaItems = mutableListOf<MediaForBrowsing>()
 
-    private val _mediaItemsData = MutableLiveData<List<MediaForBrowse>>()
-    val mediaItemsData: LiveData<List<MediaForBrowse>>
+    private val _mediaItemsData = MutableLiveData<List<MediaForBrowsing>>()
+    val mediaItemsData: LiveData<List<MediaForBrowsing>>
         get() = _mediaItemsData
 
     private val _locationData = MutableLiveData<String?>()
@@ -57,7 +57,7 @@ class EditPostViewModel : BaseViewModel() {
         _locationData.value = post.location
         _contentData.value = post.content
 
-        addToMediaItems(post.medias.map { it.toForBrowse() })
+        addToMediaItems(post.medias.map { it.toForBrowsing() })
     }
 
     fun onContentChanged(text: CharSequence?) {
@@ -65,7 +65,7 @@ class EditPostViewModel : BaseViewModel() {
         post.content = content
     }
 
-    fun addToMediaItems(list: List<MediaForBrowse>) {
+    fun addToMediaItems(list: List<MediaForBrowsing>) {
         mediaItems.addAll(list)
         _mediaItemsData.value = mediaItems
     }
@@ -82,7 +82,7 @@ class EditPostViewModel : BaseViewModel() {
         _locationData.value = post.location
     }
 
-    fun submit(transfer: (List<MediaForBrowse>) -> Single<List<MediaForUpload>>) {
+    fun submit(transfer: (List<MediaForBrowsing>) -> Single<List<MediaForUploading>>) {
         if (!isValid()) {
             showAlert(R.string.alert_post_is_invalid)
             return
@@ -112,7 +112,13 @@ class EditPostViewModel : BaseViewModel() {
                 .addTo(disposables)
 
         } else {
-            updatePost(post, mediaItems)
+            transfer(mediaItems.filter { it.objectId == EMPTY })
+                .flatMapCompletable { mediasForUploading ->
+                    val originIds = post.medias.map { it.objectId }
+                    val updatedIds = mediaItems.map { it.objectId }
+                    val idsForRemoving = originIds.subtract(updatedIds)
+                    updatePost(post, mediasForUploading, idsForRemoving)
+                }
                 .doOnComplete {
                     dismissProgress()
                 }

@@ -23,7 +23,7 @@ const val VIDEO = "video"
 const val MAX_IMAGE_SIZE = 1440
 const val MAX_THUMBNAIL_SIZE = 320
 
-data class MediaForBrowse(
+data class MediaForBrowsing(
     val objectId: String = EMPTY,
     val url: String = EMPTY,
     val type: String = EMPTY,
@@ -33,8 +33,8 @@ data class MediaForBrowse(
     val uri: Uri? = null
 )
 
-fun Media.toForBrowse(): MediaForBrowse {
-    return MediaForBrowse(
+fun Media.toForBrowsing(): MediaForBrowsing {
+    return MediaForBrowsing(
         objectId = this.objectId,
         url = this.url,
         type = this.type,
@@ -44,7 +44,7 @@ fun Media.toForBrowse(): MediaForBrowse {
     )
 }
 
-data class MediaForUpload(
+data class MediaForUploading(
     val objectId: String,
     val file: ByteArray,
     val type: String,
@@ -53,22 +53,22 @@ data class MediaForUpload(
     val thumbnail: ByteArray
 )
 
-fun getMediaItem(resolver: ContentResolver, uri: Uri): MediaForBrowse? {
+fun getMediaItem(resolver: ContentResolver, uri: Uri): MediaForBrowsing? {
     val mimeType = resolver.getType(uri) ?: EMPTY
     return when {
-        mimeType.contains(IMAGE) -> MediaForBrowse(type = IMAGE, uri = uri)
-        mimeType.contains(VIDEO) -> MediaForBrowse(type = VIDEO, uri = uri)
+        mimeType.contains(IMAGE) -> MediaForBrowsing(type = IMAGE, uri = uri)
+        mimeType.contains(VIDEO) -> MediaForBrowsing(type = VIDEO, uri = uri)
         else -> null
     }
 }
 
-fun imageForUpload(
+fun imageForUploading(
     resolver: ContentResolver,
-    mediaForBrowse: MediaForBrowse
-): Single<MediaForUpload> {
-    return Single.create<MediaForUpload> { emitter ->
+    mediaForBrowsing: MediaForBrowsing
+): Single<MediaForUploading> {
+    return Single.create<MediaForUploading> { emitter ->
         val objectId = getObjectId()
-        val bitmap = resolver.getBitmap(mediaForBrowse.uri!!)
+        val bitmap = resolver.getBitmap(mediaForBrowsing.uri!!)
 
         val image = if (bitmap.width > MAX_IMAGE_SIZE || bitmap.height > MAX_IMAGE_SIZE) {
             bitmap.scale(MAX_IMAGE_SIZE, true)
@@ -80,10 +80,10 @@ fun imageForUpload(
             } else bitmap
 
         emitter.onSuccess(
-            MediaForUpload(
+            MediaForUploading(
                 objectId,
                 image.toByteArray(),
-                mediaForBrowse.type,
+                mediaForBrowsing.type,
                 image.width,
                 image.height,
                 thumbnail.toByteArray()
@@ -92,13 +92,13 @@ fun imageForUpload(
     }.subscribeOn(Schedulers.computation())
 }
 
-fun videoForUpload(
+fun videoForUploading(
     context: Context,
-    mediaForBrowse: MediaForBrowse
-): Single<MediaForUpload> {
-    return Single.create<MediaForUpload> { emitter ->
+    mediaForBrowsing: MediaForBrowsing
+): Single<MediaForUploading> {
+    return Single.create<MediaForUploading> { emitter ->
         val objectId = getObjectId()
-        val video = mediaForBrowse.uri!!.toFile().readBytes()
+        val video = mediaForBrowsing.uri!!.toFile().readBytes()
 
 //        val videoDir = File(context.getExternalFilesDir(Environment.DIRECTORY_MOVIES), "videos")
 //        var video = ByteArray(0)
@@ -114,10 +114,10 @@ fun videoForUpload(
 //        }
 
         emitter.onSuccess(
-            MediaForUpload(
+            MediaForUploading(
                 objectId,
                 video,
-                mediaForBrowse.type,
+                mediaForBrowsing.type,
                 0,
                 0,
                 ByteArray(0)

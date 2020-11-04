@@ -11,7 +11,7 @@ import tw.hankli.brookray.extension.viewOf
 class MediaAdapter(private val listener: Listener) :
     RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
 
-    var forBrowses: List<MediaForBrowse> = emptyList()
+    var forBrows: List<MediaForBrowsing> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.viewOf(R.layout.itemview_media)
@@ -19,21 +19,21 @@ class MediaAdapter(private val listener: Listener) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(forBrowses[position], listener)
+        holder.bind(forBrows[position], listener)
     }
 
-    override fun getItemCount(): Int = forBrowses.size
+    override fun getItemCount(): Int = forBrows.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(forBrowse: MediaForBrowse, listener: Listener) {
+        fun bind(forBrowsing: MediaForBrowsing, listener: Listener) {
             with(itemView) {
 
                 when {
-                    forBrowse.uri != null -> Glide.with(itemView).load(forBrowse.uri)
+                    forBrowsing.uri != null -> Glide.with(itemView).load(forBrowsing.uri)
                         .into(view_media_thumbnail)
-                    forBrowse.thumbnailUrl.isNotEmpty() -> Glide.with(itemView)
-                        .load(forBrowse.thumbnailUrl)
+                    forBrowsing.thumbnailUrl.isNotEmpty() -> Glide.with(itemView)
+                        .load(forBrowsing.thumbnailUrl)
                         .into(view_media_thumbnail)
                     else -> Glide.with(itemView).load(R.drawable.ic_broken_image)
                         .into(view_media_thumbnail)
