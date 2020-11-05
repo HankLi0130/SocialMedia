@@ -190,7 +190,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
             R.id.action_ok -> {
                 if (requireContext().isInternetConnected()) {
                     viewModel.submit(this::transfer)
-                } else viewModel.showAlert(R.string.no_internet)
+                } else showAlert(R.string.no_internet)
                 true
             }
             else -> super.onOptionsItemSelected(item)
