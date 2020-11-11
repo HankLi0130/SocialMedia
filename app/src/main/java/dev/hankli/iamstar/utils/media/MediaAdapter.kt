@@ -26,14 +26,14 @@ class MediaAdapter(private val listener: Listener) :
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(forBrowsing: MediaForBrowsing, listener: Listener) {
+        fun bind(media: MediaForBrowsing, listener: Listener) {
             with(itemView) {
 
                 when {
-                    forBrowsing.uri != null -> Glide.with(itemView).load(forBrowsing.uri)
+                    media.uri != null -> Glide.with(itemView).load(media.uri)
                         .into(view_media_thumbnail)
-                    forBrowsing.thumbnailUrl.isNotEmpty() -> Glide.with(itemView)
-                        .load(forBrowsing.thumbnailUrl)
+                    media.thumbnailUrl.isNotEmpty() -> Glide.with(itemView)
+                        .load(media.thumbnailUrl)
                         .into(view_media_thumbnail)
                     else -> Glide.with(itemView).load(R.drawable.ic_broken_image)
                         .into(view_media_thumbnail)
