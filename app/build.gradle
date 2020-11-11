@@ -71,7 +71,7 @@ dependencies {
     // AndroidX
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation "androidx.cardview:cardview:1.0.0"
 
     def nav_version = "2.3.1"
@@ -82,7 +82,7 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:2.4.0'
 
     // Firebase
-    def firebase_ui_version = "6.3.0"
+    def firebase_ui_version = "6.4.0"
     implementation "com.firebaseui:firebase-ui-auth:$firebase_ui_version"
     implementation "com.firebaseui:firebase-ui-firestore:$firebase_ui_version"
     implementation "com.firebaseui:firebase-ui-storage:$firebase_ui_version"
@@ -93,7 +93,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
 
     // Facebook
-    implementation 'com.facebook.android:facebook-android-sdk:5.0.0'
+    implementation 'com.facebook.android:facebook-android-sdk:8.1.0'
 
     // Google Auth
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
@@ -116,12 +116,6 @@ dependencies {
 
     // Image Zoom
     implementation 'it.sephiroth.android.library.imagezoom:imagezoom:2.3.0'
-
-    // Image Compression
-    implementation 'id.zelory:compressor:3.0.0'
-
-    // Video Compression
-    implementation 'com.iceteck.silicompressorr:silicompressor:2.2.4'
 
     // BrookRay
     implementation 'com.github.HankLi0130.BrookRay:core:0.1.7'

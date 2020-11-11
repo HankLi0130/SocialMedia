@@ -1,13 +1,9 @@
 package dev.hankli.iamstar.utils.media
 
 import android.content.ContentResolver
-import android.content.Context
 import android.net.Uri
-import androidx.core.net.toFile
 import dev.hankli.iamstar.data.models.Media
-import dev.hankli.iamstar.utils.ext.getBitmap
-import dev.hankli.iamstar.utils.ext.scale
-import dev.hankli.iamstar.utils.ext.toByteArray
+import dev.hankli.iamstar.utils.ext.*
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import tw.hankli.brookray.constant.EMPTY
@@ -93,52 +89,27 @@ fun imageForUploading(
 }
 
 fun videoForUploading(
-    context: Context,
+    resolver: ContentResolver,
     mediaForBrowsing: MediaForBrowsing
 ): Single<MediaForUploading> {
     return Single.create<MediaForUploading> { emitter ->
         val objectId = getObjectId()
-        val video = mediaForBrowsing.uri!!.toFile().readBytes()
-
-//        val videoDir = File(context.getExternalFilesDir(Environment.DIRECTORY_MOVIES), "videos")
-//        var video = ByteArray(0)
-//        if (videoDir.mkdirs() || videoDir.isDirectory) {
-//            val videoPath = SiliCompressor.with(context)
-//                .compressVideo(mediaForBrowse.uri!!, videoDir.path)
-//            video = File(videoPath).readBytes()
-//        }
-//
-//        if (video.isEmpty()) {
-//            emitter.onError(Throwable("Video compression was failed !"))
-//            return@create
-//        }
+        val uri = mediaForBrowsing.uri!!
+        val video = resolver.getByteArray(uri)
+        val widthAndHeight = resolver.getWidthAndHeight(uri)
+        val thumbnail = resolver.loadThumbnail(uri).toByteArray()
 
         emitter.onSuccess(
             MediaForUploading(
                 objectId,
                 video,
                 mediaForBrowsing.type,
-                0,
-                0,
-                ByteArray(0)
+                widthAndHeight.first,
+                widthAndHeight.second,
+                thumbnail
             )
         )
     }.subscribeOn(Schedulers.computation())
 }
 
 private fun getObjectId(): String = UUID.randomUUID().toString()
-
-//fun ContentResolver.getVideoThumbnail(uri: Uri): Bitmap {
-//    val thumbnail = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//        loadThumbnail(uri, Size(MAX_THUMBNAIL_PIXEL, MAX_THUMBNAIL_PIXEL), null)
-//    } else {
-//        MediaStore.Video.Thumbnails.getThumbnail(
-//            this,
-//            uri.lastPathSegment!!.toLong(),
-//            MediaStore.Video.Thumbnails.MICRO_KIND,
-//            null
-//        )
-//    }
-//    // TODO The thumbnail isn't the same as the picture user selected, find the way to figure out.
-//    return thumbnail.scale(MAX_THUMBNAIL_PIXEL, true)
-//}
