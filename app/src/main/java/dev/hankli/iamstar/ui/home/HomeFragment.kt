@@ -1,6 +1,7 @@
 package dev.hankli.iamstar.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -9,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.MarginItemDecoration
+import dev.hankli.iamstar.utils.Response
 import dev.hankli.iamstar.utils.UIAction
 import kotlinx.android.synthetic.main.fragment_home.*
 import tw.hankli.brookray.constant.EMPTY
@@ -27,7 +29,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         postCardAdapter = PostCardAdapter().apply {
-            onItemOptionsClick = this@HomeFragment::showItemOptions
+            onItemOptionsClick = ::onPostCardOptionsClick
+            onItemReactionClick = ::onPostCardReactionClick
         }
 
         view_posts.apply {
@@ -71,13 +74,17 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         )
     }
 
-    fun showItemOptions(objectId: String) {
+    private fun onPostCardOptionsClick(objectId: String) {
         showListDialog(R.string.post_actions_title, R.array.post_actions) { which ->
             when (which) {
                 0 -> toEditPostFragment(objectId)
                 1 -> viewModel.deletePost(objectId)
             }
         }
+    }
+
+    private fun onPostCardReactionClick(objectId: String, response: Response) {
+        Log.i("test", "object id: $objectId, response: ${response.name}")
     }
 
     override fun onStart() {
