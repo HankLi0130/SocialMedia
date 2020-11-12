@@ -19,7 +19,7 @@ import java.util.*
 object FirebaseUtil {
 
     const val COLLECTION_POSTS = "Post"
-    const val COLLECTION_MEDIAS = "Medias"
+    const val COLLECTION_REACTIONS = "Reaction"
     const val BUCKET_POSTS = COLLECTION_POSTS
     const val THUMBNAIL = "thumbnail"
 

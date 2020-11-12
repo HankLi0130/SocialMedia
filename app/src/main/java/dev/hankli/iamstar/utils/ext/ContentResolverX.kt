@@ -49,7 +49,7 @@ fun ContentResolver.getWidthAndHeight(uri: Uri): Pair<Int, Int> {
 }
 
 // https://stackoverflow.com/a/20208078/8361227
-fun ContentResolver.loadThumbnail(uri: Uri): Bitmap {
+fun ContentResolver.loadVideoThumbnail(uri: Uri): Bitmap {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         loadThumbnail(uri, Size(512, 384), null)
     } else {

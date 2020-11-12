@@ -121,7 +121,7 @@ dependencies {
     implementation "com.github.pgreze:android-reactions:1.2.2"
 
     // BrookRay
-    implementation 'com.github.HankLi0130.BrookRay:core:0.1.7'
+    implementation 'com.github.HankLi0130.BrookRay:core:0.1.9'
 
     // Testing
     testImplementation 'junit:junit:4.13.1'

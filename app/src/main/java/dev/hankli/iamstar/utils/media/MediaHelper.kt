@@ -97,7 +97,7 @@ fun videoForUploading(
         val uri = mediaForBrowsing.uri!!
         val video = resolver.getByteArray(uri)
         val widthAndHeight = resolver.getWidthAndHeight(uri)
-        val thumbnail = resolver.loadThumbnail(uri).toByteArray()
+        val thumbnail = resolver.loadVideoThumbnail(uri).toByteArray()
 
         emitter.onSuccess(
             MediaForUploading(
