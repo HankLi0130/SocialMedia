@@ -37,4 +37,8 @@ class HomeViewModel : BaseViewModel() {
             })
             .addTo(disposables)
     }
+
+    fun onPostCardReactionClick(objectId: String, reactionType: String, checked: Boolean) {
+
+    }
 }

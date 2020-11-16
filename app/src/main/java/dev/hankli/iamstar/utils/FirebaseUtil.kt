@@ -27,6 +27,7 @@ object FirebaseUtil {
     val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     val storage by lazy { FirebaseStorage.getInstance() }
 
+
     fun getSignInIntent(): Intent {
         val idpConfigs = listOf(
             AuthUI.IdpConfig.EmailBuilder().build(),

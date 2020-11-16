@@ -96,7 +96,7 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:8.1.0'
 
     // Google Auth
-    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
     // round image view
     implementation 'com.mikhaellopez:circularimageview:4.0.2'
@@ -116,9 +116,6 @@ dependencies {
 
     // Image Zoom
     implementation 'it.sephiroth.android.library.imagezoom:imagezoom:2.3.0'
-
-    // Reactions
-    implementation "com.github.pgreze:android-reactions:1.2.2"
 
     // BrookRay
     implementation 'com.github.HankLi0130.BrookRay:core:0.1.9'

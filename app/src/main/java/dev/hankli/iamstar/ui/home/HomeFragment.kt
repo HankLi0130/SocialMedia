@@ -1,7 +1,6 @@
 package dev.hankli.iamstar.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -10,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.MarginItemDecoration
-import dev.hankli.iamstar.utils.Response
 import dev.hankli.iamstar.utils.UIAction
 import kotlinx.android.synthetic.main.fragment_home.*
 import tw.hankli.brookray.constant.EMPTY
@@ -83,8 +81,12 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         }
     }
 
-    private fun onPostCardReactionClick(objectId: String, response: Response) {
-        Log.i("test", "object id: $objectId, response: ${response.name}")
+    private fun onPostCardReactionClick(
+        objectId: String,
+        reactionType: String,
+        isChecked: Boolean
+    ) {
+        viewModel.onPostCardReactionClick(objectId, reactionType, isChecked)
     }
 
     override fun onStart() {

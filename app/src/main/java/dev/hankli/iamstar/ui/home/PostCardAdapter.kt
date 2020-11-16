@@ -14,9 +14,6 @@ import dev.hankli.iamstar.data.models.Post
 import dev.hankli.iamstar.utils.FirebaseUtil.COLLECTION_POSTS
 import dev.hankli.iamstar.utils.FirebaseUtil.auth
 import dev.hankli.iamstar.utils.FirebaseUtil.db
-import dev.hankli.iamstar.utils.Response
-import dev.hankli.iamstar.utils.getReactionPopup
-import dev.hankli.iamstar.utils.responses
 import kotlinx.android.synthetic.main.card_post.view.*
 import java.text.SimpleDateFormat
 
@@ -24,7 +21,7 @@ class PostCardAdapter : FirestoreRecyclerAdapter<Post, PostCardAdapter.ViewHolde
 
     lateinit var onItemOptionsClick: (objectId: String) -> Unit
 
-    lateinit var onItemReactionClick: (objectId: String, response: Response) -> Unit
+    lateinit var onItemReactionClick: (objectId: String, reactionType: String, isChecked: Boolean) -> Unit
 
     companion object {
         private val userId = auth.currentUser!!.uid
@@ -52,7 +49,7 @@ class PostCardAdapter : FirestoreRecyclerAdapter<Post, PostCardAdapter.ViewHolde
         fun bind(
             item: Post,
             onItemOptionsClick: (objectId: String) -> Unit,
-            onItemReactionClick: (objectId: String, response: Response) -> Unit
+            onItemReactionClick: (objectId: String, reactionType: String, isChecked: Boolean) -> Unit
         ) {
             with(itemView) {
                 view_head_shot.setImageResource(R.drawable.ic_person)
@@ -76,11 +73,11 @@ class PostCardAdapter : FirestoreRecyclerAdapter<Post, PostCardAdapter.ViewHolde
                     }
                 }
 
-                view_post_reaction.setOnTouchListener(getReactionPopup(context) { which ->
-                    if (which == -1) return@getReactionPopup true
-                    onItemReactionClick(item.objectId, responses[which])
-                    return@getReactionPopup true
-                })
+                view_post_reaction.setOnCheckedChangeListener { buttonView, isChecked ->
+                    if (buttonView.isPressed) {
+                        onItemReactionClick(item.objectId, "like", isChecked)
+                    }
+                }
                 view_post_reaction_count.isVisible = item.reactionCount > 0
                 view_post_reaction_count.text = item.reactionCount.toString()
 

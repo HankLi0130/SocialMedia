@@ -17,6 +17,5 @@ data class Post(
     var commentCount: Int = ZERO,
     var reactionCount: Int = ZERO,
     var content: String = EMPTY,
-    var medias: List<Media> = emptyList(),
-    var reactions: Map<String, Int> = emptyMap()
+    var medias: List<Media> = emptyList()
 )
