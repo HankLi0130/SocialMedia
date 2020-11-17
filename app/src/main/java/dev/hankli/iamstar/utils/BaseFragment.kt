@@ -36,6 +36,9 @@ abstract class BaseFragment : Fragment {
     protected val app: App
         get() = (requireActivity().application) as App
 
+    protected val mainActivity: MainActivity
+        get() = requireActivity() as MainActivity
+
     private lateinit var progressDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,8 +83,6 @@ abstract class BaseFragment : Fragment {
 
         return deniedPermissions.toTypedArray()
     }
-
-    protected fun mainActivity(): MainActivity = requireActivity() as MainActivity
 
     protected fun showProgressDialog() {
         progressDialog = ProgressDialog(requireContext())

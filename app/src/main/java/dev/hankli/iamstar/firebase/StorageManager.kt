@@ -1,8 +1,8 @@
 package dev.hankli.iamstar.firebase
 
 import android.net.Uri
+import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
-import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.InputStream
 
@@ -42,12 +42,7 @@ object StorageManager {
     }
 
     // https://firebase.google.com/docs/storage/android/delete-files#kotlin+ktx
-    fun deleteFile(path: String): Completable {
-        return Completable.create { emitter ->
-            storage.reference.child(path)
-                .delete()
-                .addOnSuccessListener { emitter.onComplete() }
-                .addOnFailureListener { emitter.onError(it) }
-        }
+    fun deleteFile(path: String): Task<Void> {
+        return storage.reference.child(path).delete()
     }
 }

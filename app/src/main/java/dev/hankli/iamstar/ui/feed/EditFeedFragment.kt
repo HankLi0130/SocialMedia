@@ -189,7 +189,11 @@ class EditFeedFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
         return when (item.itemId) {
             R.id.action_ok -> {
                 if (requireContext().isInternetConnected()) {
-                    viewModel.submit(this::transfer)
+                    viewModel.submit(
+                        mainActivity.currentUser,
+                        mainActivity.influencer,
+                        this::transfer
+                    )
                 } else showAlert(R.string.no_internet)
                 true
             }

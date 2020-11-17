@@ -26,7 +26,7 @@ class FeedFragment : BaseFragment(R.layout.fragment_feed) {
     private lateinit var feedCardAdapter: FeedCardAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val options = viewModel.getOptions(app.influencerId)
+        val options = viewModel.getOptions(mainActivity.influencer)
         feedCardAdapter = FeedCardAdapter(options).apply {
             onItemOptionsClick = ::onPostCardOptionsClick
             onItemReactionClick = ::onPostCardReactionClick

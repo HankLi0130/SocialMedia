@@ -10,7 +10,7 @@ object InfluencerManager {
     private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val rootCollection: CollectionReference by lazy { db.collection(COLLECTION_INFLUENCER) }
 
-    fun get(objectId: String): DocumentReference {
+    fun getDoc(objectId: String): DocumentReference {
         return rootCollection.document(objectId)
     }
 }

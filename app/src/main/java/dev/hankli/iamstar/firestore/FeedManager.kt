@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import dev.hankli.iamstar.data.models.Feed
+import io.reactivex.Single
 import java.util.*
 
 object FeedManager {
@@ -15,11 +16,15 @@ object FeedManager {
     private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val rootCollection: CollectionReference by lazy { db.collection(COLLECTION_FEED) }
 
-    fun add(feed: Feed): Task<Void> {
-        val feedDoc = rootCollection.document()
-        feed.objectId = feedDoc.id
-        feed.createdAt = Date()
-        return feedDoc.set(feed)
+    fun add(feed: Feed): Single<String> {
+        return Single.create { emitter ->
+            val feedDoc = rootCollection.document()
+            feed.objectId = feedDoc.id
+            feed.createdAt = Date()
+            feedDoc.set(feed)
+                .addOnSuccessListener { emitter.onSuccess(feed.objectId) }
+                .addOnFailureListener { emitter.onError(it) }
+        }
     }
 
     fun update(feed: Feed): Task<Void> {

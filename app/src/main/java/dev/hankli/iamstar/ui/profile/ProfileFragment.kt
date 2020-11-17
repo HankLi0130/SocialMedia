@@ -17,7 +17,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile) {
 
         view_sign_out.setOnClickListener {
             signOut(requireContext()) {
-                mainActivity().restart()
+                mainActivity.restart()
             }
         }
     }

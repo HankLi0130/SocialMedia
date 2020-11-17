@@ -12,8 +12,6 @@ object AuthManager {
     val currentUser: FirebaseUser?
         get() = auth.currentUser
 
-    fun hasUser() = auth.currentUser != null
-
     fun getSignInIntent(): Intent {
         val idpConfigs = listOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
