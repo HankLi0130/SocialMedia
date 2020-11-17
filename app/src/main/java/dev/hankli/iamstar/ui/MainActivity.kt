@@ -12,7 +12,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import dev.hankli.iamstar.MainNavDirections
 import dev.hankli.iamstar.R
-import dev.hankli.iamstar.utils.FirebaseUtil
+import dev.hankli.iamstar.firebase.AuthManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val topLevelDestinations = setOf(R.id.homeFragment, R.id.profileFragment)
+        val topLevelDestinations = setOf(R.id.feedFragment, R.id.profileFragment)
         appBarConfiguration = AppBarConfiguration(topLevelDestinations)
 
         navController = findNavController(R.id.view_nav_host)
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
 
         // Auth
-        if (FirebaseUtil.auth.currentUser == null) {
+        if (!AuthManager.hasUser()) {
             navController.navigate(MainNavDirections.actionGlobalAuthFragment())
         }
 

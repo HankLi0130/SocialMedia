@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.feed.FeedFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/view_posts"
+        android:id="@+id/view_feeds"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="@dimen/match_constraint"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

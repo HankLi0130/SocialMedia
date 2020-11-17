@@ -1,4 +1,4 @@
-package dev.hankli.iamstar.ui.home
+package dev.hankli.iamstar.ui.feed
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -10,10 +10,10 @@ import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.MarginItemDecoration
 import dev.hankli.iamstar.utils.UIAction
-import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_feed.*
 import tw.hankli.brookray.constant.EMPTY
 
-class HomeFragment : BaseFragment(R.layout.fragment_home) {
+class FeedFragment : BaseFragment(R.layout.fragment_feed) {
 
     override val hasOptionsMenu: Boolean
         get() = true
@@ -21,19 +21,20 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     override val menuRes: Int
         get() = R.menu.fragment_home
 
-    private val viewModel by viewModels<HomeViewModel>()
+    private val viewModel by viewModels<FeedViewModel>()
 
-    private lateinit var postCardAdapter: PostCardAdapter
+    private lateinit var feedCardAdapter: FeedCardAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        postCardAdapter = PostCardAdapter().apply {
+        val options = viewModel.getOptions(app.influencerId)
+        feedCardAdapter = FeedCardAdapter(options).apply {
             onItemOptionsClick = ::onPostCardOptionsClick
             onItemReactionClick = ::onPostCardReactionClick
         }
 
-        view_posts.apply {
+        view_feeds.apply {
             setHasFixedSize(true)
-            adapter = postCardAdapter
+            adapter = feedCardAdapter
             addItemDecoration(
                 MarginItemDecoration(resources.getDimension(R.dimen.distance_12_dp).toInt())
             )
@@ -68,7 +69,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private fun toEditPostFragment(objectId: String = EMPTY) {
         findNavController().navigate(
-            HomeFragmentDirections.actionHomeFragmentToEditPostFragment(objectId)
+            FeedFragmentDirections.actionFeedFragmentToEditFeedFragment(objectId)
         )
     }
 
@@ -91,11 +92,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     override fun onStart() {
         super.onStart()
-        postCardAdapter.startListening()
+        feedCardAdapter.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-        postCardAdapter.stopListening()
+        feedCardAdapter.stopListening()
     }
 }

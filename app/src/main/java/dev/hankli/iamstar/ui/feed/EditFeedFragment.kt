@@ -1,4 +1,4 @@
-package dev.hankli.iamstar.ui.home
+package dev.hankli.iamstar.ui.feed
 
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
@@ -26,7 +26,7 @@ import dev.hankli.iamstar.utils.media.*
 import io.reactivex.Single
 import kotlinx.android.synthetic.main.fragment_edit_post.*
 
-class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter.Listener {
+class EditFeedFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter.Listener {
 
     override val hasOptionsMenu: Boolean
         get() = true
@@ -34,9 +34,9 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
     override val menuRes: Int
         get() = R.menu.single_action_ok
 
-    private val args: EditPostFragmentArgs by navArgs()
+    private val args: EditFeedFragmentArgs by navArgs()
 
-    private val viewModel by viewModels<EditPostViewModel>()
+    private val viewModel by viewModels<EditFeedViewModel>()
 
     private val mediaAdapter = MediaAdapter(this)
 
@@ -46,7 +46,7 @@ class EditPostFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        viewModel.loadPost(args.postId)
+        viewModel.loadPost(args.feedId)
 
         view_list_media.run {
             (this.layoutManager as GridLayoutManager).spanCount = 3

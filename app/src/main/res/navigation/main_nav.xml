@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/feedFragment">
 
     <fragment
         android:id="@+id/authFragment"
@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_auth">
 
         <action
-            android:id="@+id/action_authFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
+            android:id="@+id/action_authFragment_to_feedFragment"
+            app:destination="@id/feedFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/main_nav"
             app:popUpToInclusive="true" />
@@ -21,13 +21,13 @@
     </fragment>
 
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="dev.hankli.iamstar.ui.home.HomeFragment"
-        android:label="HomeFragment"
-        tools:layout="@layout/fragment_home">
+        android:id="@+id/feedFragment"
+        android:name="dev.hankli.iamstar.ui.feed.FeedFragment"
+        android:label="FeedFragment"
+        tools:layout="@layout/fragment_feed">
 
         <action
-            android:id="@+id/action_homeFragment_to_editPostFragment"
+            android:id="@+id/action_feedFragment_to_editFeedFragment"
             app:destination="@id/editPostFragment" />
 
     </fragment>
@@ -40,20 +40,20 @@
 
     <fragment
         android:id="@+id/editPostFragment"
-        android:name="dev.hankli.iamstar.ui.home.EditPostFragment"
+        android:name="dev.hankli.iamstar.ui.feed.EditFeedFragment"
         android:label="EditPostFragment"
         tools:layout="@layout/fragment_edit_post">
 
         <argument
-            android:name="postId"
+            android:name="feedId"
             app:argType="string" />
 
     </fragment>
     <action
         android:id="@+id/action_global_authFragment"
         app:destination="@id/authFragment"
+        app:launchSingleTop="true"
         app:popUpTo="@id/main_nav"
-        app:popUpToInclusive="true"
-        app:launchSingleTop="true" />
+        app:popUpToInclusive="true" />
 
 </navigation>

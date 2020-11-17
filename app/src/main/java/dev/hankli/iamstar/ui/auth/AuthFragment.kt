@@ -7,9 +7,9 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.IdpResponse
 import dev.hankli.iamstar.R
+import dev.hankli.iamstar.firebase.AuthManager.getSignInIntent
 import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.Consts.REQUEST_SIGN_IN
-import dev.hankli.iamstar.utils.FirebaseUtil.getSignInIntent
 import kotlinx.android.synthetic.main.fragment_auth.*
 
 class AuthFragment : BaseFragment(R.layout.fragment_auth) {
@@ -29,7 +29,7 @@ class AuthFragment : BaseFragment(R.layout.fragment_auth) {
 
             if (resultCode == RESULT_OK) {
                 // Sign in successful.
-                findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToHomeFragment())
+                findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToFeedFragment())
             } else {
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check

@@ -1,13 +1,12 @@
-package dev.hankli.iamstar.ui.home
+package dev.hankli.iamstar.ui.feed
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dev.hankli.iamstar.R
-import dev.hankli.iamstar.data.models.Post
+import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.utils.BaseViewModel
 import dev.hankli.iamstar.utils.FirebaseUtil.addPost
-import dev.hankli.iamstar.utils.FirebaseUtil.auth
 import dev.hankli.iamstar.utils.FirebaseUtil.fetchPost
 import dev.hankli.iamstar.utils.FirebaseUtil.updatePost
 import dev.hankli.iamstar.utils.media.MediaForBrowsing
@@ -18,9 +17,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import tw.hankli.brookray.constant.EMPTY
 
-class EditPostViewModel : BaseViewModel() {
+class EditFeedViewModel : BaseViewModel() {
 
-    private lateinit var post: Post
+    private lateinit var feed: Feed
 
     private val _contentData = MutableLiveData<String>()
     val contentData: LiveData<String>
@@ -38,14 +37,14 @@ class EditPostViewModel : BaseViewModel() {
 
     fun loadPost(postId: String) {
         if (postId == EMPTY) {
-            post = Post()
+            feed = Feed()
         } else {
             showProgress()
             fetchPost(postId)
                 .doAfterSuccess { dismissProgress() }
                 .subscribe(
                     { post ->
-                        this.post = post
+                        this.feed = post
                         setDefaultValues()
                     },
                     { ex -> }
@@ -54,15 +53,15 @@ class EditPostViewModel : BaseViewModel() {
     }
 
     private fun setDefaultValues() {
-        _locationData.value = post.location
-        _contentData.value = post.content
+        _locationData.value = feed.location
+        _contentData.value = feed.content
 
-        addToMediaItems(post.medias.map { it.toForBrowsing() })
+        addToMediaItems(feed.medias.map { it.toForBrowsing() })
     }
 
     fun onContentChanged(text: CharSequence?) {
         val content = text?.toString() ?: EMPTY
-        post.content = content
+        feed.content = content
     }
 
     fun addToMediaItems(list: List<MediaForBrowsing>) {
@@ -76,10 +75,10 @@ class EditPostViewModel : BaseViewModel() {
     }
 
     fun setLocation(location: String?, latitude: Double?, longitude: Double?) {
-        post.location = location
-        post.latitude = latitude
-        post.longitude = longitude
-        _locationData.value = post.location
+        feed.location = location
+        feed.latitude = latitude
+        feed.longitude = longitude
+        _locationData.value = feed.location
     }
 
     fun submit(transfer: (List<MediaForBrowsing>) -> Single<List<MediaForUploading>>) {
@@ -92,13 +91,13 @@ class EditPostViewModel : BaseViewModel() {
 
         // If the post doesn't have objectId, create a new one
         // Instead of, update the post
-        if (post.objectId == EMPTY) {
-            post.authorId = auth.currentUser!!.uid
-            post.influencerId = auth.currentUser!!.uid
+        if (feed.objectId == EMPTY) {
+//            feed.author =
+//            feed.influencer =
 
             transfer(mediaItems)
                 .flatMap {
-                    addPost(post, it)
+                    addPost(feed, it)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate {
@@ -114,10 +113,10 @@ class EditPostViewModel : BaseViewModel() {
         } else {
             transfer(mediaItems.filter { it.objectId == EMPTY })
                 .flatMapCompletable { mediasForUploading ->
-                    val originIds = post.medias.map { it.objectId }
+                    val originIds = feed.medias.map { it.objectId }
                     val updatedIds = mediaItems.map { it.objectId }
                     val idsForRemoving = originIds.subtract(updatedIds)
-                    updatePost(post, mediasForUploading, idsForRemoving)
+                    updatePost(feed, mediasForUploading, idsForRemoving)
                 }
                 .doOnComplete {
                     dismissProgress()
@@ -132,7 +131,7 @@ class EditPostViewModel : BaseViewModel() {
     }
 
     private fun isValid(): Boolean {
-        if (post.content.isEmpty()) return false
+        if (feed.content.isEmpty()) return false
         return true
     }
 

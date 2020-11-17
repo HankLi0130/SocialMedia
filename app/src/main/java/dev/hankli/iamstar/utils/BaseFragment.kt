@@ -13,6 +13,7 @@ import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import dev.hankli.iamstar.App
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.ui.MainActivity
 import tw.hankli.brookray.constant.NO_RESOURCE
@@ -31,6 +32,9 @@ abstract class BaseFragment : Fragment {
 
     protected val contentResolver: ContentResolver
         get() = requireContext().contentResolver
+
+    protected val app: App
+        get() = (requireActivity().application) as App
 
     private lateinit var progressDialog: Dialog
 

@@ -1,14 +1,15 @@
 package dev.hankli.iamstar.data.models
 
+import com.google.firebase.firestore.DocumentReference
 import tw.hankli.brookray.constant.EMPTY
 import tw.hankli.brookray.constant.ZERO
 import java.util.*
 
 // https://stackoverflow.com/a/40117301/8361227
-data class Post(
+data class Feed(
     var objectId: String = EMPTY,
-    var influencerId: String = EMPTY,
-    var authorId: String = EMPTY,
+    var influencer: DocumentReference? = null,
+    var author: DocumentReference? = null,
     var createdAt: Date? = null,
     var updatedAt: Date? = null,
     var location: String? = null,
