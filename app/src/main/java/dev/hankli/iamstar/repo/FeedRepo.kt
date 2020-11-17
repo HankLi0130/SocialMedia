@@ -1,7 +1,7 @@
 package dev.hankli.iamstar.repo
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.Query
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.firebase.StorageManager
@@ -56,10 +56,6 @@ class FeedRepo {
         return FeedManager.get(postId)
     }
 
-    fun getFeeds(influencer: DocumentReference): Query {
-        return FeedManager.getQuery(influencer)
-    }
-
     private fun uploadFeedMedia(media: MediaForUploading): Single<Media> {
         val filePath = "${BUCKET_FEED}/${media.objectId}"
         val thumbnailPath = "${filePath}_${THUMBNAIL}"
@@ -80,5 +76,11 @@ class FeedRepo {
                 .addOnSuccessListener { emitter.onComplete() }
                 .addOnFailureListener { emitter.onError(it) }
         }
+    }
+
+    fun getFirestoreRecyclerOptions(influencer: DocumentReference): FirestoreRecyclerOptions<Feed> {
+        return FirestoreRecyclerOptions.Builder<Feed>()
+            .setQuery(FeedManager.queryByInfluencer(influencer), Feed::class.java)
+            .build()
     }
 }

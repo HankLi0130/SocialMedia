@@ -58,14 +58,14 @@ object FeedManager {
         }
     }
 
-    suspend fun get(objectId: String): Feed {
-        val snapshot = rootCollection.document(objectId).get().await()
-        return snapshot.toObject(Feed::class.java)!!
-    }
-
-    fun getQuery(influencer: DocumentReference): Query {
+    fun queryByInfluencer(influencer: DocumentReference): Query {
         return rootCollection
             .whereEqualTo("influencer", influencer)
             .orderBy("createdAt", Query.Direction.DESCENDING)
+    }
+
+    suspend fun get(objectId: String): Feed {
+        val snapshot = rootCollection.document(objectId).get().await()
+        return snapshot.toObject(Feed::class.java)!!
     }
 }
