@@ -42,7 +42,7 @@
         android:id="@+id/editPostFragment"
         android:name="dev.hankli.iamstar.ui.feed.EditFeedFragment"
         android:label="EditPostFragment"
-        tools:layout="@layout/fragment_edit_post">
+        tools:layout="@layout/fragment_edit_feed">
 
         <argument
             android:name="feedId"

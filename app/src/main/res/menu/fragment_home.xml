@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_add_post"
+        android:id="@+id/action_add_feed"
         android:icon="@drawable/ic_post_add"
-        android:title="@string/add_post"
+        android:title="@string/add_feed"
         app:showAsAction="always" />
 </menu>

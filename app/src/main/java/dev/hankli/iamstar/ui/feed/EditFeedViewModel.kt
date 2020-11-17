@@ -88,7 +88,7 @@ class EditFeedViewModel : BaseViewModel() {
         transfer: (List<MediaForBrowsing>) -> Single<List<MediaForUploading>>
     ) {
         if (!isValid()) {
-            showAlert(R.string.alert_post_is_invalid)
+            showAlert(R.string.alert_feed_is_invalid)
             return
         }
 

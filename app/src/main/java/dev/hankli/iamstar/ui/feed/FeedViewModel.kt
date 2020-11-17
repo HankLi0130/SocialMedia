@@ -17,12 +17,12 @@ class FeedViewModel : BaseViewModel() {
             .subscribe({
 
             }, {
-                showAlert(R.string.alert_delete_post_failed)
+                showAlert(R.string.alert_delete_feed_failed)
             })
             .addTo(disposables)
     }
 
-    fun onPostCardReactionClick(objectId: String, reactionType: String, checked: Boolean) {
+    fun onFeedCardReactionClick(objectId: String, reactionType: String, checked: Boolean) {
 
     }
 

@@ -24,9 +24,9 @@ import dev.hankli.iamstar.utils.ext.isInternetConnected
 import dev.hankli.iamstar.utils.getPlacesIntent
 import dev.hankli.iamstar.utils.media.*
 import io.reactivex.Single
-import kotlinx.android.synthetic.main.fragment_edit_post.*
+import kotlinx.android.synthetic.main.fragment_edit_feed.*
 
-class EditFeedFragment : BaseFragment(R.layout.fragment_edit_post), MediaAdapter.Listener {
+class EditFeedFragment : BaseFragment(R.layout.fragment_edit_feed), MediaAdapter.Listener {
 
     override val hasOptionsMenu: Boolean
         get() = true

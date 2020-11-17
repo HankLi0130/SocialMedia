@@ -30,8 +30,8 @@ class FeedFragment : BaseFragment(R.layout.fragment_feed) {
         val options = viewModel.getFirestoreRecyclerOptions(mainActivity.influencer)
 
         feedCardAdapter = FeedCardAdapter(options).apply {
-            onItemOptionsClick = ::onPostCardOptionsClick
-            onItemReactionClick = ::onPostCardReactionClick
+            onItemOptionsClick = ::onFeedCardOptionsClick
+            onItemReactionClick = ::onFeedCardReactionClick
         }
 
         view_feeds.apply {
@@ -61,35 +61,35 @@ class FeedFragment : BaseFragment(R.layout.fragment_feed) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_add_post -> {
-                toEditPostFragment()
+            R.id.action_add_feed -> {
+                toEditFeedFragment()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun toEditPostFragment(objectId: String = EMPTY) {
+    private fun toEditFeedFragment(objectId: String = EMPTY) {
         findNavController().navigate(
             FeedFragmentDirections.actionFeedFragmentToEditFeedFragment(objectId)
         )
     }
 
-    private fun onPostCardOptionsClick(objectId: String) {
-        showListDialog(R.string.post_actions_title, R.array.post_actions) { which ->
+    private fun onFeedCardOptionsClick(objectId: String) {
+        showListDialog(R.string.feed_actions_title, R.array.feed_actions) { which ->
             when (which) {
-                0 -> toEditPostFragment(objectId)
+                0 -> toEditFeedFragment(objectId)
                 1 -> viewModel.deleteFeed(objectId)
             }
         }
     }
 
-    private fun onPostCardReactionClick(
+    private fun onFeedCardReactionClick(
         objectId: String,
         reactionType: String,
         isChecked: Boolean
     ) {
-        viewModel.onPostCardReactionClick(objectId, reactionType, isChecked)
+        viewModel.onFeedCardReactionClick(objectId, reactionType, isChecked)
     }
 
     override fun onStart() {

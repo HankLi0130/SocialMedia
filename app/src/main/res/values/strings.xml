@@ -29,7 +29,7 @@
     <string name="creating_new_user">Creating new user</string>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
-    <string name="add_post">Add post</string>
+    <string name="add_feed">Add feed</string>
     <string name="location_not_available">location not available</string>
     <string name="up_to_image_maximum">Only 6 images can be selected</string>
     <string name="up_to_video_maximum">Only 1 video can be selected</string>
@@ -37,12 +37,12 @@
 
     <string name="alert_title">Alert</string>
     <string name="alert_message">Message: %s</string>
-    <string name="alert_post_is_invalid">Post is invalid !</string>
-    <string name="alert_delete_post_failed">Delete post failed !</string>
+    <string name="alert_feed_is_invalid">Feed is invalid !</string>
+    <string name="alert_delete_feed_failed">Delete feed failed !</string>
     <string name="alert_unknown_type">Unknown type</string>
 
-    <string name="post_actions_title">Actions</string>
-    <string-array name="post_actions">
+    <string name="feed_actions_title">Actions</string>
+    <string-array name="feed_actions">
         <item>update</item>
         <item>delete</item>
     </string-array>

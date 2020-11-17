@@ -20,27 +20,27 @@
             tools:src="@drawable/ic_person" />
 
         <TextView
-            android:id="@+id/view_post_time"
+            android:id="@+id/view_feed_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            app:layout_constraintBottom_toTopOf="@id/view_post_location"
+            app:layout_constraintBottom_toTopOf="@id/view_feed_location"
             app:layout_constraintStart_toEndOf="@+id/view_head_shot"
             app:layout_constraintTop_toTopOf="@+id/view_head_shot"
             tools:text="1 hours ago" />
 
         <TextView
-            android:id="@+id/view_post_location"
+            android:id="@+id/view_feed_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
             app:layout_constraintBottom_toBottomOf="@+id/view_head_shot"
             app:layout_constraintStart_toEndOf="@+id/view_head_shot"
-            app:layout_constraintTop_toBottomOf="@id/view_post_time"
+            app:layout_constraintTop_toBottomOf="@id/view_feed_time"
             tools:text="Toronto" />
 
         <ImageView
-            android:id="@+id/view_post_more_options"
+            android:id="@+id/view_feed_more_options"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/distance_12_dp"
@@ -49,27 +49,27 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/view_post_text"
+            android:id="@+id/view_feed_text"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            app:layout_constraintBottom_toTopOf="@id/view_post_medias"
+            app:layout_constraintBottom_toTopOf="@id/view_feed_medias"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_head_shot"
-            tools:text="Hello everyone, this is my post !" />
+            tools:text="Hello everyone, this is my feed !" />
 
         <com.synnapps.carouselview.CarouselView
-            android:id="@+id/view_post_medias"
+            android:id="@+id/view_feed_medias"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="200dp"
             android:layout_margin="10dp"
             app:autoPlay="false"
             app:fillColor="#FFFFFFFF"
-            app:layout_constraintBottom_toTopOf="@id/view_post_reaction"
+            app:layout_constraintBottom_toTopOf="@id/view_feed_reaction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_post_text"
+            app:layout_constraintTop_toBottomOf="@id/view_feed_text"
             app:pageColor="#00000000"
             app:radius="6dp"
             app:slideInterval="3000"
@@ -77,42 +77,42 @@
             app:strokeWidth="1dp" />
 
         <CheckBox
-            android:id="@+id/view_post_reaction"
+            android:id="@+id/view_feed_reaction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:button="@drawable/like_button"
             android:padding="@dimen/distance_12_dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/view_post_text"
-            app:layout_constraintTop_toBottomOf="@id/view_post_medias" />
+            app:layout_constraintStart_toStartOf="@id/view_feed_text"
+            app:layout_constraintTop_toBottomOf="@id/view_feed_medias" />
 
         <TextView
-            android:id="@+id/view_post_reaction_count"
+            android:id="@+id/view_feed_reaction_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/view_post_reaction"
-            app:layout_constraintStart_toEndOf="@id/view_post_reaction"
-            app:layout_constraintTop_toTopOf="@id/view_post_reaction"
+            app:layout_constraintBottom_toBottomOf="@id/view_feed_reaction"
+            app:layout_constraintStart_toEndOf="@id/view_feed_reaction"
+            app:layout_constraintTop_toTopOf="@id/view_feed_reaction"
             tools:text="1" />
 
         <ImageView
-            android:id="@+id/view_post_comment"
+            android:id="@+id/view_feed_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/distance_4_dp"
             android:padding="@dimen/distance_12_dp"
             android:src="@drawable/ic_comment"
-            app:layout_constraintBottom_toBottomOf="@id/view_post_reaction"
-            app:layout_constraintStart_toEndOf="@id/view_post_reaction_count"
-            app:layout_constraintTop_toTopOf="@id/view_post_reaction" />
+            app:layout_constraintBottom_toBottomOf="@id/view_feed_reaction"
+            app:layout_constraintStart_toEndOf="@id/view_feed_reaction_count"
+            app:layout_constraintTop_toTopOf="@id/view_feed_reaction" />
 
         <TextView
-            android:id="@+id/view_post_comment_count"
+            android:id="@+id/view_feed_comment_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/view_post_comment"
-            app:layout_constraintStart_toEndOf="@id/view_post_comment"
-            app:layout_constraintTop_toTopOf="@id/view_post_comment"
+            app:layout_constraintBottom_toBottomOf="@id/view_feed_comment"
+            app:layout_constraintStart_toEndOf="@id/view_feed_comment"
+            app:layout_constraintTop_toTopOf="@id/view_feed_comment"
             tools:text="1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
