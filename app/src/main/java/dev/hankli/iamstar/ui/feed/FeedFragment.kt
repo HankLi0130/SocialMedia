@@ -77,7 +77,7 @@ class FeedFragment : BaseFragment(R.layout.fragment_feed) {
         showListDialog(R.string.post_actions_title, R.array.post_actions) { which ->
             when (which) {
                 0 -> toEditPostFragment(objectId)
-                1 -> viewModel.deletePost(objectId)
+                1 -> viewModel.deleteFeed(objectId)
             }
         }
     }

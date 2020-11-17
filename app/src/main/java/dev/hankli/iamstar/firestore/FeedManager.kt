@@ -1,12 +1,13 @@
 package dev.hankli.iamstar.firestore
 
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import dev.hankli.iamstar.data.models.Feed
+import io.reactivex.Completable
 import io.reactivex.Single
+import kotlinx.coroutines.tasks.await
 import java.util.*
 
 object FeedManager {
@@ -27,13 +28,39 @@ object FeedManager {
         }
     }
 
-    fun update(feed: Feed): Task<Void> {
-        feed.updatedAt = Date()
-        return rootCollection.document(feed.objectId).set(feed)
+    fun update(feed: Feed): Completable {
+        return Completable.create { emitter ->
+            feed.updatedAt = Date()
+            rootCollection.document(feed.objectId).set(feed)
+                .addOnSuccessListener { emitter.onComplete() }
+                .addOnFailureListener { emitter.onError(it) }
+        }
     }
 
-    fun delete(feedId: String): Task<Void> {
-        return rootCollection.document(feedId).delete()
+    fun delete(feedId: String): Completable {
+        return Completable.create { emitter ->
+            rootCollection.document(feedId).delete()
+                .addOnSuccessListener { emitter.onComplete() }
+                .addOnFailureListener { emitter.onError(it) }
+        }
+    }
+
+    fun retrieve(objectId: String): Single<Feed> {
+        return Single.create { emitter ->
+            rootCollection.document(objectId)
+                .get()
+                .addOnSuccessListener { snapshot ->
+                    snapshot.toObject(Feed::class.java)?.let {
+                        emitter.onSuccess(it)
+                    } ?: emitter.onError(NullPointerException("Feed is null !"))
+                }
+                .addOnFailureListener { emitter.onError(it) }
+        }
+    }
+
+    suspend fun get(objectId: String): Feed {
+        val snapshot = rootCollection.document(objectId).get().await()
+        return snapshot.toObject(Feed::class.java)!!
     }
 
     fun getQuery(influencer: DocumentReference): Query {

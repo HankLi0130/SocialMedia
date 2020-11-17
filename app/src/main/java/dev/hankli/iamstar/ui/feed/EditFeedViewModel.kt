@@ -3,6 +3,7 @@ package dev.hankli.iamstar.ui.feed
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.DocumentReference
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
@@ -14,6 +15,9 @@ import dev.hankli.iamstar.utils.media.toForBrowsing
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import tw.hankli.brookray.constant.EMPTY
 
 class EditFeedViewModel : BaseViewModel() {
@@ -40,16 +44,12 @@ class EditFeedViewModel : BaseViewModel() {
         if (postId == EMPTY) {
             feed = Feed()
         } else {
-//            showProgress()
-//            fetchPost(postId)
-//                .doAfterSuccess { dismissProgress() }
-//                .subscribe(
-//                    { post ->
-//                        this.feed = post
-//                        setDefaultValues()
-//                    },
-//                    { ex -> }
-//                ).addTo(disposables)
+            viewModelScope.launch {
+                showProgress()
+                withContext(IO) { feed = feedRepo.fetchFeed(postId) }
+                setDefaultValues()
+                dismissProgress()
+            }
         }
     }
 
@@ -115,25 +115,24 @@ class EditFeedViewModel : BaseViewModel() {
                 })
                 .addTo(disposables)
 
+        } else {
+            transfer(mediaItems.filter { it.objectId == EMPTY })
+                .flatMapCompletable { mediasForUploading ->
+                    val originIds = feed.medias.map { it.objectId }
+                    val updatedIds = mediaItems.map { it.objectId }
+                    val idsForRemoving = originIds.subtract(updatedIds)
+                    feedRepo.updateFeed(feed, mediasForUploading, idsForRemoving)
+                }
+                .doOnComplete {
+                    dismissProgress()
+                }
+                .subscribe({
+                    popBack()
+                }, { ex ->
+                    Log.e("test", "update post failed", ex)
+                })
+                .addTo(disposables)
         }
-//        else {
-//            transfer(mediaItems.filter { it.objectId == EMPTY })
-//                .flatMapCompletable { mediasForUploading ->
-//                    val originIds = feed.medias.map { it.objectId }
-//                    val updatedIds = mediaItems.map { it.objectId }
-//                    val idsForRemoving = originIds.subtract(updatedIds)
-//                    updatePost(feed, mediasForUploading, idsForRemoving)
-//                }
-//                .doOnComplete {
-//                    dismissProgress()
-//                }
-//                .subscribe({
-//                    popBack()
-//                }, { ex ->
-//                    Log.e("test", "update post failed", ex)
-//                })
-//                .addTo(disposables)
-//        }
     }
 
     private fun isValid(): Boolean {
