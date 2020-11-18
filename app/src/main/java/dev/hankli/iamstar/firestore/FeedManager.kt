@@ -5,6 +5,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import dev.hankli.iamstar.data.models.Feed
+import dev.hankli.iamstar.data.models.Reaction
 import io.reactivex.Completable
 import io.reactivex.Single
 import kotlinx.coroutines.tasks.await
@@ -67,5 +68,37 @@ object FeedManager {
     suspend fun get(objectId: String): Feed {
         val snapshot = rootCollection.document(objectId).get().await()
         return snapshot.toObject(Feed::class.java)!!
+    }
+
+    suspend fun hasReaction(feedId: String, user: DocumentReference): Boolean {
+        val snapshot = rootCollection.document(feedId).collection(COLLECTION_REACTIONS)
+            .whereEqualTo("profile", user)
+            .limit(1L)
+            .get()
+            .await()
+
+        return !snapshot.isEmpty
+    }
+
+    suspend fun addReaction(feedId: String, reaction: Reaction) {
+        val doc = rootCollection.document(feedId).collection(COLLECTION_REACTIONS)
+            .document()
+        reaction.objectId = doc.id
+        reaction.createdAt = Date()
+        doc.set(reaction).await()
+    }
+
+    suspend fun removeReaction(feedId: String, user: DocumentReference) {
+        val reactionId = rootCollection.document(feedId).collection(COLLECTION_REACTIONS)
+            .whereEqualTo("profile", user)
+            .limit(1L)
+            .get()
+            .await()
+            .documents[0]
+            .id
+
+        rootCollection.document(feedId).collection(COLLECTION_REACTIONS).document(reactionId)
+            .delete()
+            .await()
     }
 }

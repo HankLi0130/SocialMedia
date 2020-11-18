@@ -76,12 +76,12 @@
             app:strokeColor="#FF777777"
             app:strokeWidth="1dp" />
 
-        <CheckBox
+        <ImageView
             android:id="@+id/view_feed_reaction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:button="@drawable/like_button"
             android:padding="@dimen/distance_12_dp"
+            android:src="@drawable/like_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/view_feed_text"
             app:layout_constraintTop_toBottomOf="@id/view_feed_medias" />

@@ -18,15 +18,16 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
 
     lateinit var onItemOptionsClick: (objectId: String) -> Unit
 
-    lateinit var onItemReactionClick: (objectId: String, reactionType: String, isChecked: Boolean) -> Unit
+    lateinit var onItemReactionClick: (objectId: String) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_feed, parent, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holderCard: ViewHolder, position: Int, model: Feed) {
-        holderCard.bind(model, onItemOptionsClick, onItemReactionClick)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, model: Feed) {
+        holder.bind(model, onItemOptionsClick, onItemReactionClick)
+        holder.setLike(true)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -34,7 +35,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
         fun bind(
             item: Feed,
             onItemOptionsClick: (objectId: String) -> Unit,
-            onItemReactionClick: (objectId: String, reactionType: String, isChecked: Boolean) -> Unit
+            onItemReactionClick: (objectId: String) -> Unit
         ) {
             with(itemView) {
                 view_head_shot.setImageResource(R.drawable.ic_person)
@@ -58,11 +59,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
                     }
                 }
 
-                view_feed_reaction.setOnCheckedChangeListener { buttonView, isChecked ->
-                    if (buttonView.isPressed) {
-                        onItemReactionClick(item.objectId, "like", isChecked)
-                    }
-                }
+                view_feed_reaction.setOnClickListener { onItemReactionClick(item.objectId) }
                 view_feed_reaction_count.isVisible = item.reactionCount > 0
                 view_feed_reaction_count.text = item.reactionCount.toString()
 
@@ -71,6 +68,11 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
 
                 view_feed_more_options.setOnClickListener { onItemOptionsClick(item.objectId) }
             }
+        }
+
+        fun setLike(like: Boolean) {
+            val src = if (like) R.drawable.ic_reaction_like else R.drawable.ic_like
+            itemView.view_feed_reaction.setImageResource(src)
         }
     }
 }

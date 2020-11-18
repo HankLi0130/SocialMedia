@@ -4,8 +4,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Media
+import dev.hankli.iamstar.data.models.Reaction
 import dev.hankli.iamstar.firebase.StorageManager
-import dev.hankli.iamstar.firebase.StorageManager.deleteFile
 import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.utils.media.MediaForUploading
 import io.reactivex.Completable
@@ -71,8 +71,8 @@ class FeedRepo {
         val filePath = "$BUCKET_FEED/$mediaId"
         val thumbnailPath = "${filePath}_${THUMBNAIL}"
         return Completable.create { emitter ->
-            deleteFile(filePath)
-                .continueWith { if (it.isSuccessful) deleteFile(thumbnailPath) }
+            StorageManager.deleteFile(filePath)
+                .continueWith { if (it.isSuccessful) StorageManager.deleteFile(thumbnailPath) }
                 .addOnSuccessListener { emitter.onComplete() }
                 .addOnFailureListener { emitter.onError(it) }
         }
@@ -82,5 +82,18 @@ class FeedRepo {
         return FirestoreRecyclerOptions.Builder<Feed>()
             .setQuery(FeedManager.queryByInfluencer(influencer), Feed::class.java)
             .build()
+    }
+
+    suspend fun hasReaction(feedId: String, user: DocumentReference): Boolean {
+        return FeedManager.hasReaction(feedId, user)
+    }
+
+    suspend fun like(feedId: String, user: DocumentReference) {
+        val reaction = Reaction(reactionType = "like", profile = user)
+        FeedManager.addReaction(feedId, reaction)
+    }
+
+    suspend fun unlike(feedId: String, user: DocumentReference) {
+        FeedManager.removeReaction(feedId, user)
     }
 }

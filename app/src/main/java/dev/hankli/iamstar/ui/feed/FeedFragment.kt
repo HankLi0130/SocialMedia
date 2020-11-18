@@ -84,12 +84,8 @@ class FeedFragment : BaseFragment(R.layout.fragment_feed) {
         }
     }
 
-    private fun onFeedCardReactionClick(
-        objectId: String,
-        reactionType: String,
-        isChecked: Boolean
-    ) {
-        viewModel.onFeedCardReactionClick(objectId, reactionType, isChecked)
+    private fun onFeedCardReactionClick(objectId: String) {
+        viewModel.doReaction(objectId, mainActivity.currentUser)
     }
 
     override fun onStart() {

@@ -1,10 +1,13 @@
 package dev.hankli.iamstar.ui.feed
 
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.DocumentReference
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.repo.FeedRepo
 import dev.hankli.iamstar.utils.BaseViewModel
 import io.reactivex.rxkotlin.addTo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class FeedViewModel : BaseViewModel() {
 
@@ -22,8 +25,14 @@ class FeedViewModel : BaseViewModel() {
             .addTo(disposables)
     }
 
-    fun onFeedCardReactionClick(objectId: String, reactionType: String, checked: Boolean) {
-
+    fun doReaction(feedId: String, user: DocumentReference) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (feedRepo.hasReaction(feedId, user)) {
+                feedRepo.unlike(feedId, user)
+            } else {
+                feedRepo.like(feedId, user)
+            }
+        }
     }
 
     fun getFirestoreRecyclerOptions(influencer: DocumentReference) =
