@@ -59,10 +59,11 @@ object FeedManager {
         }
     }
 
-    fun queryByInfluencer(influencer: DocumentReference): Query {
+    fun queryByInfluencer(influencer: DocumentReference, limit: Long = 50): Query {
         return rootCollection
             .whereEqualTo("influencer", influencer)
             .orderBy("createdAt", Query.Direction.DESCENDING)
+            .limit(limit)
     }
 
     suspend fun get(objectId: String): Feed {
