@@ -22,7 +22,6 @@ object FeedManager {
         return Single.create { emitter ->
             val feedDoc = rootCollection.document()
             feed.objectId = feedDoc.id
-            feed.createdAt = Date()
             feedDoc.set(feed)
                 .addOnSuccessListener { emitter.onSuccess(feed.objectId) }
                 .addOnFailureListener { emitter.onError(it) }
@@ -71,8 +70,12 @@ object FeedManager {
         return snapshot.toObject(Feed::class.java)!!
     }
 
+    private fun getReactions(feedId: String): CollectionReference {
+        return rootCollection.document(feedId).collection(COLLECTION_REACTIONS)
+    }
+
     suspend fun hasReaction(feedId: String, user: DocumentReference): Boolean {
-        val snapshot = rootCollection.document(feedId).collection(COLLECTION_REACTIONS)
+        val snapshot = getReactions(feedId)
             .whereEqualTo("profile", user)
             .limit(1L)
             .get()
@@ -81,25 +84,16 @@ object FeedManager {
         return !snapshot.isEmpty
     }
 
-    suspend fun addReaction(feedId: String, reaction: Reaction) {
-        val doc = rootCollection.document(feedId).collection(COLLECTION_REACTIONS)
-            .document()
-        reaction.objectId = doc.id
-        reaction.createdAt = Date()
-        doc.set(reaction).await()
+    suspend fun addReaction(feedId: String, user: DocumentReference) {
+        val reaction = Reaction(user.id, "like", user)
+        getReactions(feedId).document(user.id).set(reaction).await()
     }
 
     suspend fun removeReaction(feedId: String, user: DocumentReference) {
-        val reactionId = rootCollection.document(feedId).collection(COLLECTION_REACTIONS)
-            .whereEqualTo("profile", user)
-            .limit(1L)
-            .get()
-            .await()
-            .documents[0]
-            .id
+        getReactions(feedId).document(user.id).delete().await()
+    }
 
-        rootCollection.document(feedId).collection(COLLECTION_REACTIONS).document(reactionId)
-            .delete()
-            .await()
+    fun queryCollectionGroup() {
+        //db.collectionGroup()
     }
 }

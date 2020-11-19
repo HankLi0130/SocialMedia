@@ -8,5 +8,5 @@ data class Reaction(
     var objectId: String = EMPTY,
     var reactionType: String = EMPTY,
     var profile: DocumentReference? = null,
-    var createdAt: Date = Date(),
+    var createdAt: Date = Date()
 )

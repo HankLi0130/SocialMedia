@@ -4,7 +4,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.DocumentReference
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Media
-import dev.hankli.iamstar.data.models.Reaction
 import dev.hankli.iamstar.firebase.StorageManager
 import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.utils.media.MediaForUploading
@@ -89,8 +88,7 @@ class FeedRepo {
     }
 
     suspend fun like(feedId: String, user: DocumentReference) {
-        val reaction = Reaction(reactionType = "like", profile = user)
-        FeedManager.addReaction(feedId, reaction)
+        FeedManager.addReaction(feedId, user)
     }
 
     suspend fun unlike(feedId: String, user: DocumentReference) {

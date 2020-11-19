@@ -10,7 +10,7 @@ data class Feed(
     var objectId: String = EMPTY,
     var influencer: DocumentReference? = null,
     var author: DocumentReference? = null,
-    var createdAt: Date? = null,
+    var createdAt: Date = Date(),
     var updatedAt: Date? = null,
     var location: String? = null,
     var latitude: Double? = null,
