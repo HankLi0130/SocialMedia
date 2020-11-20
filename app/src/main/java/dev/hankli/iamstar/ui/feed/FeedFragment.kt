@@ -28,7 +28,7 @@ class FeedFragment : BaseFragment(R.layout.fragment_feed) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        FeedManager.queryCollectionGroup()
+        FeedManager.queryFeedAndReactions(mainActivity.influencer)
 
         val options = viewModel.getFirestoreRecyclerOptions(mainActivity.influencer)
 

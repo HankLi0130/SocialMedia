@@ -89,9 +89,11 @@ class FeedRepo {
 
     suspend fun like(feedId: String, user: DocumentReference) {
         FeedManager.addReaction(feedId, user)
+        FeedManager.increaseReactionCount(feedId)
     }
 
     suspend fun unlike(feedId: String, user: DocumentReference) {
         FeedManager.removeReaction(feedId, user)
+        FeedManager.reduceReactionCount(feedId)
     }
 }

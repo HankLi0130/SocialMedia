@@ -9,6 +9,7 @@ import dev.hankli.iamstar.data.models.Reaction
 import io.reactivex.Completable
 import io.reactivex.Single
 import kotlinx.coroutines.tasks.await
+import tw.hankli.brookray.constant.ZERO
 import java.util.*
 
 object FeedManager {
@@ -89,11 +90,34 @@ object FeedManager {
         getReactions(feedId).document(user.id).set(reaction).await()
     }
 
+    suspend fun increaseReactionCount(feedId: String) {
+        val feedDoc = rootCollection.document(feedId)
+        val count = feedDoc.get().await().getLong("reactionCount")?.toInt() ?: ZERO
+        feedDoc.update("reactionCount", count + 1).await()
+    }
+
     suspend fun removeReaction(feedId: String, user: DocumentReference) {
         getReactions(feedId).document(user.id).delete().await()
     }
 
-    fun queryCollectionGroup() {
-        //db.collectionGroup()
+    suspend fun reduceReactionCount(feedId: String) {
+        val feedDoc = rootCollection.document(feedId)
+        val count = feedDoc.get().await().getLong("reactionCount")?.toInt() ?: ZERO
+        feedDoc.update("reactionCount", count - 1).await()
+    }
+
+    fun queryFeedAndReactions(influencer: DocumentReference) {
+//        queryByInfluencer(influencer)
+//            .addSnapshotListener { feeds, error ->
+//                feeds?.documents?.forEach { feed ->
+//                    getReactions(feed.id).addSnapshotListener { reactions, error ->
+//                        Log.i("test", "Feed: ${feed.id}")
+//                        reactions?.documents?.forEach { reaction ->
+//                            Log.i("test", "Reaction: ${reaction.id}")
+//                        }
+//                        Log.i("test", "------------------------------------")
+//                    }
+//                }
+//            }
     }
 }
