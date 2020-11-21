@@ -27,7 +27,6 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: Feed) {
         holder.bind(model, onItemOptionsClick, onItemReactionClick)
-        holder.setLike(true)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -40,9 +39,8 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
             with(itemView) {
                 view_head_shot.setImageResource(R.drawable.ic_person)
 
-                view_feed_time.text = item.createdAt?.let {
-                    SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD).format(it)
-                }
+                view_feed_time.text = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)
+                    .format(item.createdAt)
 
                 view_feed_location.text = item.location
 
