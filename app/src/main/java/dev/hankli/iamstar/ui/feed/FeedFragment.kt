@@ -7,7 +7,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import dev.hankli.iamstar.R
-import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.MarginItemDecoration
 import dev.hankli.iamstar.utils.UIAction
@@ -28,9 +27,7 @@ class FeedFragment : BaseFragment(R.layout.fragment_feed) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        FeedManager.queryFeedAndReactions(mainActivity.influencer)
-
-        val options = viewModel.getFirestoreRecyclerOptions(mainActivity.influencer)
+        val options = viewModel.getFirestoreRecyclerOptions(app.influencer)
 
         feedCardAdapter = FeedCardAdapter(options).apply {
             onItemOptionsClick = ::onFeedCardOptionsClick
@@ -88,7 +85,7 @@ class FeedFragment : BaseFragment(R.layout.fragment_feed) {
     }
 
     private fun onFeedCardReactionClick(objectId: String) {
-        viewModel.doReaction(objectId, mainActivity.currentUser)
+        viewModel.doReaction(objectId, app.user)
     }
 
     override fun onStart() {

@@ -8,7 +8,7 @@ import java.io.InputStream
 
 object StorageManager {
 
-    val storage by lazy { FirebaseStorage.getInstance() }
+    private val storage by lazy { FirebaseStorage.getInstance() }
 
     // https://firebase.google.com/docs/storage/android/upload-files
     fun uploadFile(path: String, uri: Uri): Single<String> {

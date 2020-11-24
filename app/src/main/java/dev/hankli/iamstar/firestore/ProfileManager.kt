@@ -5,7 +5,6 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.hankli.iamstar.data.models.Profile
-import kotlinx.coroutines.tasks.await
 
 object ProfileManager {
     private const val COLLECTION_PROFILE = "Profile"
@@ -29,10 +28,5 @@ object ProfileManager {
 
     fun getDoc(objectId: String): DocumentReference {
         return rootCollection.document(objectId)
-    }
-
-    suspend fun getDocByUid(uid: String): DocumentReference {
-        val snapshot = rootCollection.whereEqualTo("uid", uid).get().await()
-        return snapshot.documents[0].reference
     }
 }

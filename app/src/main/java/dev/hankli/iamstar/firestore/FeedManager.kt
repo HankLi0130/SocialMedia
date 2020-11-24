@@ -59,7 +59,7 @@ object FeedManager {
         }
     }
 
-    fun queryByInfluencer(influencer: DocumentReference, limit: Long = 50): Query {
+    fun queryByInfluencer(influencer: DocumentReference, limit: Long = 10): Query {
         return rootCollection
             .whereEqualTo("influencer", influencer)
             .orderBy("createdAt", Query.Direction.DESCENDING)
@@ -104,20 +104,5 @@ object FeedManager {
         val feedDoc = rootCollection.document(feedId)
         val count = feedDoc.get().await().getLong("reactionCount")?.toInt() ?: ZERO
         feedDoc.update("reactionCount", count - 1).await()
-    }
-
-    fun queryFeedAndReactions(influencer: DocumentReference) {
-//        queryByInfluencer(influencer)
-//            .addSnapshotListener { feeds, error ->
-//                feeds?.documents?.forEach { feed ->
-//                    getReactions(feed.id).addSnapshotListener { reactions, error ->
-//                        Log.i("test", "Feed: ${feed.id}")
-//                        reactions?.documents?.forEach { reaction ->
-//                            Log.i("test", "Reaction: ${reaction.id}")
-//                        }
-//                        Log.i("test", "------------------------------------")
-//                    }
-//                }
-//            }
     }
 }

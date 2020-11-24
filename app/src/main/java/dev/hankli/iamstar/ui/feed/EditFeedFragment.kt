@@ -190,8 +190,8 @@ class EditFeedFragment : BaseFragment(R.layout.fragment_edit_feed), MediaAdapter
             R.id.action_ok -> {
                 if (requireContext().isInternetConnected()) {
                     viewModel.submit(
-                        mainActivity.currentUser,
-                        mainActivity.influencer,
+                        app.user,
+                        app.influencer,
                         this::transfer
                     )
                 } else showAlert(R.string.no_internet)

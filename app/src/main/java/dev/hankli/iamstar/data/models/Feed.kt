@@ -1,11 +1,14 @@
 package dev.hankli.iamstar.data.models
 
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.Exclude
+import com.google.firebase.firestore.IgnoreExtraProperties
 import tw.hankli.brookray.constant.EMPTY
 import tw.hankli.brookray.constant.ZERO
 import java.util.*
 
 // https://stackoverflow.com/a/40117301/8361227
+@IgnoreExtraProperties
 data class Feed(
     var objectId: String = EMPTY,
     var influencer: DocumentReference? = null,
@@ -18,5 +21,8 @@ data class Feed(
     var commentCount: Int = ZERO,
     var reactionCount: Int = ZERO,
     var content: String = EMPTY,
-    var medias: List<Media> = emptyList()
+    var medias: List<Media> = emptyList(),
+
+    @get:Exclude
+    var like: Boolean = false
 )
