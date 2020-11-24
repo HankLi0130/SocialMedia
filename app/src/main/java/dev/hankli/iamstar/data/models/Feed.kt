@@ -24,5 +24,5 @@ data class Feed(
     var medias: List<Media> = emptyList(),
 
     @get:Exclude
-    var like: Boolean = false
+    var reaction: Reaction? = null
 )

@@ -6,10 +6,14 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
+import dev.hankli.iamstar.data.models.Feed
+import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.utils.BaseFragment
 import dev.hankli.iamstar.utils.MarginItemDecoration
 import dev.hankli.iamstar.utils.UIAction
+import dev.hankli.iamstar.utils.ext.isInternetConnected
 import kotlinx.android.synthetic.main.fragment_feed.*
 import tw.hankli.brookray.constant.EMPTY
 
@@ -27,7 +31,15 @@ class FeedFragment : BaseFragment(R.layout.fragment_feed) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val options = viewModel.getFirestoreRecyclerOptions(app.influencer)
+        val options = FirestoreRecyclerOptions.Builder<Feed>()
+            .setQuery(FeedManager.queryByInfluencer(app.influencer)) { snapshot ->
+                val feed = snapshot.toObject(Feed::class.java) ?: error("Feed parse failed !")
+                if (requireContext().isInternetConnected()) {
+                    viewModel.retrieveReaction(feed, app.user)
+                }
+                return@setQuery feed
+            }
+            .build()
 
         feedCardAdapter = FeedCardAdapter(options).apply {
             onItemOptionsClick = ::onFeedCardOptionsClick
@@ -48,6 +60,7 @@ class FeedFragment : BaseFragment(R.layout.fragment_feed) {
                     UIAction.SHOW_PROGRESS -> showProgressDialog()
                     UIAction.DISMISS_PROGRESS -> dismissProgressDialog()
                     UIAction.POP_BACK -> popBack()
+                    UIAction.REFRESH -> refresh()
                 }
             }
         })
@@ -57,6 +70,10 @@ class FeedFragment : BaseFragment(R.layout.fragment_feed) {
                 showAlert(messageId)
             }
         })
+    }
+
+    private fun refresh() {
+        feedCardAdapter.notifyDataSetChanged()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -85,7 +102,9 @@ class FeedFragment : BaseFragment(R.layout.fragment_feed) {
     }
 
     private fun onFeedCardReactionClick(objectId: String) {
-        viewModel.doReaction(objectId, app.user)
+        if (requireContext().isInternetConnected()) {
+            viewModel.doReaction(objectId, app.user)
+        } else showNoInternet()
     }
 
     override fun onStart() {

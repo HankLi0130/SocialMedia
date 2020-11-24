@@ -29,15 +29,19 @@ abstract class BaseViewModel : ViewModel() {
         _uiEvents.value = Event(UIAction.DISMISS_PROGRESS)
     }
 
+    protected fun popBack() {
+        _uiEvents.value = Event(UIAction.POP_BACK)
+    }
+
+    protected fun refresh() {
+        _uiEvents.value = Event(UIAction.REFRESH)
+    }
+
     private val _uiAlertEvents = MutableLiveData<Event<Int>>()
     val uiAlertEvents: LiveData<Event<Int>>
         get() = _uiAlertEvents
 
     protected fun showAlert(@StringRes messageId: Int) {
         _uiAlertEvents.value = Event(messageId)
-    }
-
-    protected fun popBack() {
-        _uiEvents.value = Event(UIAction.POP_BACK)
     }
 }

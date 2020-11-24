@@ -76,13 +76,10 @@ object FeedManager {
     }
 
     suspend fun hasReaction(feedId: String, user: DocumentReference): Boolean {
-        val snapshot = getReactions(feedId)
-            .whereEqualTo("profile", user)
-            .limit(1L)
+        return getReactions(feedId).document(user.id)
             .get()
             .await()
-
-        return !snapshot.isEmpty
+            .exists()
     }
 
     suspend fun addReaction(feedId: String, user: DocumentReference) {
@@ -104,5 +101,12 @@ object FeedManager {
         val feedDoc = rootCollection.document(feedId)
         val count = feedDoc.get().await().getLong("reactionCount")?.toInt() ?: ZERO
         feedDoc.update("reactionCount", count - 1).await()
+    }
+
+    suspend fun getReaction(feedId: String, user: DocumentReference): Reaction? {
+        return getReactions(feedId).document(user.id)
+            .get()
+            .await()
+            .toObject(Reaction::class.java)
     }
 }

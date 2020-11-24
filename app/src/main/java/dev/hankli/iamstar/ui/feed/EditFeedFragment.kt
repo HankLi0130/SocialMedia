@@ -194,7 +194,7 @@ class EditFeedFragment : BaseFragment(R.layout.fragment_edit_feed), MediaAdapter
                         app.influencer,
                         this::transfer
                     )
-                } else showAlert(R.string.no_internet)
+                } else showNoInternet()
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -27,6 +27,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: Feed) {
         holder.bind(model, onItemOptionsClick, onItemReactionClick)
+        holder.setLike(model.reaction != null)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -134,6 +134,8 @@ abstract class BaseFragment : Fragment {
         }
     }
 
+    protected fun showNoInternet() = showAlert(R.string.no_internet)
+
     protected fun showListDialog(
         @StringRes titleId: Int,
         @ArrayRes itemsId: Int,
