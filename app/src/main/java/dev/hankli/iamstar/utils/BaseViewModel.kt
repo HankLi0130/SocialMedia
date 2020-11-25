@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
+import tw.hankli.brookray.constant.NO_RESOURCE
 import tw.hankli.brookray.event.Event
 
 abstract class BaseViewModel : ViewModel() {
@@ -13,35 +14,30 @@ abstract class BaseViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        disposables.dispose()
         disposables.clear()
     }
 
-    private val _uiEvents = MutableLiveData<Event<UIAction>>()
-    val uiEvents: LiveData<Event<UIAction>>
-        get() = _uiEvents
+    private val _viewEvents = MutableLiveData<Event<ViewAction>>()
+    val viewEvents: LiveData<Event<ViewAction>>
+        get() = _viewEvents
 
     protected fun showProgress() {
-        _uiEvents.value = Event(UIAction.SHOW_PROGRESS)
+        _viewEvents.value = Event(ViewAction.ProgressAction(true))
     }
 
     protected fun dismissProgress() {
-        _uiEvents.value = Event(UIAction.DISMISS_PROGRESS)
+        _viewEvents.value = Event(ViewAction.ProgressAction(false))
     }
 
     protected fun popBack() {
-        _uiEvents.value = Event(UIAction.POP_BACK)
+        _viewEvents.value = Event(ViewAction.PopBackAction)
     }
 
-    protected fun refresh() {
-        _uiEvents.value = Event(UIAction.REFRESH)
+    protected fun showAlert(@StringRes messageRes: Int) {
+        _viewEvents.value = Event(ViewAction.AlertAction(messageRes))
     }
 
-    private val _uiAlertEvents = MutableLiveData<Event<Int>>()
-    val uiAlertEvents: LiveData<Event<Int>>
-        get() = _uiAlertEvents
-
-    protected fun showAlert(@StringRes messageId: Int) {
-        _uiAlertEvents.value = Event(messageId)
+    protected fun showMessage(@StringRes titleRes: Int = NO_RESOURCE, @StringRes messageRes: Int) {
+        _viewEvents.value = Event(ViewAction.MessageAction(titleRes, messageRes))
     }
 }

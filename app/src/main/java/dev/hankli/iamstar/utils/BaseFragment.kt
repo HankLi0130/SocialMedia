@@ -84,13 +84,11 @@ abstract class BaseFragment : Fragment {
         return deniedPermissions.toTypedArray()
     }
 
-    protected fun showProgressDialog() {
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog.show()
-    }
-
-    protected fun dismissProgressDialog() {
-        progressDialog.dismiss()
+    protected fun callProgressDialog(show: Boolean) {
+        if (show) {
+            progressDialog = ProgressDialog(requireContext())
+            progressDialog.show()
+        } else progressDialog.dismiss()
     }
 
     protected fun showMessageDialog(
@@ -113,21 +111,6 @@ abstract class BaseFragment : Fragment {
             R.string.alert_title,
             messageId,
             R.string.ok,
-            cancelable
-        ) { _, _ ->
-            onSubmit?.invoke()
-        }
-    }
-
-    protected fun showAlert(
-        message: String,
-        cancelable: Boolean = true,
-        onSubmit: (() -> Unit)? = null
-    ) {
-        requireContext().showMessageDialog(
-            getString(R.string.alert_title),
-            getString(R.string.alert_message, message),
-            getString(R.string.ok),
             cancelable
         ) { _, _ ->
             onSubmit?.invoke()

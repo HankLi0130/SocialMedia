@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
@@ -12,7 +11,6 @@ import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.utils.BaseArchFragment
 import dev.hankli.iamstar.utils.MarginItemDecoration
-import dev.hankli.iamstar.utils.UIAction
 import dev.hankli.iamstar.utils.ext.isInternetConnected
 import kotlinx.android.synthetic.main.fragment_feed.*
 import tw.hankli.brookray.constant.EMPTY
@@ -54,26 +52,9 @@ class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
             )
         }
 
-        viewModel.uiEvents.observe(viewLifecycleOwner, Observer { event ->
-            event.getContentIfNotHandle()?.let { action ->
-                when (action) {
-                    UIAction.SHOW_PROGRESS -> showProgressDialog()
-                    UIAction.DISMISS_PROGRESS -> dismissProgressDialog()
-                    UIAction.POP_BACK -> popBack()
-                    UIAction.REFRESH -> refresh()
-                }
-            }
-        })
-
-        viewModel.uiAlertEvents.observe(viewLifecycleOwner, Observer { event ->
-            event.getContentIfNotHandle()?.let { messageId ->
-                showAlert(messageId)
-            }
-        })
-    }
-
-    private fun refresh() {
-        feedCardAdapter.notifyDataSetChanged()
+        viewModel.refreshFeeds.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandle()?.let { feedCardAdapter.notifyDataSetChanged() }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

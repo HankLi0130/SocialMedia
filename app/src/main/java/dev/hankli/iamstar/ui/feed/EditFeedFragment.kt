@@ -19,7 +19,6 @@ import dev.hankli.iamstar.utils.BaseArchFragment
 import dev.hankli.iamstar.utils.Consts.REQUEST_PERMISSION_MEDIA
 import dev.hankli.iamstar.utils.Consts.REQUEST_PICK_MEDIAS
 import dev.hankli.iamstar.utils.Consts.REQUEST_PLACES
-import dev.hankli.iamstar.utils.UIAction
 import dev.hankli.iamstar.utils.ext.isInternetConnected
 import dev.hankli.iamstar.utils.getPlacesIntent
 import dev.hankli.iamstar.utils.media.*
@@ -84,22 +83,6 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
             view_post_location.text =
                 if (location.isNullOrEmpty()) getText(R.string.location_not_available)
                 else location
-        })
-
-        viewModel.uiEvents.observe(viewLifecycleOwner, Observer { event ->
-            event.getContentIfNotHandle()?.let { action ->
-                when (action) {
-                    UIAction.SHOW_PROGRESS -> showProgressDialog()
-                    UIAction.DISMISS_PROGRESS -> dismissProgressDialog()
-                    UIAction.POP_BACK -> popBack()
-                }
-            }
-        })
-
-        viewModel.uiAlertEvents.observe(viewLifecycleOwner, Observer { event ->
-            event.getContentIfNotHandle()?.let { messageId ->
-                showAlert(messageId)
-            }
         })
     }
 
@@ -173,12 +156,11 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
                 }
             }
             AutocompleteActivity.RESULT_ERROR -> {
-                data?.let {
-                    val status = Autocomplete.getStatusFromIntent(it)
-                    status.statusMessage?.let { message ->
-                        showAlert(message)
-                    }
-                }
+                // TODO handle error
+//                data?.let {
+//                    val status = Autocomplete.getStatusFromIntent(it)
+//                    status.statusMessage?.let { message -> }
+//                }
             }
             RESULT_CANCELED -> {
                 // The user canceled the operation.

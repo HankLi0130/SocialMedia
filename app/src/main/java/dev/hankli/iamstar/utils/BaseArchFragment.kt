@@ -15,7 +15,18 @@ abstract class BaseArchFragment<T : BaseViewModel> : BaseFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // UI Event Listeners
-
+        viewModel.viewEvents.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandle()?.let { action ->
+                when (action) {
+                    is ViewAction.ProgressAction -> callProgressDialog(action.show)
+                    is ViewAction.PopBackAction -> popBack()
+                    is ViewAction.MessageAction -> showMessageDialog(
+                        action.titleRes,
+                        action.messageRes
+                    )
+                    is ViewAction.AlertAction -> showAlert(action.messageRes)
+                }
+            }
+        }
     }
 }
