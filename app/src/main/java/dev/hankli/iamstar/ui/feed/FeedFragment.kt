@@ -10,14 +10,14 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.firestore.FeedManager
-import dev.hankli.iamstar.utils.BaseFragment
+import dev.hankli.iamstar.utils.BaseArchFragment
 import dev.hankli.iamstar.utils.MarginItemDecoration
 import dev.hankli.iamstar.utils.UIAction
 import dev.hankli.iamstar.utils.ext.isInternetConnected
 import kotlinx.android.synthetic.main.fragment_feed.*
 import tw.hankli.brookray.constant.EMPTY
 
-class FeedFragment : BaseFragment(R.layout.fragment_feed) {
+class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
 
     override val hasOptionsMenu: Boolean
         get() = true
@@ -25,7 +25,7 @@ class FeedFragment : BaseFragment(R.layout.fragment_feed) {
     override val menuRes: Int
         get() = R.menu.fragment_home
 
-    private val viewModel by viewModels<FeedViewModel>()
+    override val viewModel: FeedViewModel by viewModels()
 
     private lateinit var feedCardAdapter: FeedCardAdapter
 

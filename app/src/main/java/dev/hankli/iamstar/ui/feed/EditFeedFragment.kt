@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import dev.hankli.iamstar.R
-import dev.hankli.iamstar.utils.BaseFragment
+import dev.hankli.iamstar.utils.BaseArchFragment
 import dev.hankli.iamstar.utils.Consts.REQUEST_PERMISSION_MEDIA
 import dev.hankli.iamstar.utils.Consts.REQUEST_PICK_MEDIAS
 import dev.hankli.iamstar.utils.Consts.REQUEST_PLACES
@@ -26,7 +26,8 @@ import dev.hankli.iamstar.utils.media.*
 import io.reactivex.Single
 import kotlinx.android.synthetic.main.fragment_edit_feed.*
 
-class EditFeedFragment : BaseFragment(R.layout.fragment_edit_feed), MediaAdapter.Listener {
+class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_edit_feed),
+    MediaAdapter.Listener {
 
     override val hasOptionsMenu: Boolean
         get() = true
@@ -34,9 +35,9 @@ class EditFeedFragment : BaseFragment(R.layout.fragment_edit_feed), MediaAdapter
     override val menuRes: Int
         get() = R.menu.single_action_ok
 
-    private val args: EditFeedFragmentArgs by navArgs()
+    override val viewModel: EditFeedViewModel by viewModels()
 
-    private val viewModel by viewModels<EditFeedViewModel>()
+    private val args: EditFeedFragmentArgs by navArgs()
 
     private val mediaAdapter = MediaAdapter(this)
 
