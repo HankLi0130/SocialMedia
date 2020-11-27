@@ -3,7 +3,6 @@ package dev.hankli.iamstar.ui.comment
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
@@ -28,7 +27,8 @@ class CommentAdapter(options: FirestoreRecyclerOptions<Comment>) :
 
         fun bind(item: Comment) {
             with(itemView) {
-                Glide.with(this).load(item.commenterHeadshot).into(view_commenter_head_shot)
+                // Glide.with(this).load(item.commenterHeadshot).into(view_commenter_head_shot)
+                view_commenter_head_shot.setImageResource(R.drawable.ic_person)
 
                 view_commenter_name.text = item.commenterName
 

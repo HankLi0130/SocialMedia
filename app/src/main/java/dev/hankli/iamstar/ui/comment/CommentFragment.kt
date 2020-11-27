@@ -9,6 +9,7 @@ import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.utils.BaseArchFragment
+import dev.hankli.iamstar.utils.MarginItemDecoration
 import kotlinx.android.synthetic.main.fragment_comment.*
 
 class CommentFragment : BaseArchFragment<CommentViewModel>(R.layout.fragment_comment) {
@@ -35,6 +36,9 @@ class CommentFragment : BaseArchFragment<CommentViewModel>(R.layout.fragment_com
         view_comment_list.run {
             setHasFixedSize(true)
             adapter = commentAdapter
+            addItemDecoration(
+                MarginItemDecoration(resources.getDimension(R.dimen.distance_12_dp).toInt())
+            )
         }
     }
 

@@ -27,7 +27,7 @@
             app:layout_constraintBottom_toTopOf="@id/view_comment_time"
             app:layout_constraintStart_toEndOf="@+id/view_commenter_head_shot"
             app:layout_constraintTop_toTopOf="@+id/view_commenter_head_shot"
-            tools:text="1 hours ago" />
+            tools:text="Michael Jordan" />
 
         <TextView
             android:id="@+id/view_comment_time"
@@ -37,7 +37,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/view_commenter_head_shot"
             app:layout_constraintStart_toEndOf="@+id/view_commenter_head_shot"
             app:layout_constraintTop_toBottomOf="@id/view_commenter_name"
-            tools:text="Toronto" />
+            tools:text="2020/11/11" />
 
         <TextView
             android:id="@+id/view_comment_content"
