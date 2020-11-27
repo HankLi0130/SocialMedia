@@ -2,6 +2,7 @@ package dev.hankli.iamstar.ui.comment
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -39,6 +40,13 @@ class CommentFragment : BaseArchFragment<CommentViewModel>(R.layout.fragment_com
             addItemDecoration(
                 MarginItemDecoration(resources.getDimension(R.dimen.distance_12_dp).toInt())
             )
+        }
+
+        view_send.setOnClickListener {
+            val message = view_input_comment.text.toString()
+            viewModel.sendComment(args.feedId, app.user, message)
+            view_input_comment.text.clear()
+            view_input_comment.onEditorAction(EditorInfo.IME_ACTION_DONE)
         }
     }
 

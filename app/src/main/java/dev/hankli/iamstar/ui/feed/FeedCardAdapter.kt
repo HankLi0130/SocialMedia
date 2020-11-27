@@ -9,6 +9,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
+import dev.hankli.iamstar.data.models.Reaction
 import kotlinx.android.synthetic.main.card_feed.view.*
 import tw.hankli.brookray.extension.viewOf
 import java.text.SimpleDateFormat
@@ -29,7 +30,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: Feed) {
         holder.bind(model, onItemOptionsClick, onItemReactionClick, onItemCommentClick)
-        holder.setLike(model.reaction != null)
+        holder.setReaction(model.reaction)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -62,6 +63,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
                 }
 
                 view_feed_reaction.setOnClickListener { onItemReactionClick(item.objectId) }
+
                 view_feed_reaction_count.isVisible = item.reactionCount > 0
                 view_feed_reaction_count.text = item.reactionCount.toString()
 
@@ -73,8 +75,11 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
             }
         }
 
-        fun setLike(like: Boolean) {
-            val src = if (like) R.drawable.ic_reaction_like else R.drawable.ic_like
+        fun setReaction(reaction: Reaction?) {
+            val src = when (reaction?.reactionType) {
+                "like" -> R.drawable.ic_reaction_like
+                else -> R.drawable.ic_like
+            }
             itemView.view_feed_reaction.setImageResource(src)
         }
     }

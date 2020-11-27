@@ -3,6 +3,7 @@ package dev.hankli.iamstar.utils
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.ContentResolver
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -40,6 +41,11 @@ abstract class BaseFragment : Fragment {
         get() = requireActivity() as MainActivity
 
     private lateinit var progressDialog: Dialog
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        progressDialog = ProgressDialog(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,10 +91,7 @@ abstract class BaseFragment : Fragment {
     }
 
     protected fun callProgressDialog(show: Boolean) {
-        if (show) {
-            progressDialog = ProgressDialog(requireContext())
-            progressDialog.show()
-        } else progressDialog.dismiss()
+        if (show) progressDialog.show() else progressDialog.dismiss()
     }
 
     protected fun showMessageDialog(

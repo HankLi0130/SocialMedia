@@ -4,6 +4,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Reaction
 import io.reactivex.Completable
@@ -72,12 +73,12 @@ object FeedManager {
         return snapshot.toObject(Feed::class.java)!!
     }
 
-    private fun getReactions(feedId: String): CollectionReference {
+    private fun getReactionsRef(feedId: String): CollectionReference {
         return rootCollection.document(feedId).collection(COLLECTION_REACTIONS)
     }
 
     suspend fun hasReaction(feedId: String, user: DocumentReference): Boolean {
-        return getReactions(feedId).document(user.id)
+        return getReactionsRef(feedId).document(user.id)
             .get()
             .await()
             .exists()
@@ -85,7 +86,7 @@ object FeedManager {
 
     suspend fun addReaction(feedId: String, user: DocumentReference) {
         val reaction = Reaction(user.id, "like", user)
-        getReactions(feedId).document(user.id).set(reaction).await()
+        getReactionsRef(feedId).document(user.id).set(reaction).await()
     }
 
     suspend fun increaseReactionCount(feedId: String) {
@@ -95,7 +96,7 @@ object FeedManager {
     }
 
     suspend fun removeReaction(feedId: String, user: DocumentReference) {
-        getReactions(feedId).document(user.id).delete().await()
+        getReactionsRef(feedId).document(user.id).delete().await()
     }
 
     suspend fun reduceReactionCount(feedId: String) {
@@ -105,19 +106,31 @@ object FeedManager {
     }
 
     suspend fun getReaction(feedId: String, user: DocumentReference): Reaction? {
-        return getReactions(feedId).document(user.id)
+        return getReactionsRef(feedId).document(user.id)
             .get()
             .await()
             .toObject(Reaction::class.java)
     }
 
-    private fun getComments(feedId: String): CollectionReference {
+    private fun getCommentsRef(feedId: String): CollectionReference {
         return rootCollection.document(feedId).collection(COLLECTION_COMMENTS)
     }
 
     fun queryComments(feedId: String, limit: Long = 50): Query {
-        return getComments(feedId)
+        return getCommentsRef(feedId)
             .orderBy("createdAt", Query.Direction.DESCENDING)
             .limit(limit)
+    }
+
+    suspend fun addComment(feedId: String, comment: Comment) {
+        val commentDoc = getCommentsRef(feedId).document()
+        comment.objectId = commentDoc.id
+        commentDoc.set(comment).await()
+    }
+
+    suspend fun increaseCommentCount(feedId: String) {
+        val feedDoc = rootCollection.document(feedId)
+        val count = feedDoc.get().await().getLong("commentCount")?.toInt() ?: ZERO
+        feedDoc.update("commentCount", count + 1).await()
     }
 }

@@ -1,6 +1,7 @@
 package dev.hankli.iamstar.repo
 
 import com.google.firebase.firestore.DocumentReference
+import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Reaction
@@ -93,5 +94,11 @@ class FeedRepo {
 
     suspend fun getReaction(feedId: String, user: DocumentReference): Reaction? {
         return FeedManager.getReaction(feedId, user)
+    }
+
+    suspend fun addComment(feedId: String, user: DocumentReference, message: String) {
+        val comment = Comment(profile = user, content = message)
+        FeedManager.addComment(feedId, comment)
+        FeedManager.increaseCommentCount(feedId)
     }
 }
