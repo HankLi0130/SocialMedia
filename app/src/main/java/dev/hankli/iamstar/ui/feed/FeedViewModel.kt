@@ -45,9 +45,13 @@ class FeedViewModel : BaseViewModel() {
     }
 
     fun retrieveReaction(feed: Feed, user: DocumentReference) {
+        showProgress()
         viewModelScope.launch(Dispatchers.IO) {
             feed.reaction = feedRepo.getReaction(feed.objectId, user)
-            withContext(Dispatchers.Main) { _refreshFeeds.value = Event(Unit) }
+            withContext(Dispatchers.Main) {
+                _refreshFeeds.value = Event(Unit)
+                dismissProgress()
+            }
         }
     }
 }

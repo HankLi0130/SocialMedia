@@ -104,7 +104,7 @@ abstract class BaseFragment : Fragment {
 
     protected fun showAlert(
         @StringRes messageId: Int,
-        cancelable: Boolean = true,
+        cancelable: Boolean = false,
         onSubmit: (() -> Unit)? = null
     ) {
         requireContext().showMessageDialog(
