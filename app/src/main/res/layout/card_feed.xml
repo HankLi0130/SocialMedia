@@ -10,7 +10,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/view_commenter_head_shot"
+            android:id="@+id/view_feed_head_shot"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_marginStart="10dp"
@@ -24,18 +24,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            app:layout_constraintBottom_toTopOf="@id/view_comment_time"
-            app:layout_constraintStart_toEndOf="@+id/view_commenter_head_shot"
-            app:layout_constraintTop_toTopOf="@+id/view_commenter_head_shot"
+            app:layout_constraintBottom_toTopOf="@id/view_feed_location"
+            app:layout_constraintStart_toEndOf="@+id/view_feed_head_shot"
+            app:layout_constraintTop_toTopOf="@+id/view_feed_head_shot"
             tools:text="1 hours ago" />
 
         <TextView
-            android:id="@+id/view_comment_time"
+            android:id="@+id/view_feed_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            app:layout_constraintBottom_toBottomOf="@+id/view_commenter_head_shot"
-            app:layout_constraintStart_toEndOf="@+id/view_commenter_head_shot"
+            app:layout_constraintBottom_toBottomOf="@+id/view_feed_head_shot"
+            app:layout_constraintStart_toEndOf="@+id/view_feed_head_shot"
             app:layout_constraintTop_toBottomOf="@id/view_feed_time"
             tools:text="Toronto" />
 
@@ -49,14 +49,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/view_comment"
+            android:id="@+id/view_feed_content"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             app:layout_constraintBottom_toTopOf="@id/view_feed_medias"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_commenter_head_shot"
+            app:layout_constraintTop_toBottomOf="@id/view_feed_head_shot"
             tools:text="Hello everyone, this is my feed !" />
 
         <com.synnapps.carouselview.CarouselView
@@ -69,7 +69,7 @@
             app:layout_constraintBottom_toTopOf="@id/view_feed_reaction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_comment"
+            app:layout_constraintTop_toBottomOf="@id/view_feed_content"
             app:pageColor="#00000000"
             app:radius="6dp"
             app:slideInterval="3000"
@@ -83,7 +83,7 @@
             android:padding="@dimen/distance_12_dp"
             android:src="@drawable/like_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/view_comment"
+            app:layout_constraintStart_toStartOf="@id/view_feed_content"
             app:layout_constraintTop_toBottomOf="@id/view_feed_medias" />
 
         <TextView

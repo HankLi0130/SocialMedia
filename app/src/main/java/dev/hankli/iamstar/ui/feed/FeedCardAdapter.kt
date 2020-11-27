@@ -1,6 +1,5 @@
 package dev.hankli.iamstar.ui.feed
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -11,6 +10,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
 import kotlinx.android.synthetic.main.card_feed.view.*
+import tw.hankli.brookray.extension.viewOf
 import java.text.SimpleDateFormat
 
 class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
@@ -23,7 +23,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
     lateinit var onItemCommentClick: (feedId: String) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_feed, parent, false)
+        val view = parent.viewOf(R.layout.card_feed)
         return ViewHolder(view)
     }
 
@@ -41,14 +41,14 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
             onItemCommentClick: (feedId: String) -> Unit
         ) {
             with(itemView) {
-                view_commenter_head_shot.setImageResource(R.drawable.ic_person)
+                view_feed_head_shot.setImageResource(R.drawable.ic_person)
 
                 view_feed_time.text = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)
                     .format(item.createdAt)
 
-                view_comment_time.text = item.location
+                view_feed_location.text = item.location
 
-                view_comment.text = item.content
+                view_feed_content.text = item.content
 
                 if (item.medias.isEmpty()) {
                     view_feed_medias.isVisible = false
@@ -56,7 +56,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
                     view_feed_medias.isVisible = true
                     view_feed_medias.pageCount = item.medias.size
                     view_feed_medias.setImageListener { position, imageView ->
-                        Glide.with(this@with).load(item.medias[position].thumbnailUrl)
+                        Glide.with(this).load(item.medias[position].thumbnailUrl)
                             .into(imageView)
                     }
                 }

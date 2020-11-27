@@ -40,7 +40,7 @@
             tools:text="Toronto" />
 
         <TextView
-            android:id="@+id/view_comment"
+            android:id="@+id/view_comment_content"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

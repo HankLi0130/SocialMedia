@@ -15,6 +15,7 @@ import java.util.*
 object FeedManager {
     private const val COLLECTION_FEED = "Feed"
     private const val COLLECTION_REACTIONS = "reactions"
+    private const val COLLECTION_COMMENTS = "comments"
 
     private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val rootCollection: CollectionReference by lazy { db.collection(COLLECTION_FEED) }
@@ -108,5 +109,15 @@ object FeedManager {
             .get()
             .await()
             .toObject(Reaction::class.java)
+    }
+
+    private fun getComments(feedId: String): CollectionReference {
+        return rootCollection.document(feedId).collection(COLLECTION_COMMENTS)
+    }
+
+    fun queryComments(feedId: String, limit: Long = 50): Query {
+        return getComments(feedId)
+            .orderBy("createdAt", Query.Direction.DESCENDING)
+            .limit(limit)
     }
 }
