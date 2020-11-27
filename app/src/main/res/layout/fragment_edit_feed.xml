@@ -7,7 +7,7 @@
     tools:context=".ui.feed.EditFeedFragment">
 
     <ImageView
-        android:id="@+id/view_head_shot"
+        android:id="@+id/view_commenter_head_shot"
         android:layout_width="@dimen/distance_64_dp"
         android:layout_height="@dimen/distance_64_dp"
         android:layout_marginStart="10dp"
@@ -21,9 +21,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/location_not_available"
-        app:layout_constraintBottom_toBottomOf="@+id/view_head_shot"
-        app:layout_constraintStart_toEndOf="@+id/view_head_shot"
-        app:layout_constraintTop_toTopOf="@+id/view_head_shot" />
+        app:layout_constraintBottom_toBottomOf="@+id/view_commenter_head_shot"
+        app:layout_constraintStart_toEndOf="@+id/view_commenter_head_shot"
+        app:layout_constraintTop_toTopOf="@+id/view_commenter_head_shot" />
 
     <EditText
         android:id="@+id/view_input_post_text"
@@ -33,7 +33,7 @@
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_head_shot" />
+        app:layout_constraintTop_toBottomOf="@id/view_commenter_head_shot" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/view_list_media"

@@ -38,14 +38,14 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
             onItemReactionClick: (objectId: String) -> Unit
         ) {
             with(itemView) {
-                view_head_shot.setImageResource(R.drawable.ic_person)
+                view_commenter_head_shot.setImageResource(R.drawable.ic_person)
 
                 view_feed_time.text = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD)
                     .format(item.createdAt)
 
-                view_feed_location.text = item.location
+                view_comment_time.text = item.location
 
-                view_feed_text.text = item.content
+                view_comment.text = item.content
 
                 if (item.medias.isEmpty()) {
                     view_feed_medias.isVisible = false
