@@ -21,23 +21,23 @@ abstract class BaseViewModel : ViewModel() {
     val viewEvents: LiveData<Event<ViewAction>>
         get() = _viewEvents
 
-    protected fun showProgress() {
+    fun showProgress() {
         _viewEvents.value = Event(ViewAction.ProgressAction(true))
     }
 
-    protected fun dismissProgress() {
+    fun dismissProgress() {
         _viewEvents.value = Event(ViewAction.ProgressAction(false))
     }
 
-    protected fun popBack() {
+    fun popBack() {
         _viewEvents.value = Event(ViewAction.PopBackAction)
     }
 
-    protected fun showAlert(@StringRes messageRes: Int) {
+    fun showAlert(@StringRes messageRes: Int) {
         _viewEvents.value = Event(ViewAction.AlertAction(messageRes))
     }
 
-    protected fun showMessage(@StringRes titleRes: Int = NO_RESOURCE, @StringRes messageRes: Int) {
+    fun showMessage(@StringRes titleRes: Int = NO_RESOURCE, @StringRes messageRes: Int) {
         _viewEvents.value = Event(ViewAction.MessageAction(titleRes, messageRes))
     }
 }

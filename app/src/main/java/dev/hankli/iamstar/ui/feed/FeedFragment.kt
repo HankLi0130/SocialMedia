@@ -28,6 +28,7 @@ class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
     private lateinit var feedCardAdapter: FeedCardAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val options = FirestoreRecyclerOptions.Builder<Feed>()
             .setQuery(FeedManager.queryByInfluencer(app.influencer)) { snapshot ->
