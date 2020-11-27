@@ -29,14 +29,11 @@
         <action
             android:id="@+id/action_feedFragment_to_editFeedFragment"
             app:destination="@id/editPostFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
 
     </fragment>
-
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="dev.hankli.iamstar.ui.profile.ProfileFragment"
-        android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/editPostFragment"
@@ -49,6 +46,25 @@
             app:argType="string" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/commentFragment"
+        android:name="dev.hankli.iamstar.ui.comment.CommentFragment"
+        android:label="CommentFragment"
+        tools:layout="@layout/fragment_comment">
+
+        <argument
+            android:name="feedId"
+            app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="dev.hankli.iamstar.ui.profile.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile" />
+
     <action
         android:id="@+id/action_global_authFragment"
         app:destination="@id/authFragment"
