@@ -4,8 +4,8 @@ import com.google.firebase.firestore.PropertyName
 import tw.hankli.brookray.constant.EMPTY
 import tw.hankli.brookray.constant.ZERO
 
-data class Media(
-    var objectId: String = EMPTY,
+class Media(
+    objectId: String = EMPTY,
     var url: String = EMPTY,
     var type: String = EMPTY,
     var width: Int = ZERO,
@@ -14,4 +14,4 @@ data class Media(
     @get:PropertyName("thumbnail")
     @set:PropertyName("thumbnail")
     var thumbnailUrl: String = EMPTY
-)
+) : FirestoreModel(objectId)

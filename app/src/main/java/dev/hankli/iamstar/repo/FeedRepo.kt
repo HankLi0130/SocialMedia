@@ -83,7 +83,8 @@ class FeedRepo {
     }
 
     suspend fun like(feedId: String, user: DocumentReference) {
-        FeedManager.addReaction(feedId, user)
+        val reaction = Reaction(user.id, "like", user)
+        FeedManager.addReaction(feedId, user, reaction)
         FeedManager.increaseReactionCount(feedId)
     }
 

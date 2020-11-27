@@ -9,8 +9,8 @@ import java.util.*
 
 // https://stackoverflow.com/a/40117301/8361227
 @IgnoreExtraProperties
-data class Feed(
-    var objectId: String = EMPTY,
+class Feed(
+    objectId: String = EMPTY,
     var influencer: DocumentReference? = null,
     var author: DocumentReference? = null,
     var createdAt: Date = Date(),
@@ -25,4 +25,4 @@ data class Feed(
 
     @get:Exclude
     var reaction: Reaction? = null
-)
+) : FirestoreModel(objectId)

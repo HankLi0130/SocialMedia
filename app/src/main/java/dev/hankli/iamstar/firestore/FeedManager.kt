@@ -84,8 +84,7 @@ object FeedManager {
             .exists()
     }
 
-    suspend fun addReaction(feedId: String, user: DocumentReference) {
-        val reaction = Reaction(user.id, "like", user)
+    suspend fun addReaction(feedId: String, user: DocumentReference, reaction: Reaction) {
         getReactionsRef(feedId).document(user.id).set(reaction).await()
     }
 
