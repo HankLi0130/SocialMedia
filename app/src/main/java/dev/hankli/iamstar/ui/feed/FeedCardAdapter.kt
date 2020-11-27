@@ -16,9 +16,11 @@ import java.text.SimpleDateFormat
 class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
     FirestoreRecyclerAdapter<Feed, FeedCardAdapter.ViewHolder>(options) {
 
-    lateinit var onItemOptionsClick: (objectId: String) -> Unit
+    lateinit var onItemOptionsClick: (feedId: String) -> Unit
 
-    lateinit var onItemReactionClick: (objectId: String) -> Unit
+    lateinit var onItemReactionClick: (feedId: String) -> Unit
+
+    lateinit var onItemCommentClick: (feedId: String) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_feed, parent, false)
@@ -26,7 +28,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: Feed) {
-        holder.bind(model, onItemOptionsClick, onItemReactionClick)
+        holder.bind(model, onItemOptionsClick, onItemReactionClick, onItemCommentClick)
         holder.setLike(model.reaction != null)
     }
 
@@ -34,8 +36,9 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
 
         fun bind(
             item: Feed,
-            onItemOptionsClick: (objectId: String) -> Unit,
-            onItemReactionClick: (objectId: String) -> Unit
+            onItemOptionsClick: (feedId: String) -> Unit,
+            onItemReactionClick: (feedId: String) -> Unit,
+            onItemCommentClick: (feedId: String) -> Unit
         ) {
             with(itemView) {
                 view_commenter_head_shot.setImageResource(R.drawable.ic_person)
@@ -62,6 +65,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
                 view_feed_reaction_count.isVisible = item.reactionCount > 0
                 view_feed_reaction_count.text = item.reactionCount.toString()
 
+                view_feed_comment.setOnClickListener { onItemCommentClick(item.objectId) }
                 view_feed_comment_count.isVisible = item.commentCount > 0
                 view_feed_comment_count.text = item.commentCount.toString()
 

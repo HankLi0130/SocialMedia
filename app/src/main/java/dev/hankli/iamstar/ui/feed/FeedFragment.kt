@@ -42,6 +42,7 @@ class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
         feedCardAdapter = FeedCardAdapter(options).apply {
             onItemOptionsClick = ::onFeedCardOptionsClick
             onItemReactionClick = ::onFeedCardReactionClick
+            onItemCommentClick = ::onFeedCardCommentClick
         }
 
         view_feeds.apply {
@@ -73,19 +74,25 @@ class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
         )
     }
 
-    private fun onFeedCardOptionsClick(objectId: String) {
+    private fun onFeedCardOptionsClick(feedId: String) {
         showListDialog(R.string.feed_actions_title, R.array.feed_actions) { which ->
             when (which) {
-                0 -> toEditFeedFragment(objectId)
-                1 -> viewModel.deleteFeed(objectId)
+                0 -> toEditFeedFragment(feedId)
+                1 -> viewModel.deleteFeed(feedId)
             }
         }
     }
 
-    private fun onFeedCardReactionClick(objectId: String) {
+    private fun onFeedCardReactionClick(feedId: String) {
         if (requireContext().isInternetConnected()) {
-            viewModel.doReaction(objectId, app.user)
+            viewModel.doReaction(feedId, app.user)
         } else showNoInternet()
+    }
+
+    private fun onFeedCardCommentClick(feedId: String) {
+        findNavController().navigate(
+            FeedFragmentDirections.actionFeedFragmentToCommentFragment(feedId)
+        )
     }
 
     override fun onStart() {
