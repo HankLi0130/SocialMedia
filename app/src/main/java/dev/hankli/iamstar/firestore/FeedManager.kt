@@ -10,7 +10,6 @@ import dev.hankli.iamstar.data.models.Reaction
 import io.reactivex.Completable
 import io.reactivex.Single
 import kotlinx.coroutines.tasks.await
-import tw.hankli.brookray.constant.ZERO
 import java.util.*
 
 object FeedManager {
@@ -88,20 +87,13 @@ object FeedManager {
         getReactionsRef(feedId).document(user.id).set(reaction).await()
     }
 
-    suspend fun increaseReactionCount(feedId: String) {
-        val feedDoc = rootCollection.document(feedId)
-        val count = feedDoc.get().await().getLong("reactionCount")?.toInt() ?: ZERO
-        feedDoc.update("reactionCount", count + 1).await()
-    }
-
     suspend fun removeReaction(feedId: String, user: DocumentReference) {
         getReactionsRef(feedId).document(user.id).delete().await()
     }
 
-    suspend fun reduceReactionCount(feedId: String) {
-        val feedDoc = rootCollection.document(feedId)
-        val count = feedDoc.get().await().getLong("reactionCount")?.toInt() ?: ZERO
-        feedDoc.update("reactionCount", count - 1).await()
+    suspend fun updateReactionCount(feedId: String) {
+        val count = getReactionsRef(feedId).get().await().size()
+        rootCollection.document(feedId).update("reactionCount", count).await()
     }
 
     suspend fun getReaction(feedId: String, user: DocumentReference): Reaction? {
@@ -127,20 +119,13 @@ object FeedManager {
         commentDoc.set(comment).await()
     }
 
-    suspend fun increaseCommentCount(feedId: String) {
-        val feedDoc = rootCollection.document(feedId)
-        val count = feedDoc.get().await().getLong("commentCount")?.toInt() ?: ZERO
-        feedDoc.update("commentCount", count + 1).await()
-    }
-
     suspend fun removeComment(feedId: String, commentId: String) {
         getCommentsRef(feedId).document(commentId).delete().await()
     }
 
-    suspend fun reduceCommentCount(feedId: String) {
-        val feedDoc = rootCollection.document(feedId)
-        val count = feedDoc.get().await().getLong("commentCount")?.toInt() ?: ZERO
-        feedDoc.update("commentCount", count - 1).await()
+    suspend fun updateCommentCount(feedId: String) {
+        val count = getCommentsRef(feedId).get().await().size()
+        rootCollection.document(feedId).update("commentCount", count).await()
     }
 
     suspend fun updateComment(feedId: String, commentId: String, newContent: String) {

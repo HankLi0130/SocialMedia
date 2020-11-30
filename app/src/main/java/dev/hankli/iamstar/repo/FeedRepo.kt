@@ -85,12 +85,12 @@ class FeedRepo {
     suspend fun like(feedId: String, user: DocumentReference) {
         val reaction = Reaction(user.id, "like", user)
         FeedManager.addReaction(feedId, user, reaction)
-        FeedManager.increaseReactionCount(feedId)
+        FeedManager.updateReactionCount(feedId)
     }
 
     suspend fun unlike(feedId: String, user: DocumentReference) {
         FeedManager.removeReaction(feedId, user)
-        FeedManager.reduceReactionCount(feedId)
+        FeedManager.updateReactionCount(feedId)
     }
 
     suspend fun getReaction(feedId: String, user: DocumentReference): Reaction? {
@@ -100,6 +100,6 @@ class FeedRepo {
     suspend fun addComment(feedId: String, user: DocumentReference, message: String) {
         val comment = Comment(profile = user, content = message)
         FeedManager.addComment(feedId, comment)
-        FeedManager.increaseCommentCount(feedId)
+        FeedManager.updateCommentCount(feedId)
     }
 }
