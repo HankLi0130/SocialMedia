@@ -132,4 +132,25 @@ object FeedManager {
         val count = feedDoc.get().await().getLong("commentCount")?.toInt() ?: ZERO
         feedDoc.update("commentCount", count + 1).await()
     }
+
+    suspend fun removeComment(feedId: String, commentId: String) {
+        getCommentsRef(feedId).document(commentId).delete().await()
+    }
+
+    suspend fun reduceCommentCount(feedId: String) {
+        val feedDoc = rootCollection.document(feedId)
+        val count = feedDoc.get().await().getLong("commentCount")?.toInt() ?: ZERO
+        feedDoc.update("commentCount", count - 1).await()
+    }
+
+    suspend fun updateComment(feedId: String, commentId: String, newContent: String) {
+        getCommentsRef(feedId).document(commentId)
+            .update(
+                mapOf(
+                    "content" to newContent,
+                    "updatedAt" to Date()
+                )
+            )
+            .await()
+    }
 }
