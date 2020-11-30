@@ -44,7 +44,9 @@ abstract class BaseFragment : Fragment {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        progressDialog = ProgressDialog(context)
+        progressDialog = ProgressDialog(context).apply {
+            setCancelable(false)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

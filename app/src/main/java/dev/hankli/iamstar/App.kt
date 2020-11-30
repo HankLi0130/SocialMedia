@@ -17,7 +17,11 @@ class App : Application() {
 
         Places.initialize(this, getString(R.string.places_api_key))
 
-        AuthManager.currentUser?.let { user = ProfileManager.getDoc(it.uid) }
         influencer = InfluencerManager.getDoc(getString(R.string.influencer_object_id))
+        loadUser()
+    }
+
+    fun loadUser() {
+        AuthManager.currentUser?.let { user = ProfileManager.getDoc(it.uid) }
     }
 }

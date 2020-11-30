@@ -29,6 +29,7 @@ class AuthFragment : BaseFragment(R.layout.fragment_auth) {
 
             if (resultCode == RESULT_OK) {
                 // Sign in successful.
+                app.loadUser()
                 findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToFeedFragment())
             } else {
                 // Sign in failed. If response is null the user canceled the
