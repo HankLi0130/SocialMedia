@@ -107,23 +107,6 @@ abstract class BaseFragment : Fragment {
         }
     }
 
-    protected fun showAlert(
-        @StringRes messageId: Int,
-        cancelable: Boolean = false,
-        onSubmit: (() -> Unit)? = null
-    ) {
-        requireContext().showMessageDialog(
-            R.string.alert_title,
-            messageId,
-            R.string.ok,
-            cancelable
-        ) { _, _ ->
-            onSubmit?.invoke()
-        }
-    }
-
-    protected fun showNoInternet() = showAlert(R.string.no_internet)
-
     protected fun showListDialog(
         @StringRes titleId: Int,
         @ArrayRes itemsId: Int,

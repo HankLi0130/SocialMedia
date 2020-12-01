@@ -35,7 +35,7 @@
         android:paddingTop="10dp"
         android:paddingEnd="20dp"
         android:paddingBottom="10dp"
-        android:text="@string/log_in"
+        android:text="@string/sign_in"
         android:textAllCaps="false"
         android:textColor="?android:attr/textColorPrimaryInverse"
         android:textSize="20sp"

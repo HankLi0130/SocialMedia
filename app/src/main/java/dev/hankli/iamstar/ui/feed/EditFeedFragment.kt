@@ -122,7 +122,7 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
                 VIDEO -> {
                     showMessageDialog(R.string.error_title, R.string.up_to_video_maximum)
                 }
-                else -> showAlert(R.string.alert_unknown_type)
+                else -> viewModel.showError(R.string.alert_unknown_type)
             }
         }
     }
@@ -178,7 +178,7 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
                         app.influencer,
                         this::transfer
                     )
-                } else showNoInternet()
+                } else viewModel.showNoInternet()
                 true
             }
             else -> super.onOptionsItemSelected(item)

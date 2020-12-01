@@ -1,45 +1,33 @@
 <resources>
     <string name="app_name">iamStar</string>
+
     <string name="sign_in">Sign In</string>
-    <string name="email_or_phone">Email or phone number</string>
-    <string name="password">Password</string>
-    <string name="log_in">Log In</string>
-    <string name="or">OR</string>
-    <string name="welcome">Welcome to Instachatty</string>
-    <string name="browse_and_post_anything">Stay in touch with your best friends.</string>
-    <string name="sign_up">Sign Up</string>
     <string name="sign_out">Sign Out</string>
-    <string name="error_title">Oh!</string>
-    <string name="error_message">An error occurred, Please try again later.</string>
-    <string name="create_new_account">Create new account</string>
-    <string name="fullName">Full Name</string>
-    <string name="phone">Phone Number</string>
-    <string name="email">Email Address</string>
+    <string name="sign_in_canceled">Sign in canceled</string>
+
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="open_camera">Open camera</string>
-    <string name="pick_from_gallery">Pick from gallery</string>
-    <string name="name_required_error">Name is required to sign up.</string>
-    <string name="phone_required_error">Phone number is required to sign up.</string>
-    <string name="email_required_error">Email address is required to sign up.</string>
-    <string name="password_required_error">Password is required to sign up.</string>
-    <string name="malformed_phone_error">This phone number is badly formatted.</string>
-    <string name="malformed_email_error">This email address is badly formatted.</string>
-    <string name="short_password_error">Password should be at least 6 characters.</string>
-    <string name="creating_new_user">Creating new user</string>
+
     <string name="home">Home</string>
     <string name="profile">Profile</string>
+
     <string name="add_feed">Add feed</string>
-    <string name="location_not_available">location not available</string>
-    <string name="up_to_image_maximum">Only 6 images can be selected</string>
-    <string name="up_to_video_maximum">Only 1 video can be selected</string>
-    <string name="no_internet">there is no internet connect</string>
+
+    <string name="location_not_available">location not available !</string>
+
+    <string name="up_to_image_maximum">Only 6 images can be selected !</string>
+    <string name="up_to_video_maximum">Only 1 video can be selected !</string>
 
     <string name="alert_title">Alert</string>
     <string name="alert_message">Message: %s</string>
     <string name="alert_feed_is_invalid">Feed is invalid !</string>
     <string name="alert_delete_feed_failed">Delete feed failed !</string>
     <string name="alert_unknown_type">Unknown type</string>
+
+    <string name="error_title">Error</string>
+    <string name="error_message">Message: %s</string>
+    <string name="error_unknown">Please contact staff for assistance.</string>
+    <string name="error_no_internet">There is no internet.</string>
 
     <string name="feed_actions_title">Actions</string>
     <string-array name="feed_actions">

@@ -87,7 +87,7 @@ class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
     private fun onFeedCardReactionClick(feedId: String) {
         if (requireContext().isInternetConnected()) {
             viewModel.doReaction(feedId, app.user)
-        } else showNoInternet()
+        } else viewModel.showNoInternet()
     }
 
     private fun onFeedCardCommentClick(feedId: String) {

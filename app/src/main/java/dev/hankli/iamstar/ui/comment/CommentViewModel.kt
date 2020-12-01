@@ -16,9 +16,9 @@ class CommentViewModel : BaseViewModel() {
         if (message.isEmpty()) return
 
         viewModelScope.launch {
-            showProgress()
+            callProgress(true)
             withContext(Dispatchers.IO) { feedRepo.addComment(feedId, user, message) }
-            dismissProgress()
+            callProgress(false)
         }
     }
 }

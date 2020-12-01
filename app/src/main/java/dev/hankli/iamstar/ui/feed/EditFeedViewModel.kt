@@ -45,10 +45,10 @@ class EditFeedViewModel : BaseViewModel() {
             feed = Feed()
         } else {
             viewModelScope.launch {
-                showProgress()
+                callProgress(true)
                 withContext(IO) { feed = feedRepo.fetchFeed(postId) }
                 setDefaultValues()
-                dismissProgress()
+                callProgress(false)
             }
         }
     }
@@ -92,7 +92,7 @@ class EditFeedViewModel : BaseViewModel() {
             return
         }
 
-        showProgress()
+        callProgress(true)
 
         // If the post doesn't have objectId, create a new one
         // Instead of, update the post
@@ -106,7 +106,7 @@ class EditFeedViewModel : BaseViewModel() {
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate {
-                    dismissProgress()
+                    callProgress(false)
                 }
                 .subscribe({
                     popBack()
@@ -124,7 +124,7 @@ class EditFeedViewModel : BaseViewModel() {
                     feedRepo.updateFeed(feed, mediasForUploading, idsForRemoving)
                 }
                 .doOnComplete {
-                    dismissProgress()
+                    callProgress(false)
                 }
                 .subscribe({
                     popBack()

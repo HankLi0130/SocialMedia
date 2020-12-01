@@ -3,6 +3,7 @@ package dev.hankli.iamstar.utils
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
+import dev.hankli.iamstar.R
 
 abstract class BaseArchFragment<T : BaseViewModel> : BaseFragment {
 
@@ -24,7 +25,14 @@ abstract class BaseArchFragment<T : BaseViewModel> : BaseFragment {
                         action.titleRes,
                         action.messageRes
                     )
-                    is ViewAction.AlertAction -> showAlert(action.messageRes)
+                    is ViewAction.AlertAction -> showMessageDialog(
+                        R.string.alert_title,
+                        action.messageRes
+                    )
+                    is ViewAction.ErrorAction -> showMessageDialog(
+                        R.string.error_title,
+                        action.messageRes
+                    )
                 }
             }
         }

@@ -23,9 +23,9 @@ class FeedViewModel : BaseViewModel() {
         get() = _refreshFeeds
 
     fun deleteFeed(objectId: String) {
-        showProgress()
+        callProgress(true)
         feedRepo.deleteFeed(objectId)
-            .doOnComplete { dismissProgress() }
+            .doOnComplete { callProgress(false) }
             .subscribe({
 
             }, {
@@ -45,12 +45,12 @@ class FeedViewModel : BaseViewModel() {
     }
 
     fun retrieveReaction(feed: Feed, user: DocumentReference) {
-        showProgress()
+        callProgress(true)
         viewModelScope.launch(Dispatchers.IO) {
             feed.reaction = feedRepo.getReaction(feed.objectId, user)
             withContext(Dispatchers.Main) {
                 _refreshFeeds.value = Event(Unit)
-                dismissProgress()
+                callProgress(false)
             }
         }
     }

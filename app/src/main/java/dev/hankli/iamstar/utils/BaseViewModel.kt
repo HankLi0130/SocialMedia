@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dev.hankli.iamstar.R
 import io.reactivex.disposables.CompositeDisposable
 import tw.hankli.brookray.constant.NO_RESOURCE
 import tw.hankli.brookray.event.Event
@@ -21,12 +22,8 @@ abstract class BaseViewModel : ViewModel() {
     val viewEvents: LiveData<Event<ViewAction>>
         get() = _viewEvents
 
-    fun showProgress() {
-        _viewEvents.value = Event(ViewAction.ProgressAction(true))
-    }
-
-    fun dismissProgress() {
-        _viewEvents.value = Event(ViewAction.ProgressAction(false))
+    fun callProgress(show: Boolean) {
+        _viewEvents.value = Event(ViewAction.ProgressAction(show))
     }
 
     fun popBack() {
@@ -37,7 +34,15 @@ abstract class BaseViewModel : ViewModel() {
         _viewEvents.value = Event(ViewAction.AlertAction(messageRes))
     }
 
+    fun showError(@StringRes messageRes: Int) {
+        _viewEvents.value = Event(ViewAction.ErrorAction(messageRes))
+    }
+
     fun showMessage(@StringRes titleRes: Int = NO_RESOURCE, @StringRes messageRes: Int) {
         _viewEvents.value = Event(ViewAction.MessageAction(titleRes, messageRes))
+    }
+
+    fun showNoInternet() {
+        showError(R.string.error_no_internet)
     }
 }

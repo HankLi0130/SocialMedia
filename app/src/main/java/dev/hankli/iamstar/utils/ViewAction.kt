@@ -14,4 +14,6 @@ sealed class ViewAction {
     ) : ViewAction()
 
     data class AlertAction(@StringRes val messageRes: Int) : ViewAction()
+
+    data class ErrorAction(@StringRes val messageRes: Int) : ViewAction()
 }
