@@ -26,7 +26,7 @@
 
     <string name="error_title">Error</string>
     <string name="error_message">Message: %s</string>
-    <string name="error_unknown">Please contact staff for assistance.</string>
+    <string name="error_unknown">Unknown error. Please contact staff for assistance.</string>
     <string name="error_no_internet">There is no internet.</string>
 
     <string name="feed_actions_title">Actions</string>

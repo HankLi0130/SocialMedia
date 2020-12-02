@@ -33,8 +33,11 @@ abstract class BaseArchFragment<T : BaseViewModel> : BaseFragment {
                         R.string.error_title,
                         action.messageRes
                     )
+                    is ViewAction.CustomAction -> notifyFromViewModel(action.code)
                 }
             }
         }
     }
+
+    protected open fun notifyFromViewModel(code: Int) {}
 }

@@ -45,6 +45,7 @@ class FeedRepo {
     }
 
     fun deleteFeed(feedId: String): Completable {
+        // TODO Delete all of comments and reactions of this Feed
         return FeedManager.retrieve(feedId)
             .flatMapCompletable { feed ->
                 Completable.merge(feed.medias.map { removeFeedMedia(it.objectId) })

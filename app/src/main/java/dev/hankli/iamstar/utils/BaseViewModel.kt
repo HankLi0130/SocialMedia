@@ -42,6 +42,10 @@ abstract class BaseViewModel : ViewModel() {
         _viewEvents.value = Event(ViewAction.MessageAction(titleRes, messageRes))
     }
 
+    fun notifyView(code: Int) {
+        _viewEvents.value = Event(ViewAction.CustomAction(code))
+    }
+
     fun showNoInternet() {
         showError(R.string.error_no_internet)
     }

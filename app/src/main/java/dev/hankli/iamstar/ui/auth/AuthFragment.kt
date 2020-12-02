@@ -32,29 +32,34 @@ class AuthFragment : BaseArchFragment<AuthViewModel>(R.layout.fragment_auth) {
             val response = IdpResponse.fromResultIntent(data)
 
             when {
-                resultCode == RESULT_OK -> onSignInSuccessfully()
+                resultCode == RESULT_OK -> onSignInSuccessfully(response)
                 response == null -> onSignInCanceled()
-                response.error?.errorCode == ErrorCodes.NO_NETWORK -> onSignInNoNetwork()
                 else -> onSignInFailed(response)
             }
         }
     }
 
-    private fun onSignInSuccessfully() {
-        app.loadUser()
-        findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToFeedFragment())
+    override fun notifyFromViewModel(code: Int) {
+        if (code == viewModel.profileCreatedCode) {
+            app.loadUser()
+            findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToFeedFragment())
+        }
+    }
+
+    private fun onSignInSuccessfully(response: IdpResponse?) {
+        response?.let {
+            if (it.isNewUser) viewModel.createProfile(it) else viewModel.onProfileCreated()
+        } ?: viewModel.showError(R.string.error_unknown)
     }
 
     private fun onSignInCanceled() {
         viewModel.showMessage(messageRes = R.string.sign_in_canceled)
     }
 
-    private fun onSignInNoNetwork() {
-        viewModel.showNoInternet()
-    }
-
     private fun onSignInFailed(response: IdpResponse) {
-        response.error?.printStackTrace()
-        viewModel.showError(R.string.error_unknown)
+        response.error?.let { error ->
+            error.printStackTrace()
+            if (error.errorCode == ErrorCodes.NO_NETWORK) viewModel.showNoInternet()
+        } ?: viewModel.showError(R.string.error_unknown)
     }
 }
