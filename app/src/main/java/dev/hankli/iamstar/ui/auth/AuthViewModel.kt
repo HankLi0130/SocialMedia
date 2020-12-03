@@ -14,11 +14,10 @@ class AuthViewModel : BaseViewModel() {
 
     private val profileRepo = ProfileRepo()
 
-    // Provider Type https://firebase.google.com/docs/projects/provisioning/configure-oauth#add-idp
     fun createProfile(response: IdpResponse) {
         callProgress(true)
         viewModelScope.launch(Dispatchers.IO) {
-            profileRepo.add()
+            profileRepo.createProfile(response)
             withContext(Dispatchers.Main) {
                 callProgress(false)
                 onProfileCreated()
