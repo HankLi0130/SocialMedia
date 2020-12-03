@@ -1,7 +1,5 @@
 package dev.hankli.iamstar.ui.feed
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.DocumentReference
 import dev.hankli.iamstar.R
@@ -12,15 +10,12 @@ import io.reactivex.rxkotlin.addTo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import tw.hankli.brookray.event.Event
 
 class FeedViewModel : BaseViewModel() {
 
-    private val feedRepo: FeedRepo by lazy { FeedRepo() }
+    val refreshFeedsCode = 1
 
-    private val _refreshFeeds = MutableLiveData<Event<Unit>>()
-    val refreshFeeds: LiveData<Event<Unit>>
-        get() = _refreshFeeds
+    private val feedRepo: FeedRepo by lazy { FeedRepo() }
 
     fun deleteFeed(objectId: String) {
         callProgress(true)
@@ -49,7 +44,7 @@ class FeedViewModel : BaseViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             feed.reaction = feedRepo.getReaction(feed.objectId, user)
             withContext(Dispatchers.Main) {
-                _refreshFeeds.value = Event(Unit)
+                notifyView(refreshFeedsCode)
                 callProgress(false)
             }
         }

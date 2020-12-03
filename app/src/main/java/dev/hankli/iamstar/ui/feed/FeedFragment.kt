@@ -53,10 +53,10 @@ class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
                 MarginItemDecoration(resources.getDimension(R.dimen.distance_12_dp).toInt())
             )
         }
+    }
 
-        viewModel.refreshFeeds.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandle()?.let { feedCardAdapter.notifyDataSetChanged() }
-        }
+    override fun notifyFromViewModel(code: Int) {
+        if (code == viewModel.refreshFeedsCode) feedCardAdapter.notifyDataSetChanged()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
