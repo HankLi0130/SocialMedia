@@ -138,7 +138,7 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
     private fun handleMedias(resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK) {
             val selectedMediaItems = obtainResult(data).mapNotNull { uri ->
-                getMediaItem(contentResolver, uri)
+                getMediaItem(requireContext().contentResolver, uri)
             }
             viewModel.addToMediaItems(selectedMediaItems)
         }
@@ -192,8 +192,8 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
     private fun transfer(mediasForBrowsing: List<MediaForBrowsing>): Single<List<MediaForUploading>> {
         val actions = mediasForBrowsing.mapNotNull {
             when (it.type) {
-                IMAGE -> imageForUploading(contentResolver, it)
-                VIDEO -> videoForUploading(contentResolver, it)
+                IMAGE -> imageForUploading(requireContext().contentResolver, it)
+                VIDEO -> videoForUploading(requireContext().contentResolver, it)
                 else -> null
             }
         }

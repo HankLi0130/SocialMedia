@@ -2,7 +2,6 @@ package dev.hankli.iamstar.utils
 
 import android.app.Dialog
 import android.app.ProgressDialog
-import android.content.ContentResolver
 import android.content.Context
 import android.os.Bundle
 import android.view.Menu
@@ -30,9 +29,6 @@ abstract class BaseFragment : Fragment {
     protected open val hasOptionsMenu = false
 
     protected open val menuRes = NO_RESOURCE
-
-    protected val contentResolver: ContentResolver
-        get() = requireContext().contentResolver
 
     protected val app: App
         get() = (requireActivity().application) as App
