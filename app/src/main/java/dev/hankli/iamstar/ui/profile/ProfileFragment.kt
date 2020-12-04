@@ -5,6 +5,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.firebase.AuthManager
@@ -91,7 +92,8 @@ class ProfileFragment : BaseArchFragment<ProfileViewModel>(R.layout.fragment_pro
     }
 
     private fun updateProfile(): Boolean {
-        // TODO navigate to EditProfileFragment
+        findNavController()
+            .navigate(ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment())
         return true
     }
 
