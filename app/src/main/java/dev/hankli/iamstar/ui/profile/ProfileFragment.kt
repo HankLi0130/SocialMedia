@@ -24,6 +24,7 @@ class ProfileFragment : BaseArchFragment<ProfileViewModel>(R.layout.fragment_pro
     override val viewModel: ProfileViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewModel.subscribeProfile(app.user.id)
 
@@ -84,11 +85,11 @@ class ProfileFragment : BaseArchFragment<ProfileViewModel>(R.layout.fragment_pro
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.action_update_profile -> updateProfile()
             R.id.action_sign_out -> signOut()
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun updateProfile(): Boolean {
