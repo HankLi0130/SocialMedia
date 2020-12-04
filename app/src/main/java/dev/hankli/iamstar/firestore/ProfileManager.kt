@@ -15,6 +15,9 @@ object ProfileManager {
 
     suspend fun delete(feedId: String) = rootCollection.document(feedId).delete().await()
 
+    suspend fun get(objectId: String) =
+        rootCollection.document(objectId).get().await().toObject(Profile::class.java)
+
     fun getDoc(objectId: String) = rootCollection.document(objectId)
 
     fun addSnapshotListener(
