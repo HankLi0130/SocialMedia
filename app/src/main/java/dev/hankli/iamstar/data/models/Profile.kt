@@ -20,8 +20,4 @@ class Profile(
     var createdAt: Date = Date(),
     var updatedAt: Date? = null
     // TODO AppIdentifiers
-) : FirestoreModel(objectId) {
-    override fun toString(): String {
-        return "Profile(displayName=$displayName, description=$description, firstName=$firstName, lastName=$lastName, birthday=$birthday, loginMethod=$loginMethod, email=$email, phoneNumber=$phoneNumber, photoURL=$photoURL, sex=$sex, fcmToken=$fcmToken, voipToken=$voipToken, createdAt=$createdAt, updatedAt=$updatedAt)"
-    }
-}
+) : FirestoreModel(objectId)

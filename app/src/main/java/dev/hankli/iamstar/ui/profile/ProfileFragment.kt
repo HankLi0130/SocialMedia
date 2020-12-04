@@ -1,16 +1,24 @@
 package dev.hankli.iamstar.ui.profile
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import dev.hankli.iamstar.R
+import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.utils.BaseArchFragment
 import kotlinx.android.synthetic.main.card_field.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : BaseArchFragment<ProfileViewModel>(R.layout.fragment_profile) {
+
+    override val hasOptionsMenu: Boolean
+        get() = true
+
+    override val menuRes: Int
+        get() = R.menu.fragment_profile
 
     override val viewModel: ProfileViewModel by viewModels()
 
@@ -72,11 +80,23 @@ class ProfileFragment : BaseArchFragment<ProfileViewModel>(R.layout.fragment_pro
                 view_sex.view_field.text = it
             } ?: run { view_sex.isVisible = false }
         }
+    }
 
-//        view_sign_out.setOnClickListener {
-//            signOut(requireContext()) {
-//                mainActivity.restart()
-//            }
-//        }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_update_profile -> updateProfile()
+            R.id.action_sign_out -> signOut()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun updateProfile(): Boolean {
+        // TODO navigate to EditProfileFragment
+        return true
+    }
+
+    private fun signOut(): Boolean {
+        AuthManager.signOut(requireContext()) { mainActivity.restart() }
+        return true
     }
 }
