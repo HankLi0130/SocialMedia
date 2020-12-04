@@ -1,7 +1,6 @@
 package dev.hankli.iamstar.firestore
 
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.*
 import dev.hankli.iamstar.data.models.Profile
 import kotlinx.coroutines.tasks.await
 
@@ -17,4 +16,11 @@ object ProfileManager {
     suspend fun delete(feedId: String) = rootCollection.document(feedId).delete().await()
 
     fun getDoc(objectId: String) = rootCollection.document(objectId)
+
+    fun addSnapshotListener(
+        objectId: String,
+        listener: (DocumentSnapshot?, FirebaseFirestoreException?) -> Unit
+    ): ListenerRegistration {
+        return rootCollection.document(objectId).addSnapshotListener(listener)
+    }
 }

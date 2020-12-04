@@ -9,7 +9,16 @@
     <string name="cancel">Cancel</string>
 
     <string name="home">Home</string>
+
     <string name="profile">Profile</string>
+    <string name="profile_display_name">Display Name</string>
+    <string name="profile_description">Description</string>
+    <string name="profile_first_name">First Name</string>
+    <string name="profile_last_name">Last Name</string>
+    <string name="profile_birthday">Birthday</string>
+    <string name="profile_email">e-mail</string>
+    <string name="profile_phone_number">Phone</string>
+    <string name="profile_sex">Gender</string>
 
     <string name="add_feed">Add feed</string>
 
@@ -19,13 +28,11 @@
     <string name="up_to_video_maximum">Only 1 video can be selected !</string>
 
     <string name="alert_title">Alert</string>
-    <string name="alert_message">Message: %s</string>
     <string name="alert_feed_is_invalid">Feed is invalid !</string>
     <string name="alert_delete_feed_failed">Delete feed failed !</string>
     <string name="alert_unknown_type">Unknown type</string>
 
     <string name="error_title">Error</string>
-    <string name="error_message">Message: %s</string>
     <string name="error_unknown">Unknown error. Please contact staff for assistance.</string>
     <string name="error_no_internet">There is no internet.</string>
 
