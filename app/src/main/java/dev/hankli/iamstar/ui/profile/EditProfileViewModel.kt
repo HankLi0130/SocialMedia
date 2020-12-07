@@ -11,8 +11,12 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class EditProfileViewModel : BaseViewModel() {
+
+    val birthdayChangedCode = 100
+    val sexChangedCode = 101
 
     private lateinit var profile: Profile
 
@@ -36,6 +40,10 @@ class EditProfileViewModel : BaseViewModel() {
         }
     }
 
+    fun getBirthday(): Date? = profile.birthday
+
+    fun getSex(): String? = profile.sex
+
     fun onDisplayNameChanged(text: CharSequence?) {
         val displayName = if (text.isNullOrEmpty()) null else text.toString().trimEnd()
         profile.displayName = displayName
@@ -56,6 +64,15 @@ class EditProfileViewModel : BaseViewModel() {
         profile.lastName = lastName
     }
 
+    fun onBirthdayChanged(milliseconds: Long?) {
+        if (milliseconds != null) {
+            profile.birthday = Date(milliseconds)
+        } else {
+            profile.birthday = null
+        }
+        notifyView(birthdayChangedCode)
+    }
+
     fun onEmailChanged(text: CharSequence?) {
         val email = if (text.isNullOrEmpty()) null else text.toString().trimEnd()
         profile.email = email
@@ -64,6 +81,16 @@ class EditProfileViewModel : BaseViewModel() {
     fun onPhoneNumberChanged(text: CharSequence?) {
         val phoneNumber = if (text.isNullOrEmpty()) null else text.toString().trimEnd()
         profile.phoneNumber = phoneNumber
+    }
+
+    // 0 = Male, 1 = Female
+    fun onSexChanged(sexType: Int) {
+        profile.sex = when (sexType) {
+            0 -> "MALE"
+            1 -> "FEMALE"
+            else -> null
+        }
+        notifyView(sexChangedCode)
     }
 
     fun submit() {

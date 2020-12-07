@@ -6,10 +6,13 @@ import android.view.View
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.google.android.material.datepicker.MaterialDatePicker
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.BaseArchFragment
+import dev.hankli.iamstar.utils.ext.display
 import dev.hankli.iamstar.utils.ext.isInternetConnected
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
+import java.util.*
 
 class EditProfileFragment : BaseArchFragment<EditProfileViewModel>(R.layout.fragment_edit_profile) {
 
@@ -39,7 +42,7 @@ class EditProfileFragment : BaseArchFragment<EditProfileViewModel>(R.layout.frag
 
             view_input_profile_last_name.editText?.setText(profile.lastName)
 
-            view_input_profile_birthday.editText?.setText(profile.birthday.toString())
+            view_input_profile_birthday.editText?.setText(profile.birthday?.display())
 
             view_input_profile_email.editText?.setText(profile.email)
 
@@ -71,6 +74,37 @@ class EditProfileFragment : BaseArchFragment<EditProfileViewModel>(R.layout.frag
         view_input_profile_phone_number.editText?.doOnTextChanged { text, _, _, _ ->
             viewModel.onPhoneNumberChanged(text)
         }
+
+        view_input_profile_birthday.editText?.setOnClickListener {
+            val selection = viewModel.getBirthday()?.time ?: getDefaultSelection()
+
+            val picker = MaterialDatePicker.Builder.datePicker()
+                .setSelection(selection)
+                .build().apply {
+                    addOnPositiveButtonClickListener {
+                        viewModel.onBirthdayChanged(it)
+                        this.clearOnPositiveButtonClickListeners()
+                    }
+                }
+            picker.show(parentFragmentManager, null)
+        }
+
+        view_input_profile_sex.editText?.setOnClickListener {
+            showListDialog(R.string.sex_types_title, R.array.sex_types) {
+                viewModel.onSexChanged(it)
+            }
+        }
+    }
+
+    override fun notifyFromViewModel(code: Int) {
+        when (code) {
+            viewModel.birthdayChangedCode -> {
+                view_input_profile_birthday.editText?.setText(viewModel.getBirthday()?.display())
+            }
+            viewModel.sexChangedCode -> {
+                view_input_profile_sex.editText?.setText(viewModel.getSex())
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -85,5 +119,18 @@ class EditProfileFragment : BaseArchFragment<EditProfileViewModel>(R.layout.frag
             viewModel.submit()
         } else viewModel.showNoInternet()
         return true
+    }
+
+    // Default date is January 1 of 20 years ago.
+    private fun getDefaultSelection(): Long {
+        val cal = Calendar.getInstance().apply {
+            clear(Calendar.HOUR)
+            clear(Calendar.MINUTE)
+            clear(Calendar.SECOND)
+            clear(Calendar.MILLISECOND)
+        }
+        val defaultYear = cal.get(Calendar.YEAR) - 20
+        cal.set(defaultYear, Calendar.JANUARY, 1)
+        return cal.timeInMillis
     }
 }

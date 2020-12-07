@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.utils.BaseArchFragment
+import dev.hankli.iamstar.utils.ext.display
 import kotlinx.android.synthetic.main.card_field.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -61,7 +62,7 @@ class ProfileFragment : BaseArchFragment<ProfileViewModel>(R.layout.fragment_pro
             profile.birthday?.let {
                 view_birthday.isVisible = true
                 view_birthday.view_title.text = getString(R.string.profile_birthday)
-                view_birthday.view_field.text = it.toString()
+                view_birthday.view_field.text = it.display()
             } ?: run { view_birthday.isVisible = false }
 
             profile.email?.let {

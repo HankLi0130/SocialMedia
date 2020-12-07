@@ -48,4 +48,10 @@
         <item>Image</item>
         <item>Video</item>
     </string-array>
+
+    <string name="sex_types_title">Gender</string>
+    <string-array name="sex_types">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
 </resources>
