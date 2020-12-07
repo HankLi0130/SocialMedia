@@ -96,6 +96,7 @@ class EditProfileViewModel : BaseViewModel() {
     fun submit() {
         callProgress(true)
         viewModelScope.launch(IO) {
+            profile.updatedAt = Date()
             ProfileManager.update(profile)
             withContext(Main) {
                 callProgress(false)
