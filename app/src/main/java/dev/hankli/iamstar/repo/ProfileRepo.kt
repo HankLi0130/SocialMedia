@@ -6,6 +6,7 @@ import dev.hankli.iamstar.data.models.Profile
 import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.firebase.StorageManager
 import dev.hankli.iamstar.firestore.ProfileManager
+import java.util.*
 
 class ProfileRepo {
 
@@ -32,6 +33,15 @@ class ProfileRepo {
             photoURL = user.photoUrl?.toString(),
             loginMethod = loginMethod
         )
+        ProfileManager.update(profile)
+    }
+
+    suspend fun fetchProfile(userId: String): Profile {
+        return ProfileManager.get(userId).toObject(Profile::class.java)!!
+    }
+
+    suspend fun updateProfile(profile: Profile) {
+        profile.updatedAt = Date()
         ProfileManager.update(profile)
     }
 

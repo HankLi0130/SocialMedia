@@ -4,9 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Profile
-import dev.hankli.iamstar.firestore.ProfileManager
 import dev.hankli.iamstar.repo.ProfileRepo
 import dev.hankli.iamstar.utils.BaseViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -25,16 +23,12 @@ class EditProfileViewModel : BaseViewModel() {
     val profileData: LiveData<Profile>
         get() = _profileData
 
-    fun loadProfile(objectId: String) {
+    fun loadProfile(userId: String) {
         callProgress(true)
         viewModelScope.launch(IO) {
-            val profile = ProfileManager.get(objectId)
+            val profile = profileRepo.fetchProfile(userId)
             withContext(Main) {
                 callProgress(false)
-                if (profile == null) {
-                    showError(R.string.error_unknown)
-                    return@withContext
-                }
                 this@EditProfileViewModel.profile = profile
                 refreshProfile()
             }
@@ -110,8 +104,7 @@ class EditProfileViewModel : BaseViewModel() {
     fun submit() {
         callProgress(true)
         viewModelScope.launch(IO) {
-            profile.updatedAt = Date()
-            ProfileManager.update(profile)
+            profileRepo.updateProfile(profile)
             withContext(Main) {
                 callProgress(false)
                 popBack()

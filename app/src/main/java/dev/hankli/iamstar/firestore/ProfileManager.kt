@@ -10,18 +10,16 @@ object ProfileManager {
     private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val rootCollection: CollectionReference by lazy { db.collection(COLLECTION_PROFILE) }
 
+    fun getDoc(userId: String) = rootCollection.document(userId)
+
     suspend fun updateHeadshot(userId: String, url: String) =
-        rootCollection.document(userId).update("photoURL", url).await()
+        getDoc(userId).update("photoURL", url).await()
 
-    suspend fun update(profile: Profile) =
-        rootCollection.document(profile.objectId).set(profile).await()
+    suspend fun update(profile: Profile) = getDoc(profile.objectId).set(profile).await()
 
-    suspend fun delete(feedId: String) = rootCollection.document(feedId).delete().await()
+    suspend fun delete(userId: String) = getDoc(userId).delete().await()
 
-    suspend fun get(objectId: String) =
-        rootCollection.document(objectId).get().await().toObject(Profile::class.java)
-
-    fun getDoc(objectId: String) = rootCollection.document(objectId)
+    suspend fun get(userId: String) = getDoc(userId).get().await()
 
     fun addSnapshotListener(
         objectId: String,
