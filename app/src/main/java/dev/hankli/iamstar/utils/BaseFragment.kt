@@ -1,7 +1,5 @@
 package dev.hankli.iamstar.utils
 
-import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.Menu
@@ -11,12 +9,14 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.core.content.PermissionChecker.checkSelfPermission
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import dev.hankli.iamstar.App
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.ui.MainActivity
 import tw.hankli.brookray.constant.NO_RESOURCE
+import tw.hankli.brookray.dialog.ProcessDialog
 import tw.hankli.brookray.extension.showListDialog
 import tw.hankli.brookray.extension.showMessageDialog
 
@@ -36,13 +36,11 @@ abstract class BaseFragment : Fragment {
     protected val mainActivity: MainActivity
         get() = requireActivity() as MainActivity
 
-    private lateinit var progressDialog: Dialog
+    private lateinit var processDialog: DialogFragment
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        progressDialog = ProgressDialog(context).apply {
-            setCancelable(false)
-        }
+        processDialog = ProcessDialog.newInstance(getString(R.string.loading))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,7 +87,7 @@ abstract class BaseFragment : Fragment {
     }
 
     protected fun callProgressDialog(show: Boolean) {
-        if (show) progressDialog.show() else progressDialog.dismiss()
+        if (show) processDialog.show(parentFragmentManager, null) else processDialog.dismiss()
     }
 
     protected fun showMessageDialog(
