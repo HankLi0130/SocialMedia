@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/view_feed_head_shot"
-        android:layout_width="@dimen/distance_64_dp"
-        android:layout_height="@dimen/distance_64_dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/ic_person"
