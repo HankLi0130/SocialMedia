@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dev.hankli.iamstar.R
 import io.reactivex.disposables.CompositeDisposable
-import tw.hankli.brookray.constant.NO_RESOURCE
-import tw.hankli.brookray.event.Event
+import tw.hankli.brookray.core.constant.NO_RESOURCE
+import tw.hankli.brookray.core.event.Event
 
 abstract class BaseViewModel : ViewModel() {
 

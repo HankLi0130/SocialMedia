@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dev.hankli.iamstar.R
 import kotlinx.android.synthetic.main.itemview_media.view.*
-import tw.hankli.brookray.extension.viewOf
+import tw.hankli.brookray.core.extension.viewOf
 
 class MediaAdapter(private val listener: Listener) :
     RecyclerView.Adapter<MediaAdapter.ViewHolder>() {

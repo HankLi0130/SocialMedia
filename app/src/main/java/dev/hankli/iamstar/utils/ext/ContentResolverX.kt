@@ -8,7 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Size
-import tw.hankli.brookray.constant.ZERO
+import tw.hankli.brookray.core.constant.ZERO
 
 fun ContentResolver.getBitmap(uri: Uri): Bitmap {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

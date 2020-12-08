@@ -13,7 +13,7 @@ import dev.hankli.iamstar.utils.BaseArchFragment
 import dev.hankli.iamstar.utils.MarginItemDecoration
 import dev.hankli.iamstar.utils.ext.isInternetConnected
 import kotlinx.android.synthetic.main.fragment_feed.*
-import tw.hankli.brookray.constant.EMPTY
+import tw.hankli.brookray.core.constant.EMPTY
 
 class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
 

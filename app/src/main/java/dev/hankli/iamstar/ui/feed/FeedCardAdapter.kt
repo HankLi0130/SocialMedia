@@ -12,7 +12,7 @@ import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Reaction
 import dev.hankli.iamstar.utils.ext.display
 import kotlinx.android.synthetic.main.card_feed.view.*
-import tw.hankli.brookray.extension.viewOf
+import tw.hankli.brookray.core.extension.viewOf
 
 class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
     FirestoreRecyclerAdapter<Feed, FeedCardAdapter.ViewHolder>(options) {

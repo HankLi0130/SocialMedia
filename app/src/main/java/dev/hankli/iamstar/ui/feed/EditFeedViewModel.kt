@@ -18,7 +18,7 @@ import io.reactivex.rxkotlin.addTo
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import tw.hankli.brookray.constant.EMPTY
+import tw.hankli.brookray.core.constant.EMPTY
 
 class EditFeedViewModel : BaseViewModel() {
 

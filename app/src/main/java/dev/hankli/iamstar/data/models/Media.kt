@@ -1,8 +1,8 @@
 package dev.hankli.iamstar.data.models
 
 import com.google.firebase.firestore.PropertyName
-import tw.hankli.brookray.constant.EMPTY
-import tw.hankli.brookray.constant.ZERO
+import tw.hankli.brookray.core.constant.EMPTY
+import tw.hankli.brookray.core.constant.ZERO
 
 class Media(
     objectId: String = EMPTY,

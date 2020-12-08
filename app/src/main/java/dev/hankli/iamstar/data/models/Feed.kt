@@ -3,8 +3,8 @@ package dev.hankli.iamstar.data.models
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.IgnoreExtraProperties
-import tw.hankli.brookray.constant.EMPTY
-import tw.hankli.brookray.constant.ZERO
+import tw.hankli.brookray.core.constant.EMPTY
+import tw.hankli.brookray.core.constant.ZERO
 import java.util.*
 
 // https://stackoverflow.com/a/40117301/8361227

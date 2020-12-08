@@ -6,8 +6,8 @@ import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.utils.ext.*
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import tw.hankli.brookray.constant.EMPTY
-import tw.hankli.brookray.constant.ZERO
+import tw.hankli.brookray.core.constant.EMPTY
+import tw.hankli.brookray.core.constant.ZERO
 import java.util.*
 
 /**
