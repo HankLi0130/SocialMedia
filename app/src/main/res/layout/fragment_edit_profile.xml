@@ -17,8 +17,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/view_profile_avatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/distance_100_dp"
+            android:layout_height="@dimen/distance_100_dp"
             android:layout_gravity="center_horizontal"
             app:cardCornerRadius="50dp"
             app:cardElevation="@dimen/distance_3_dp">
@@ -34,8 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="@dimen/distance_10_dp"
+                android:layout_marginBottom="@dimen/distance_10_dp"
                 app:cardBackgroundColor="@android:color/darker_gray"
                 app:cardCornerRadius="50dp"
                 app:cardElevation="@dimen/distance_3_dp">

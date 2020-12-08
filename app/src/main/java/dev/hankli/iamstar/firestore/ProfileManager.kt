@@ -10,6 +10,9 @@ object ProfileManager {
     private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val rootCollection: CollectionReference by lazy { db.collection(COLLECTION_PROFILE) }
 
+    suspend fun updateHeadshot(userId: String, url: String) =
+        rootCollection.document(userId).update("photoURL", url).await()
+
     suspend fun update(profile: Profile) =
         rootCollection.document(profile.objectId).set(profile).await()
 

@@ -1,11 +1,13 @@
 package dev.hankli.iamstar.ui.profile
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Profile
 import dev.hankli.iamstar.firestore.ProfileManager
+import dev.hankli.iamstar.repo.ProfileRepo
 import dev.hankli.iamstar.utils.BaseViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -15,10 +17,9 @@ import java.util.*
 
 class EditProfileViewModel : BaseViewModel() {
 
-    val birthdayChangedCode = 100
-    val sexChangedCode = 101
-
     private lateinit var profile: Profile
+
+    private val profileRepo = ProfileRepo()
 
     private val _profileData = MutableLiveData<Profile>()
     val profileData: LiveData<Profile>
@@ -35,14 +36,27 @@ class EditProfileViewModel : BaseViewModel() {
                     return@withContext
                 }
                 this@EditProfileViewModel.profile = profile
-                _profileData.value = profile
+                refreshProfile()
             }
         }
     }
 
     fun getBirthday(): Date? = profile.birthday
 
-    fun getSex(): String? = profile.sex
+    fun refreshProfile() {
+        _profileData.value = profile
+    }
+
+    fun onHeadShotSelected(userId: String, uri: Uri) {
+        callProgress(true)
+        viewModelScope.launch {
+            profile.photoURL = profileRepo.updateHeadshot(userId, uri)
+            withContext(Main) {
+                callProgress(false)
+                refreshProfile()
+            }
+        }
+    }
 
     fun onDisplayNameChanged(text: CharSequence?) {
         val displayName = if (text.isNullOrEmpty()) null else text.toString().trimEnd()
@@ -70,7 +84,7 @@ class EditProfileViewModel : BaseViewModel() {
         } else {
             profile.birthday = null
         }
-        notifyView(birthdayChangedCode)
+        refreshProfile()
     }
 
     fun onEmailChanged(text: CharSequence?) {
@@ -90,7 +104,7 @@ class EditProfileViewModel : BaseViewModel() {
             1 -> "FEMALE"
             else -> null
         }
-        notifyView(sexChangedCode)
+        refreshProfile()
     }
 
     fun submit() {

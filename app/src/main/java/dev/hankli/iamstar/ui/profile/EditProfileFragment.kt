@@ -1,5 +1,7 @@
 package dev.hankli.iamstar.ui.profile
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -9,8 +11,13 @@ import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.BaseArchFragment
+import dev.hankli.iamstar.utils.Consts.REQUEST_PERMISSION_MEDIA
+import dev.hankli.iamstar.utils.Consts.REQUEST_PICK_MEDIAS
 import dev.hankli.iamstar.utils.ext.display
 import dev.hankli.iamstar.utils.ext.isInternetConnected
+import dev.hankli.iamstar.utils.media.mediaPickerPermissions
+import dev.hankli.iamstar.utils.media.obtainResult
+import dev.hankli.iamstar.utils.media.showImagePicker
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import java.util.*
 
@@ -23,6 +30,8 @@ class EditProfileFragment : BaseArchFragment<EditProfileViewModel>(R.layout.frag
         get() = R.menu.single_action_ok
 
     override val viewModel: EditProfileViewModel by viewModels()
+
+    private val maxSelectable = 1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -75,6 +84,10 @@ class EditProfileFragment : BaseArchFragment<EditProfileViewModel>(R.layout.frag
             viewModel.onPhoneNumberChanged(text)
         }
 
+        view_profile_head_shot.setOnClickListener {
+            askingPermissions(mediaPickerPermissions, REQUEST_PERMISSION_MEDIA)
+        }
+
         view_input_profile_birthday.editText?.setOnClickListener {
             val selection = viewModel.getBirthday()?.time ?: getDefaultSelection()
 
@@ -96,13 +109,17 @@ class EditProfileFragment : BaseArchFragment<EditProfileViewModel>(R.layout.frag
         }
     }
 
-    override fun notifyFromViewModel(code: Int) {
-        when (code) {
-            viewModel.birthdayChangedCode -> {
-                view_input_profile_birthday.editText?.setText(viewModel.getBirthday()?.display())
-            }
-            viewModel.sexChangedCode -> {
-                view_input_profile_sex.editText?.setText(viewModel.getSex())
+    override fun onAllPermissionsGranted(requestCode: Int) {
+        when (requestCode) {
+            REQUEST_PERMISSION_MEDIA -> showImagePicker(this, maxSelectable, REQUEST_PICK_MEDIAS)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_PICK_MEDIAS && resultCode == RESULT_OK) {
+            val uris = obtainResult(data)
+            if (uris.isNotEmpty()) {
+                viewModel.onHeadShotSelected(app.user.id, uris[0])
             }
         }
     }

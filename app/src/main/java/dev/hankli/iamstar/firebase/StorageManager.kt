@@ -4,11 +4,20 @@ import android.net.Uri
 import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
 import io.reactivex.Single
+import kotlinx.coroutines.tasks.await
 import java.io.InputStream
 
 object StorageManager {
 
     private val storage by lazy { FirebaseStorage.getInstance() }
+
+    suspend fun uploadFile2(path: String, uri: Uri): String {
+        val ref = storage.reference.child(path)
+        return ref.putFile(uri)
+            .continueWithTask { ref.downloadUrl }
+            .await()
+            .toString()
+    }
 
     // https://firebase.google.com/docs/storage/android/upload-files
     fun uploadFile(path: String, uri: Uri): Single<String> {
