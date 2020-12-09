@@ -99,7 +99,7 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
 
     private fun selectTypeOfMedia() {
         if (viewModel.isMediaItemsEmpty()) {
-            showListDialog(R.string.media_types_title, R.array.media_types) { which ->
+            showListDialog(itemsId = R.array.media_types) { which ->
                 when (which) {
                     0 -> showImagePicker(this, maxImageSelectable, REQUEST_PICK_MEDIAS)
                     1 -> showVideoPicker(this, maxVideoSelectable, REQUEST_PICK_MEDIAS)

@@ -44,7 +44,6 @@
         <item>delete</item>
     </string-array>
 
-    <string name="media_types_title">Media Types</string>
     <string-array name="media_types">
         <item>Image</item>
         <item>Video</item>

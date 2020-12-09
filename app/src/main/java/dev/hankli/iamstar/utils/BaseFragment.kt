@@ -91,7 +91,7 @@ abstract class BaseFragment : Fragment {
     }
 
     protected fun showMessageDialog(
-        @StringRes titleId: Int,
+        @StringRes titleId: Int = NO_RESOURCE,
         @StringRes messageId: Int,
         cancelable: Boolean = true,
         onSubmit: (() -> Unit)? = null
@@ -102,7 +102,7 @@ abstract class BaseFragment : Fragment {
     }
 
     protected fun showListDialog(
-        @StringRes titleId: Int,
+        @StringRes titleId: Int = NO_RESOURCE,
         @ArrayRes itemsId: Int,
         cancelable: Boolean = true,
         onSubmit: ((which: Int) -> Unit)? = null
