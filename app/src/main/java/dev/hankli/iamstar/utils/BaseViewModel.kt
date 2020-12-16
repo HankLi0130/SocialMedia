@@ -5,18 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dev.hankli.iamstar.R
-import io.reactivex.disposables.CompositeDisposable
 import tw.hankli.brookray.core.constant.NO_RESOURCE
 import tw.hankli.brookray.core.event.Event
 
 abstract class BaseViewModel : ViewModel() {
-
-    protected val disposables = CompositeDisposable()
-
-    override fun onCleared() {
-        super.onCleared()
-        disposables.clear()
-    }
 
     private val _viewEvents = MutableLiveData<Event<ViewAction>>()
     val viewEvents: LiveData<Event<ViewAction>>

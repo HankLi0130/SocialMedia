@@ -7,7 +7,6 @@ import com.google.firebase.firestore.Query
 import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Reaction
-import io.reactivex.Single
 import kotlinx.coroutines.tasks.await
 import java.util.*
 
@@ -32,18 +31,18 @@ object FeedManager {
 
     suspend fun delete(feedId: String) = rootCollection.document(feedId).delete().await()
 
-    fun retrieve(objectId: String): Single<Feed> {
-        return Single.create { emitter ->
-            rootCollection.document(objectId)
-                .get()
-                .addOnSuccessListener { snapshot ->
-                    snapshot.toObject(Feed::class.java)?.let {
-                        emitter.onSuccess(it)
-                    } ?: emitter.onError(NullPointerException("Feed is null !"))
-                }
-                .addOnFailureListener { emitter.onError(it) }
-        }
-    }
+//    fun retrieve(objectId: String): Single<Feed> {
+//        return Single.create { emitter ->
+//            rootCollection.document(objectId)
+//                .get()
+//                .addOnSuccessListener { snapshot ->
+//                    snapshot.toObject(Feed::class.java)?.let {
+//                        emitter.onSuccess(it)
+//                    } ?: emitter.onError(NullPointerException("Feed is null !"))
+//                }
+//                .addOnFailureListener { emitter.onError(it) }
+//        }
+//    }
 
     fun queryByInfluencer(influencer: DocumentReference, limit: Long = 10): Query {
         return rootCollection
