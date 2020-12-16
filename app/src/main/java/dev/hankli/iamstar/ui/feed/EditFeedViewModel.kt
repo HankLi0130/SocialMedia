@@ -1,6 +1,6 @@
 package dev.hankli.iamstar.ui.feed
 
-import android.util.Log
+import android.content.ContentResolver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,13 +9,10 @@ import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.repo.FeedRepo
 import dev.hankli.iamstar.utils.BaseViewModel
-import dev.hankli.iamstar.utils.media.MediaForBrowsing
-import dev.hankli.iamstar.utils.media.MediaForUploading
-import dev.hankli.iamstar.utils.media.toForBrowsing
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
+import dev.hankli.iamstar.utils.media.*
+import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.hankli.brookray.core.constant.EMPTY
@@ -30,11 +27,11 @@ class EditFeedViewModel : BaseViewModel() {
     val contentData: LiveData<String>
         get() = _contentData
 
-    private val mediaItems = mutableListOf<MediaForBrowsing>()
+    private val mediaFiles = mutableListOf<MediaFile>()
 
-    private val _mediaItemsData = MutableLiveData<List<MediaForBrowsing>>()
-    val mediaItemsData: LiveData<List<MediaForBrowsing>>
-        get() = _mediaItemsData
+    private val _mediaFilesData = MutableLiveData<List<MediaFile>>()
+    val mediaFilesData: LiveData<List<MediaFile>>
+        get() = _mediaFilesData
 
     private val _locationData = MutableLiveData<String?>()
     val locationData: LiveData<String?>
@@ -57,7 +54,7 @@ class EditFeedViewModel : BaseViewModel() {
         _locationData.value = feed.location
         _contentData.value = feed.content
 
-        addToMediaItems(feed.medias.map { it.toForBrowsing() })
+        addMediaFiles(feed.medias.map { it.toMediaFile() })
     }
 
     fun onContentChanged(text: CharSequence?) {
@@ -65,14 +62,14 @@ class EditFeedViewModel : BaseViewModel() {
         feed.content = content
     }
 
-    fun addToMediaItems(list: List<MediaForBrowsing>) {
-        mediaItems.addAll(list)
-        _mediaItemsData.value = mediaItems
+    fun addMediaFiles(list: List<MediaFile>) {
+        mediaFiles.addAll(list)
+        _mediaFilesData.value = mediaFiles
     }
 
     fun removeMediaItemAt(position: Int) {
-        mediaItems.removeAt(position)
-        _mediaItemsData.value = mediaItems
+        mediaFiles.removeAt(position)
+        _mediaFilesData.value = mediaFiles
     }
 
     fun setLocation(location: String?, latitude: Double?, longitude: Double?) {
@@ -83,69 +80,88 @@ class EditFeedViewModel : BaseViewModel() {
     }
 
     fun submit(
+        contentResolver: ContentResolver,
         currentUser: DocumentReference,
-        influencer: DocumentReference,
-        transfer: (List<MediaForBrowsing>) -> Single<List<MediaForUploading>>
+        influencer: DocumentReference
     ) {
-        if (!isValid()) {
-            showAlert(R.string.alert_feed_is_invalid)
+        val errorMessageRes = checkValid()
+        if (errorMessageRes.isNotEmpty()) {
+            showErrors(errorMessageRes)
             return
         }
 
-        callProgress(true)
-
-        // If the post doesn't have objectId, create a new one
+        // If the post doesn't have an objectId, create a new post
         // Instead of, update the post
         if (feed.objectId == EMPTY) {
             feed.author = currentUser
             feed.influencer = influencer
 
-            transfer(mediaItems)
-                .flatMap {
-                    feedRepo.addFeed(feed, it)
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate {
-                    callProgress(false)
-                }
-                .subscribe({
-                    popBack()
-                }, { ex ->
-                    Log.e("test", "add post failed", ex)
-                })
-                .addTo(disposables)
+            viewModelScope.launch(Main) {
+                callProgress(true)
 
+                val uploadingMedias = withContext(Default) {
+                    val localMediaFiles = mediaFiles.filterIsInstance(LocalMediaFile::class.java)
+                    return@withContext toUploadingMedias(contentResolver, localMediaFiles)
+                }
+
+                withContext(IO) {
+                    feedRepo.addFeed(this, feed, uploadingMedias)
+                }
+
+                callProgress(false)
+                popBack()
+            }
         } else {
-            transfer(mediaItems.filter { it.objectId == EMPTY })
-                .flatMapCompletable { mediasForUploading ->
+            viewModelScope.launch(Main) {
+                callProgress(true)
+
+                val uploadingMedias = withContext(Default) {
+                    val localMediaFiles = mediaFiles.filterIsInstance(LocalMediaFile::class.java)
+                    return@withContext toUploadingMedias(contentResolver, localMediaFiles)
+                }
+
+                val removingMediaIds = withContext(Default) {
                     val originIds = feed.medias.map { it.objectId }
-                    val updatedIds = mediaItems.map { it.objectId }
-                    val idsForRemoving = originIds.subtract(updatedIds)
-                    feedRepo.updateFeed(feed, mediasForUploading, idsForRemoving)
+                    val keepingIds = mediaFiles.filterIsInstance(RemoteMediaFile::class.java)
+                        .map { it.id }
+                    return@withContext originIds.subtract(keepingIds)
                 }
-                .doOnComplete {
-                    callProgress(false)
+
+                withContext(IO) {
+                    feedRepo.updateFeed(this, feed, uploadingMedias, removingMediaIds)
                 }
-                .subscribe({
-                    popBack()
-                }, { ex ->
-                    Log.e("test", "update post failed", ex)
-                })
-                .addTo(disposables)
+
+                callProgress(false)
+                popBack()
+            }
+//            transfer(mediaFiles.filter { it.objectId == EMPTY })
+//                .flatMapCompletable { mediasForUploading ->
+//                    val originIds = feed.medias.map { it.objectId }
+//                    val updatedIds = mediaFiles.map { it.objectId }
+//                    val idsForRemoving = originIds.subtract(updatedIds)
+//                    feedRepo.updateFeed(feed, mediasForUploading, idsForRemoving)
+//                }
+//                .doOnComplete {
+//                    callProgress(false)
+//                }
+//                .subscribe({
+//                    popBack()
+//                }, { ex ->
+//                    Log.e("test", "update post failed", ex)
+//                })
+//                .addTo(disposables)
         }
     }
 
-    private fun isValid(): Boolean {
-        if (feed.content.isEmpty()) return false
-        return true
+    private fun checkValid(): List<Int> {
+        val errorMessageRes = mutableListOf<Int>()
+        if (feed.content.isEmpty()) errorMessageRes.add(R.string.error_feed_content_is_empty)
+        return errorMessageRes
     }
 
-    fun isMediaItemsEmpty() = mediaItems.isEmpty()
+    fun isMediaFilesEmpty() = mediaFiles.isEmpty()
 
-    fun getMediaItemCount(): Int = mediaItems.size
+    fun getMediaFilesCount() = mediaFiles.size
 
-    fun getMediaItemsType(): String? {
-        val media = mediaItems.getOrNull(0)
-        return media?.type
-    }
+    fun getMediaFilesType() = mediaFiles[0].type()
 }

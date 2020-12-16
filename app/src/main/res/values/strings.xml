@@ -30,10 +30,10 @@
     <string name="up_to_video_maximum">Only 1 video can be selected !</string>
 
     <string name="alert_title">Alert</string>
-    <string name="alert_feed_is_invalid">Feed is invalid !</string>
     <string name="alert_delete_feed_failed">Delete feed failed !</string>
     <string name="alert_unknown_type">Unknown type</string>
 
+    <string name="error_feed_content_is_empty">Feed content is empty !</string>
     <string name="error_title">Error</string>
     <string name="error_unknown">Unknown error. Please contact staff for assistance.</string>
     <string name="error_no_internet">There is no internet.</string>

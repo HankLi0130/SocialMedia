@@ -2,12 +2,12 @@ package dev.hankli.iamstar.ui.feed
 
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.DocumentReference
-import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.repo.FeedRepo
 import dev.hankli.iamstar.utils.BaseViewModel
-import io.reactivex.rxkotlin.addTo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -17,16 +17,23 @@ class FeedViewModel : BaseViewModel() {
 
     private val feedRepo: FeedRepo by lazy { FeedRepo() }
 
-    fun deleteFeed(objectId: String) {
-        callProgress(true)
-        feedRepo.deleteFeed(objectId)
-            .doOnComplete { callProgress(false) }
-            .subscribe({
+    fun deleteFeed(feedId: String) {
+        viewModelScope.launch(Main) {
+            callProgress(true)
+            withContext(IO) {
+                feedRepo.removeFeed(feedId)
+            }
+            callProgress(false)
+        }
 
-            }, {
-                showAlert(R.string.alert_delete_feed_failed)
-            })
-            .addTo(disposables)
+//        feedRepo.deleteFeed(objectId)
+//            .doOnComplete { callProgress(false) }
+//            .subscribe({
+//
+//            }, {
+//                showAlert(R.string.alert_delete_feed_failed)
+//            })
+//            .addTo(disposables)
     }
 
     fun doReaction(feedId: String, user: DocumentReference) {
@@ -40,13 +47,11 @@ class FeedViewModel : BaseViewModel() {
     }
 
     fun retrieveReaction(feed: Feed, user: DocumentReference) {
-        callProgress(true)
-        viewModelScope.launch(Dispatchers.IO) {
-            feed.reaction = feedRepo.getReaction(feed.objectId, user)
-            withContext(Dispatchers.Main) {
-                notifyView(refreshFeedsCode)
-                callProgress(false)
-            }
+        viewModelScope.launch(Main) {
+            callProgress(true)
+            withContext(IO) { feed.reaction = feedRepo.getReaction(feed.objectId, user) }
+            notifyView(refreshFeedsCode)
+            callProgress(false)
         }
     }
 }

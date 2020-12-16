@@ -7,7 +7,6 @@ import com.google.firebase.firestore.Query
 import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Reaction
-import io.reactivex.Completable
 import io.reactivex.Single
 import kotlinx.coroutines.tasks.await
 import java.util.*
@@ -20,32 +19,18 @@ object FeedManager {
     private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val rootCollection: CollectionReference by lazy { db.collection(COLLECTION_FEED) }
 
-    fun add(feed: Feed): Single<String> {
-        return Single.create { emitter ->
-            val feedDoc = rootCollection.document()
-            feed.objectId = feedDoc.id
-            feedDoc.set(feed)
-                .addOnSuccessListener { emitter.onSuccess(feed.objectId) }
-                .addOnFailureListener { emitter.onError(it) }
-        }
+    suspend fun add(feed: Feed) {
+        val feedDoc = rootCollection.document()
+        feed.objectId = feedDoc.id
+        feedDoc.set(feed).await()
     }
 
-    fun update(feed: Feed): Completable {
-        return Completable.create { emitter ->
-            feed.updatedAt = Date()
-            rootCollection.document(feed.objectId).set(feed)
-                .addOnSuccessListener { emitter.onComplete() }
-                .addOnFailureListener { emitter.onError(it) }
-        }
+    suspend fun update(feed: Feed) {
+        feed.updatedAt = Date()
+        rootCollection.document(feed.objectId).set(feed).await()
     }
 
-    fun delete(feedId: String): Completable {
-        return Completable.create { emitter ->
-            rootCollection.document(feedId).delete()
-                .addOnSuccessListener { emitter.onComplete() }
-                .addOnFailureListener { emitter.onError(it) }
-        }
-    }
+    suspend fun delete(feedId: String) = rootCollection.document(feedId).delete().await()
 
     fun retrieve(objectId: String): Single<Feed> {
         return Single.create { emitter ->
@@ -91,6 +76,13 @@ object FeedManager {
         getReactionsRef(feedId).document(user.id).delete().await()
     }
 
+    suspend fun removeReactions(feedId: String) {
+        val docs = getReactionsRef(feedId).get().await().documents
+        for (doc in docs) {
+            doc.reference.delete().await()
+        }
+    }
+
     suspend fun updateReactionCount(feedId: String) {
         val count = getReactionsRef(feedId).get().await().size()
         rootCollection.document(feedId).update("reactionCount", count).await()
@@ -121,6 +113,13 @@ object FeedManager {
 
     suspend fun removeComment(feedId: String, commentId: String) {
         getCommentsRef(feedId).document(commentId).delete().await()
+    }
+
+    suspend fun removeComments(feedId: String) {
+        val docs = getCommentsRef(feedId).get().await().documents
+        for (doc in docs) {
+            doc.reference.delete().await()
+        }
     }
 
     suspend fun updateCommentCount(feedId: String) {

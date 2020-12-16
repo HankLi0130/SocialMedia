@@ -38,6 +38,10 @@ abstract class BaseViewModel : ViewModel() {
         _viewEvents.value = Event(ViewAction.ErrorAction(messageRes))
     }
 
+    fun showErrors(messageRes: List<Int>) {
+        _viewEvents.value = Event(ViewAction.ErrorsAction(messageRes))
+    }
+
     fun showMessage(@StringRes titleRes: Int = NO_RESOURCE, @StringRes messageRes: Int) {
         _viewEvents.value = Event(ViewAction.MessageAction(titleRes, messageRes))
     }

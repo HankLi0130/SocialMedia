@@ -47,7 +47,7 @@ class ProfileRepo {
 
     suspend fun updateHeadshot(userId: String, uri: Uri): String {
         val filePath = "${BUCKET_PROFILE}/${userId}"
-        val url = StorageManager.uploadFile2(filePath, uri)
+        val url = StorageManager.uploadFile(filePath, uri)
         ProfileManager.updateHeadshot(userId, url)
         return url
     }

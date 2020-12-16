@@ -22,11 +22,10 @@ import dev.hankli.iamstar.utils.Consts.REQUEST_PLACES
 import dev.hankli.iamstar.utils.ext.isInternetConnected
 import dev.hankli.iamstar.utils.getPlacesIntent
 import dev.hankli.iamstar.utils.media.*
-import io.reactivex.Single
 import kotlinx.android.synthetic.main.fragment_edit_feed.*
 
 class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_edit_feed),
-    MediaAdapter.Listener {
+    MediaFileAdapter.Listener {
 
     override val hasOptionsMenu: Boolean
         get() = true
@@ -38,7 +37,7 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
 
     private val args: EditFeedFragmentArgs by navArgs()
 
-    private val mediaAdapter = MediaAdapter(this)
+    private val mediaAdapter = MediaFileAdapter(this)
 
     private val maxImageSelectable = 6
 
@@ -73,10 +72,10 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
             view_input_post_text.setSelection(content.length)
         })
 
-        viewModel.mediaItemsData.observe(viewLifecycleOwner, Observer { mediaItems ->
-            view_list_media.isVisible = mediaItems.isNotEmpty()
+        viewModel.mediaFilesData.observe(viewLifecycleOwner, Observer { mediaFiles ->
+            view_list_media.isVisible = mediaFiles.isNotEmpty()
 
-            mediaAdapter.forBrows = mediaItems
+            mediaAdapter.items = mediaFiles
             mediaAdapter.notifyDataSetChanged()
         })
 
@@ -98,7 +97,7 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
     }
 
     private fun selectTypeOfMedia() {
-        if (viewModel.isMediaItemsEmpty()) {
+        if (viewModel.isMediaFilesEmpty()) {
             showListDialog(itemsId = R.array.media_types) { which ->
                 when (which) {
                     0 -> showImagePicker(this, maxImageSelectable, REQUEST_PICK_MEDIAS)
@@ -106,9 +105,9 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
                 }
             }
         } else {
-            val mediaItemCount = viewModel.getMediaItemCount()
-            when (viewModel.getMediaItemsType()) {
+            when (viewModel.getMediaFilesType()) {
                 IMAGE -> {
+                    val mediaItemCount = viewModel.getMediaFilesCount()
                     if (mediaItemCount < maxImageSelectable) {
                         showImagePicker(
                             this,
@@ -122,7 +121,6 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
                 VIDEO -> {
                     showMessageDialog(R.string.error_title, R.string.up_to_video_maximum)
                 }
-                else -> viewModel.showError(R.string.alert_unknown_type)
             }
         }
     }
@@ -137,10 +135,15 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
 
     private fun handleMedias(resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK) {
-            val selectedMediaItems = obtainResult(data).mapNotNull { uri ->
-                getMediaItem(requireContext().contentResolver, uri)
-            }
-            viewModel.addToMediaItems(selectedMediaItems)
+            val uris = obtainResult(data)
+            val paths = obtainPathResult(data)
+            val selectedMediaFiles = toMediaFiles(
+                requireContext().contentResolver,
+                uris,
+                paths
+            )
+
+            viewModel.addMediaFiles(selectedMediaFiles)
         }
     }
 
@@ -174,9 +177,9 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
             R.id.action_ok -> {
                 if (requireContext().isInternetConnected()) {
                     viewModel.submit(
+                        requireContext().contentResolver,
                         app.user,
-                        app.influencer,
-                        this::transfer
+                        app.influencer
                     )
                 } else viewModel.showNoInternet()
                 true
@@ -185,19 +188,17 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
         }
     }
 
-    override fun onItemCancel(position: Int) {
-        viewModel.removeMediaItemAt(position)
-    }
+    override fun onItemCancel(position: Int) = viewModel.removeMediaItemAt(position)
 
-    private fun transfer(mediasForBrowsing: List<MediaForBrowsing>): Single<List<MediaForUploading>> {
-        val actions = mediasForBrowsing.mapNotNull {
-            when (it.type) {
-                IMAGE -> imageForUploading(requireContext().contentResolver, it)
-                VIDEO -> videoForUploading(requireContext().contentResolver, it)
-                else -> null
-            }
-        }
-
-        return Single.merge(actions).toList()
-    }
+//    private fun transfer(mediasForBrowsing: List<MediaForBrowsing>): Single<List<MediaForUploading>> {
+//        val actions = mediasForBrowsing.mapNotNull {
+//            when (it.type) {
+//                IMAGE -> imageForUploading(requireContext().contentResolver, it)
+//                VIDEO -> videoForUploading(requireContext().contentResolver, it)
+//                else -> null
+//            }
+//        }
+//
+//        return Single.merge(actions).toList()
+//    }
 }

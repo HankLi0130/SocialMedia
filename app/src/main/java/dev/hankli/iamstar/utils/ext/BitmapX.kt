@@ -1,6 +1,7 @@
 package dev.hankli.iamstar.utils.ext
 
 import android.graphics.Bitmap
+import tw.hankli.brookray.core.constant.ZERO
 import java.io.ByteArrayOutputStream
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -14,10 +15,7 @@ fun Bitmap.scale(maxSize: Int, filter: Boolean): Bitmap {
 
 fun Bitmap.toByteArray(
     format: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG,
-    quality: Int = 99
+    quality: Int = ZERO
 ): ByteArray {
-    ByteArrayOutputStream().apply {
-        compress(format, quality, this)
-        return toByteArray()
-    }
+    return ByteArrayOutputStream().apply { compress(format, quality, this) }.toByteArray()
 }

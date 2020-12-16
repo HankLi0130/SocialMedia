@@ -8,10 +8,10 @@ import dev.hankli.iamstar.R
 import kotlinx.android.synthetic.main.itemview_media.view.*
 import tw.hankli.brookray.core.extension.viewOf
 
-class MediaAdapter(private val listener: Listener) :
-    RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
+class MediaFileAdapter(private val listener: Listener) :
+    RecyclerView.Adapter<MediaFileAdapter.ViewHolder>() {
 
-    var forBrows: List<MediaForBrowsing> = emptyList()
+    var items: List<MediaFile> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.viewOf(R.layout.itemview_media)
@@ -19,23 +19,20 @@ class MediaAdapter(private val listener: Listener) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(forBrows[position], listener)
+        holder.bind(items[position], listener)
     }
 
-    override fun getItemCount(): Int = forBrows.size
+    override fun getItemCount(): Int = items.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(media: MediaForBrowsing, listener: Listener) {
+        fun bind(media: MediaFile, listener: Listener) {
             with(itemView) {
 
-                when {
-                    media.uri != null -> Glide.with(itemView).load(media.uri)
+                when (media) {
+                    is LocalMediaFile -> Glide.with(itemView).load(media.uri)
                         .into(view_media_thumbnail)
-                    media.thumbnailUrl.isNotEmpty() -> Glide.with(itemView)
-                        .load(media.thumbnailUrl)
-                        .into(view_media_thumbnail)
-                    else -> Glide.with(itemView).load(R.drawable.ic_broken_image)
+                    is RemoteMediaFile -> Glide.with(itemView).load(media.thumbnailUrl)
                         .into(view_media_thumbnail)
                 }
 

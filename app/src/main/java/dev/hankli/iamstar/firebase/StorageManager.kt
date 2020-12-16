@@ -1,17 +1,18 @@
 package dev.hankli.iamstar.firebase
 
 import android.net.Uri
-import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
-import io.reactivex.Single
 import kotlinx.coroutines.tasks.await
 import java.io.InputStream
 
+/**
+ *  https://firebase.google.com/docs/storage/android/upload-files
+ */
 object StorageManager {
 
     private val storage by lazy { FirebaseStorage.getInstance() }
 
-    suspend fun uploadFile2(path: String, uri: Uri): String {
+    suspend fun uploadFile(path: String, uri: Uri): String {
         val ref = storage.reference.child(path)
         return ref.putFile(uri)
             .continueWithTask { ref.downloadUrl }
@@ -19,39 +20,21 @@ object StorageManager {
             .toString()
     }
 
-    // https://firebase.google.com/docs/storage/android/upload-files
-    fun uploadFile(path: String, uri: Uri): Single<String> {
-        return Single.create { emitter ->
-            val ref = storage.reference.child(path)
-            ref.putFile(uri)
-                .continueWithTask { ref.downloadUrl }
-                .addOnSuccessListener { emitter.onSuccess(it.toString()) }
-                .addOnFailureListener { emitter.onError(it) }
-        }
+    suspend fun uploadFile(path: String, bytes: ByteArray): String {
+        val ref = storage.reference.child(path)
+        return ref.putBytes(bytes)
+            .continueWithTask { ref.downloadUrl }
+            .await()
+            .toString()
     }
 
-    fun uploadFile(path: String, bytes: ByteArray): Single<String> {
-        return Single.create { emitter ->
-            val ref = storage.reference.child(path)
-            ref.putBytes(bytes)
-                .continueWithTask { ref.downloadUrl }
-                .addOnSuccessListener { emitter.onSuccess(it.toString()) }
-                .addOnFailureListener { emitter.onError(it) }
-        }
+    suspend fun uploadFile(path: String, stream: InputStream): String {
+        val ref = storage.reference.child(path)
+        return ref.putStream(stream)
+            .continueWithTask { ref.downloadUrl }
+            .await()
+            .toString()
     }
 
-    fun uploadFile(path: String, stream: InputStream): Single<String> {
-        return Single.create { emitter ->
-            val ref = storage.reference.child(path)
-            ref.putStream(stream)
-                .continueWithTask { ref.downloadUrl }
-                .addOnSuccessListener { emitter.onSuccess(it.toString()) }
-                .addOnFailureListener { emitter.onError(it) }
-        }
-    }
-
-    // https://firebase.google.com/docs/storage/android/delete-files#kotlin+ktx
-    fun deleteFile(path: String): Task<Void> {
-        return storage.reference.child(path).delete()
-    }
+    suspend fun deleteFile(path: String) = storage.reference.child(path).delete().await()
 }

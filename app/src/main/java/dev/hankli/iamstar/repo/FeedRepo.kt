@@ -7,9 +7,10 @@ import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Reaction
 import dev.hankli.iamstar.firebase.StorageManager
 import dev.hankli.iamstar.firestore.FeedManager
-import dev.hankli.iamstar.utils.media.MediaForUploading
-import io.reactivex.Completable
-import io.reactivex.Single
+import dev.hankli.iamstar.utils.ext.toByteArray
+import dev.hankli.iamstar.utils.media.UploadingMedia
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 
 class FeedRepo {
 
@@ -18,65 +19,89 @@ class FeedRepo {
         private const val THUMBNAIL = "thumbnail"
     }
 
-    fun addFeed(feed: Feed, mediasForUploading: List<MediaForUploading>): Single<String> {
-        return Single.merge(mediasForUploading.map { uploadFeedMedia(it) })
-            .toList()
-            .flatMap { medias ->
-                feed.medias = medias
-                FeedManager.add(feed)
-            }
+    suspend fun addFeed(scope: CoroutineScope, feed: Feed, uploadingMedias: List<UploadingMedia>) {
+        val medias = uploadingMedias.map { uploadFeedMedia(scope, it) }
+        feed.medias = medias
+        FeedManager.add(feed)
     }
 
-    fun updateFeed(
+    suspend fun updateFeed(
+        scope: CoroutineScope,
         feed: Feed,
-        mediasForUploading: List<MediaForUploading>,
-        idsForRemoving: Collection<String>
-    ): Completable {
-        val newMedias = ArrayList<Media>().apply { this.addAll(feed.medias) }
-        return Completable.merge(idsForRemoving.map { removeFeedMedia(it) })
-            .andThen(Single.merge(mediasForUploading.map { uploadFeedMedia(it) }))
-            .toList()
-            .flatMapCompletable { medias ->
-                newMedias.removeAll { idsForRemoving.contains(it.objectId) }
-                newMedias.addAll(medias)
-                feed.medias = newMedias
-                FeedManager.update(feed)
-            }
+        uploadingMedias: List<UploadingMedia>,
+        removingMediaIds: Set<String>
+    ) {
+        val newMedias = uploadingMedias.map { uploadFeedMedia(scope, it) }
+
+        val medias = feed.medias.toMutableList()
+        removingMediaIds.forEach { mediaId ->
+            removeFeedMedia(mediaId)
+            medias.removeIf { it.objectId == mediaId }
+        }
+
+        medias.addAll(newMedias)
+        feed.medias = medias
+        FeedManager.update(feed)
     }
 
-    fun deleteFeed(feedId: String): Completable {
-        // TODO Delete all of comments and reactions of this Feed
-        return FeedManager.retrieve(feedId)
-            .flatMapCompletable { feed ->
-                Completable.merge(feed.medias.map { removeFeedMedia(it.objectId) })
-            }
-            .andThen(FeedManager.delete(feedId))
+//    fun updateFeed(
+//        feed: Feed,
+//        mediasForUploading: List<MediaForUploading>,
+//        idsForRemoving: Collection<String>
+//    ): Completable {
+//        val newMedias = ArrayList<Media>().apply { this.addAll(feed.medias) }
+//        return Completable.merge(idsForRemoving.map { removeFeedMedia(it) })
+//            .andThen(Single.merge(mediasForUploading.map { uploadFeedMedia(it) }))
+//            .toList()
+//            .flatMapCompletable { medias ->
+//                newMedias.removeAll { idsForRemoving.contains(it.objectId) }
+//                newMedias.addAll(medias)
+//                feed.medias = newMedias
+//                FeedManager.update(feed)
+//            }
+//    }
+
+    suspend fun removeFeed(feedId: String) {
+        FeedManager.removeComments(feedId)
+        FeedManager.removeReactions(feedId)
+
+        val feed = fetchFeed(feedId)
+        for (media in feed.medias) {
+            removeFeedMedia(media.objectId)
+        }
+
+        FeedManager.delete(feedId)
     }
 
-    suspend fun fetchFeed(postId: String): Feed {
-        return FeedManager.get(postId)
-    }
+    suspend fun fetchFeed(postId: String) = FeedManager.get(postId)
 
-    private fun uploadFeedMedia(media: MediaForUploading): Single<Media> {
+    private suspend fun uploadFeedMedia(scope: CoroutineScope, media: UploadingMedia): Media {
         val filePath = "${BUCKET_FEED}/${media.objectId}"
         val thumbnailPath = "${filePath}_${THUMBNAIL}"
-        return Single.zip<String, String, Media>(
-            StorageManager.uploadFile(filePath, media.file),
-            StorageManager.uploadFile(thumbnailPath, media.thumbnail)
-        ) { fileUrl, thumbnailUrl ->
-            Media(media.objectId, fileUrl, media.type, media.width, media.height, thumbnailUrl)
+
+        val fileUrl = scope.async {
+            StorageManager.uploadFile(filePath, media.file)
         }
+
+        val thumbnailUrl = scope.async {
+            StorageManager.uploadFile(thumbnailPath, media.thumbnail.toByteArray())
+        }
+
+        return Media(
+            media.objectId,
+            fileUrl.await(),
+            media.type,
+            media.width,
+            media.height,
+            thumbnailUrl.await()
+        )
     }
 
-    private fun removeFeedMedia(mediaId: String): Completable {
+    private suspend fun removeFeedMedia(mediaId: String) {
         val filePath = "$BUCKET_FEED/$mediaId"
         val thumbnailPath = "${filePath}_${THUMBNAIL}"
-        return Completable.create { emitter ->
-            StorageManager.deleteFile(filePath)
-                .continueWith { if (it.isSuccessful) StorageManager.deleteFile(thumbnailPath) }
-                .addOnSuccessListener { emitter.onComplete() }
-                .addOnFailureListener { emitter.onError(it) }
-        }
+        StorageManager.deleteFile(filePath)
+        StorageManager.deleteFile(thumbnailPath)
     }
 
     suspend fun hasReaction(feedId: String, user: DocumentReference): Boolean {

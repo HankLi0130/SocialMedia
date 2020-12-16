@@ -37,6 +37,7 @@ abstract class BaseFragment : Fragment {
         get() = requireActivity() as MainActivity
 
     private lateinit var processDialog: DialogFragment
+    private var isProcessShowing = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -87,7 +88,13 @@ abstract class BaseFragment : Fragment {
     }
 
     protected fun callProgressDialog(show: Boolean) {
-        if (show) processDialog.show(parentFragmentManager, null) else processDialog.dismiss()
+        isProcessShowing = if (show) {
+            if (!isProcessShowing) processDialog.show(parentFragmentManager, null)
+            true
+        } else {
+            processDialog.dismiss()
+            false
+        }
     }
 
     protected fun showMessageDialog(
@@ -97,6 +104,20 @@ abstract class BaseFragment : Fragment {
         onSubmit: (() -> Unit)? = null
     ) {
         requireContext().showMessageDialog(titleId, messageId, R.string.ok, cancelable) { _, _ ->
+            onSubmit?.invoke()
+        }
+    }
+
+    protected fun showMessagesDialog(
+        @StringRes titleId: Int = NO_RESOURCE,
+        messageIds: List<Int>,
+        cancelable: Boolean = true,
+        onSubmit: (() -> Unit)? = null
+    ) {
+        val title = if (titleId == NO_RESOURCE) null else getString(titleId)
+        val message = messageIds.joinToString("\n") { getString(it) }
+        val buttonText = getString(R.string.ok)
+        requireContext().showMessageDialog(title, message, buttonText, cancelable) { _, _ ->
             onSubmit?.invoke()
         }
     }
