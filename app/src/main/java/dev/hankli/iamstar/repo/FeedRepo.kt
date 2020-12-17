@@ -7,7 +7,6 @@ import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Reaction
 import dev.hankli.iamstar.firebase.StorageManager
 import dev.hankli.iamstar.firestore.FeedManager
-import dev.hankli.iamstar.utils.ext.toByteArray
 import dev.hankli.iamstar.utils.media.UploadingMedia
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -44,23 +43,6 @@ class FeedRepo {
         FeedManager.update(feed)
     }
 
-//    fun updateFeed(
-//        feed: Feed,
-//        mediasForUploading: List<MediaForUploading>,
-//        idsForRemoving: Collection<String>
-//    ): Completable {
-//        val newMedias = ArrayList<Media>().apply { this.addAll(feed.medias) }
-//        return Completable.merge(idsForRemoving.map { removeFeedMedia(it) })
-//            .andThen(Single.merge(mediasForUploading.map { uploadFeedMedia(it) }))
-//            .toList()
-//            .flatMapCompletable { medias ->
-//                newMedias.removeAll { idsForRemoving.contains(it.objectId) }
-//                newMedias.addAll(medias)
-//                feed.medias = newMedias
-//                FeedManager.update(feed)
-//            }
-//    }
-
     suspend fun removeFeed(feedId: String) {
         FeedManager.removeComments(feedId)
         FeedManager.removeReactions(feedId)
@@ -84,7 +66,7 @@ class FeedRepo {
         }
 
         val thumbnailUrl = scope.async {
-            StorageManager.uploadFile(thumbnailPath, media.thumbnail.toByteArray())
+            StorageManager.uploadFile(thumbnailPath, media.thumbnail)
         }
 
         return Media(

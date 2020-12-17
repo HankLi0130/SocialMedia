@@ -134,22 +134,6 @@ class EditFeedViewModel : BaseViewModel() {
                 callProgress(false)
                 popBack()
             }
-//            transfer(mediaFiles.filter { it.objectId == EMPTY })
-//                .flatMapCompletable { mediasForUploading ->
-//                    val originIds = feed.medias.map { it.objectId }
-//                    val updatedIds = mediaFiles.map { it.objectId }
-//                    val idsForRemoving = originIds.subtract(updatedIds)
-//                    feedRepo.updateFeed(feed, mediasForUploading, idsForRemoving)
-//                }
-//                .doOnComplete {
-//                    callProgress(false)
-//                }
-//                .subscribe({
-//                    popBack()
-//                }, { ex ->
-//                    Log.e("test", "update post failed", ex)
-//                })
-//                .addTo(disposables)
         }
     }
 

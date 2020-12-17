@@ -1,13 +1,11 @@
 package dev.hankli.iamstar.utils.media
 
 import android.content.ContentResolver
-import android.graphics.Bitmap
 import android.net.Uri
 import dev.hankli.iamstar.data.models.Media
-import dev.hankli.iamstar.utils.ext.getWidthAndHeight
 import tw.hankli.brookray.core.constant.EMPTY
-import tw.hankli.brookray.core.extension.getImageThumbnail
-import tw.hankli.brookray.core.extension.getVideoThumbnail
+import tw.hankli.brookray.core.extension.*
+import java.io.InputStream
 import java.util.*
 
 /**
@@ -17,7 +15,8 @@ import java.util.*
 const val IMAGE = "image"
 const val VIDEO = "video"
 const val MAX_IMAGE_SIZE = 1440
-const val MAX_THUMBNAIL_SIZE = 320
+
+fun getRandomId(): String = UUID.randomUUID().toString()
 
 fun Media.toMediaFile() = RemoteMediaFile(
     this.objectId,
@@ -28,11 +27,11 @@ fun Media.toMediaFile() = RemoteMediaFile(
 
 data class UploadingMedia(
     val objectId: String,
-    val file: Uri,
+    val file: InputStream,
     val type: String,
     val width: Int,
     val height: Int,
-    val thumbnail: Bitmap
+    val thumbnail: InputStream
 )
 
 @Throws(IllegalArgumentException::class)
@@ -60,77 +59,52 @@ fun toUploadingMedias(
     localMediaFiles: List<LocalMediaFile>
 ): List<UploadingMedia> {
     return localMediaFiles.map { mediaFile ->
-        val objectId = getRandomId()
-        val widthAndHeight = contentResolver.getWidthAndHeight(mediaFile.uri)
-        val thumbnail = when (mediaFile.type) {
-            IMAGE -> contentResolver.getImageThumbnail(mediaFile.uri)
-            VIDEO -> contentResolver.getVideoThumbnail(mediaFile.uri)
+        return@map when (mediaFile.type) {
+            IMAGE -> produceUploadingImage(contentResolver, mediaFile)
+            VIDEO -> produceUploadingVideo(contentResolver, mediaFile)
             else -> throw IllegalArgumentException("Unknown type !")
         }
-
-        UploadingMedia(
-            objectId,
-            mediaFile.uri,
-            mediaFile.type,
-            widthAndHeight.first,
-            widthAndHeight.second,
-            thumbnail
-        )
     }
 }
 
-//fun imageForUploading(
-//    resolver: ContentResolver,
-//    mediaForBrowsing: MediaForBrowsing
-//): Single<MediaForUploading> {
-//    return Single.create<MediaForUploading> { emitter ->
-//        val objectId = getObjectId()
-//        val bitmap = resolver.getBitmap(mediaForBrowsing.uri!!)
-//
-//        val image = if (bitmap.width > MAX_IMAGE_SIZE || bitmap.height > MAX_IMAGE_SIZE) {
-//            bitmap.scale(MAX_IMAGE_SIZE, true)
-//        } else bitmap
-//
-//        val thumbnail =
-//            if (bitmap.width > MAX_THUMBNAIL_SIZE || bitmap.height > MAX_THUMBNAIL_SIZE) {
-//                bitmap.scale(MAX_THUMBNAIL_SIZE, true)
-//            } else bitmap
-//
-//        emitter.onSuccess(
-//            MediaForUploading(
-//                objectId,
-//                image.toByteArray(),
-//                mediaForBrowsing.type,
-//                image.width,
-//                image.height,
-//                thumbnail.toByteArray()
-//            )
-//        )
-//    }.subscribeOn(Schedulers.computation())
-//}
+private fun produceUploadingImage(
+    contentResolver: ContentResolver,
+    mediaFile: LocalMediaFile,
+): UploadingMedia {
+    val objectId = getRandomId()
+    val bitmap = contentResolver.getBitmap(mediaFile.uri)
 
-//fun videoForUploading(
-//    resolver: ContentResolver,
-//    mediaForBrowsing: MediaForBrowsing
-//): Single<MediaForUploading> {
-//    return Single.create<MediaForUploading> { emitter ->
-//        val objectId = getObjectId()
-//        val uri = mediaForBrowsing.uri!!
-//        val video = resolver.getByteArray(uri)
-//        val widthAndHeight = resolver.getWidthAndHeight(uri)
-//        val thumbnail = resolver.loadVideoThumbnail(uri).toByteArray()
-//
-//        emitter.onSuccess(
-//            MediaForUploading(
-//                objectId,
-//                video,
-//                mediaForBrowsing.type,
-//                widthAndHeight.first,
-//                widthAndHeight.second,
-//                thumbnail
-//            )
-//        )
-//    }.subscribeOn(Schedulers.computation())
-//}
+    val image = if (bitmap.width > MAX_IMAGE_SIZE || bitmap.height > MAX_IMAGE_SIZE) {
+        bitmap.scale(MAX_IMAGE_SIZE, true)
+    } else bitmap
 
-fun getRandomId(): String = UUID.randomUUID().toString()
+    val thumbnail = contentResolver.getImageThumbnail(mediaFile.uri, ThumbnailSize.MINI_KIND)
+
+    return UploadingMedia(
+        objectId,
+        image.toByteArrayInputStream(),
+        mediaFile.type,
+        image.width,
+        image.height,
+        thumbnail.toByteArrayInputStream()
+    )
+}
+
+private fun produceUploadingVideo(
+    contentResolver: ContentResolver,
+    mediaFile: LocalMediaFile
+): UploadingMedia {
+    val objectId = getRandomId()
+    val video = contentResolver.openInputStream(mediaFile.uri)!!
+    val widthAndHeight = contentResolver.getWidthAndHeight(mediaFile.uri)
+    val thumbnail = contentResolver.getVideoThumbnail(mediaFile.uri, ThumbnailSize.MINI_KIND)
+
+    return UploadingMedia(
+        objectId,
+        video,
+        mediaFile.type,
+        widthAndHeight.first,
+        widthAndHeight.second,
+        thumbnail.toByteArrayInputStream()
+    )
+}
