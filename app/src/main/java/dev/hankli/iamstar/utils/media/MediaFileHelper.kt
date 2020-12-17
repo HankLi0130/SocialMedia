@@ -15,6 +15,7 @@ import java.util.*
 const val IMAGE = "image"
 const val VIDEO = "video"
 const val MAX_IMAGE_SIZE = 1440
+const val MAX_THUMBNAIL_SIZE = 320
 
 fun getRandomId(): String = UUID.randomUUID().toString()
 
@@ -78,7 +79,9 @@ private fun produceUploadingImage(
         bitmap.scale(MAX_IMAGE_SIZE, true)
     } else bitmap
 
-    val thumbnail = contentResolver.getImageThumbnail(mediaFile.uri, ThumbnailSize.MINI_KIND)
+    val thumbnail = if (bitmap.width > MAX_THUMBNAIL_SIZE || bitmap.height > MAX_THUMBNAIL_SIZE) {
+        bitmap.scale(MAX_THUMBNAIL_SIZE, true)
+    } else bitmap
 
     return UploadingMedia(
         objectId,
@@ -95,9 +98,14 @@ private fun produceUploadingVideo(
     mediaFile: LocalMediaFile
 ): UploadingMedia {
     val objectId = getRandomId()
+    // TODO compress video
     val video = contentResolver.openInputStream(mediaFile.uri)!!
     val widthAndHeight = contentResolver.getWidthAndHeight(mediaFile.uri)
-    val thumbnail = contentResolver.getVideoThumbnail(mediaFile.uri, ThumbnailSize.MINI_KIND)
+    val bitmap = contentResolver.getVideoThumbnail(mediaFile.uri, ThumbnailSize.MINI_KIND)
+
+    val thumbnail = if (bitmap.width > MAX_THUMBNAIL_SIZE || bitmap.height > MAX_THUMBNAIL_SIZE) {
+        bitmap.scale(MAX_THUMBNAIL_SIZE, true)
+    } else bitmap
 
     return UploadingMedia(
         objectId,
