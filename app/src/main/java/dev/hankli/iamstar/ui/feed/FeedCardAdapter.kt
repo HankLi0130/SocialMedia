@@ -10,6 +10,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Reaction
+import dev.hankli.iamstar.firestore.ProfileManager
 import dev.hankli.iamstar.utils.ext.display
 import kotlinx.android.synthetic.main.card_feed.view.*
 import tw.hankli.brookray.core.extension.viewOf
@@ -42,11 +43,23 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
             onItemCommentClick: (feedId: String) -> Unit
         ) {
             with(itemView) {
-                view_feed_head_shot.setImageResource(R.drawable.ic_person)
+                item.influencer?.let { doc ->
+                    ProfileManager.getDoc(doc.id).get().addOnSuccessListener { snapshot ->
+                        val url = snapshot.getString("photoURL")
+                        if (url.isNullOrEmpty()) view_feed_head_shot.setImageResource(R.drawable.ic_person)
+                        else Glide.with(this).load(url).into(view_feed_head_shot)
+                    }
+                } ?: view_feed_head_shot.setImageResource(R.drawable.ic_person)
 
                 view_feed_time.text = item.createdAt.display()
 
-                view_feed_location.text = item.location
+                if (item.location.isNullOrEmpty()) {
+                    view_feed_location.text = null
+                    view_feed_location.isVisible = false
+                } else {
+                    view_feed_location.text = item.location
+                    view_feed_location.isVisible = true
+                }
 
                 view_feed_content.text = item.content
 

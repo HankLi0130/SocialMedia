@@ -9,33 +9,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/view_feed_head_shot"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/view_profile_avatar"
+            android:layout_width="@dimen/distance_52_dp"
+            android:layout_height="@dimen/distance_52_dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/distance_16_dp"
+            app:cardCornerRadius="50dp"
+            app:cardElevation="@dimen/distance_3_dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_person" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/view_feed_head_shot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/ic_person" />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/view_feed_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/distance_16_dp"
             android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@id/view_feed_location"
-            app:layout_constraintStart_toEndOf="@+id/view_feed_head_shot"
-            app:layout_constraintTop_toTopOf="@+id/view_feed_head_shot"
+            app:layout_constraintStart_toEndOf="@+id/view_profile_avatar"
+            app:layout_constraintTop_toTopOf="@+id/view_profile_avatar"
             tools:text="1 hours ago" />
 
         <TextView
             android:id="@+id/view_feed_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/distance_16_dp"
             android:maxLines="1"
-            app:layout_constraintBottom_toBottomOf="@+id/view_feed_head_shot"
-            app:layout_constraintStart_toEndOf="@+id/view_feed_head_shot"
+            app:layout_constraintBottom_toBottomOf="@+id/view_profile_avatar"
+            app:layout_constraintStart_toEndOf="@+id/view_profile_avatar"
             app:layout_constraintTop_toBottomOf="@id/view_feed_time"
             tools:text="Toronto" />
 
@@ -56,7 +68,7 @@
             app:layout_constraintBottom_toTopOf="@id/view_feed_medias"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_feed_head_shot"
+            app:layout_constraintTop_toBottomOf="@id/view_profile_avatar"
             tools:text="Hello everyone, this is my feed !" />
 
         <com.synnapps.carouselview.CarouselView
