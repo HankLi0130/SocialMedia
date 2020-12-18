@@ -33,8 +33,8 @@
             android:id="@+id/action_feedFragment_to_commentFragment"
             app:destination="@id/commentFragment" />
         <action
-            android:id="@+id/action_feedFragment_to_mediaBottomDialogFragment"
-            app:destination="@id/mediaBottomDialogFragment" />
+            android:id="@+id/action_feedFragment_to_mediaFragment"
+            app:destination="@id/mediaFragment" />
 
     </fragment>
 
@@ -85,9 +85,9 @@
         android:label="EditProfileFragment"
         tools:layout="@layout/fragment_edit_profile" />
 
-    <dialog
-        android:id="@+id/mediaBottomDialogFragment"
-        android:name="dev.hankli.iamstar.ui.media.MediaBottomDialogFragment"
+    <fragment
+        android:id="@+id/mediaFragment"
+        android:name="dev.hankli.iamstar.ui.media.MediaFragment"
         android:label="MediaBottomDialogFragment"
         tools:layout="@layout/dialog_bottom_sheet_media">
 
@@ -104,6 +104,6 @@
             android:name="height"
             app:argType="integer" />
 
-    </dialog>
+    </fragment>
 
 </navigation>

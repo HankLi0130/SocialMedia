@@ -5,6 +5,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
@@ -42,6 +43,7 @@ class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
             .build()
 
         feedCardAdapter = FeedCardAdapter(options).apply {
+            stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             onItemOptionsClick = ::onFeedCardOptionsClick
             onItemReactionClick = ::onFeedCardReactionClick
             onItemCommentClick = ::onFeedCardCommentClick
@@ -100,7 +102,7 @@ class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
 
     private fun onFeedCardMediaClick(media: Media) {
         findNavController().navigate(
-            FeedFragmentDirections.actionFeedFragmentToMediaBottomDialogFragment(
+            FeedFragmentDirections.actionFeedFragmentToMediaFragment(
                 media.url,
                 media.type,
                 media.width,
