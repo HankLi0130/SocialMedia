@@ -1,7 +1,6 @@
 package dev.hankli.iamstar.ui.feed
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -100,7 +99,14 @@ class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
     }
 
     private fun onFeedCardMediaClick(media: Media) {
-        Log.i("test", media.url)
+        findNavController().navigate(
+            FeedFragmentDirections.actionFeedFragmentToMediaBottomDialogFragment(
+                media.url,
+                media.type,
+                media.width,
+                media.height
+            )
+        )
     }
 
     override fun onStart() {

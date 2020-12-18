@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_feedFragment_to_commentFragment"
             app:destination="@id/commentFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_mediaBottomDialogFragment"
+            app:destination="@id/mediaBottomDialogFragment" />
 
     </fragment>
 
@@ -81,5 +84,26 @@
         android:name="dev.hankli.iamstar.ui.profile.EditProfileFragment"
         android:label="EditProfileFragment"
         tools:layout="@layout/fragment_edit_profile" />
+
+    <dialog
+        android:id="@+id/mediaBottomDialogFragment"
+        android:name="dev.hankli.iamstar.ui.media.MediaBottomDialogFragment"
+        android:label="MediaBottomDialogFragment"
+        tools:layout="@layout/dialog_bottom_sheet_media">
+
+        <argument
+            android:name="url"
+            app:argType="string" />
+        <argument
+            android:name="type"
+            app:argType="string" />
+        <argument
+            android:name="width"
+            app:argType="integer" />
+        <argument
+            android:name="height"
+            app:argType="integer" />
+
+    </dialog>
 
 </navigation>
