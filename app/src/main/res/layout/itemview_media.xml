@@ -10,14 +10,15 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_gravity="center"
+        android:adjustViewBounds="true"
         android:scaleType="centerCrop" />
 
     <ImageView
         android:id="@+id/view_cancel"
-        android:src="@drawable/ic_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|top"
-        android:padding="@dimen/distance_8_dp" />
+        android:padding="@dimen/distance_8_dp"
+        android:src="@drawable/ic_cancel" />
 
 </FrameLayout>

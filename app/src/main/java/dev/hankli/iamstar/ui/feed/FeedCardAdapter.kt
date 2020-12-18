@@ -12,6 +12,7 @@ import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Reaction
 import dev.hankli.iamstar.firestore.ProfileManager
 import dev.hankli.iamstar.utils.ext.display
+import dev.hankli.iamstar.utils.media.VIDEO
 import kotlinx.android.synthetic.main.card_feed.view.*
 import tw.hankli.brookray.core.extension.viewOf
 
@@ -69,8 +70,9 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
                     view_feed_medias.isVisible = true
                     view_feed_medias.pageCount = item.medias.size
                     view_feed_medias.setImageListener { position, imageView ->
-                        Glide.with(this).load(item.medias[position].thumbnailUrl)
-                            .into(imageView)
+                        val media = item.medias[position]
+                        view_play.isVisible = media.type == VIDEO
+                        Glide.with(this).load(media.thumbnailUrl).into(imageView)
                     }
                 }
 
