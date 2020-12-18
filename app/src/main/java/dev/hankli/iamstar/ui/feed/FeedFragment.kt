@@ -1,6 +1,7 @@
 package dev.hankli.iamstar.ui.feed
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -8,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
+import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.utils.BaseArchFragment
 import dev.hankli.iamstar.utils.MarginItemDecoration
@@ -44,6 +46,7 @@ class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
             onItemOptionsClick = ::onFeedCardOptionsClick
             onItemReactionClick = ::onFeedCardReactionClick
             onItemCommentClick = ::onFeedCardCommentClick
+            onItemMediaClick = ::onFeedCardMediaClick
         }
 
         view_feeds.apply {
@@ -94,6 +97,10 @@ class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
         findNavController().navigate(
             FeedFragmentDirections.actionFeedFragmentToCommentFragment(feedId)
         )
+    }
+
+    private fun onFeedCardMediaClick(media: Media) {
+        Log.i("test", media.url)
     }
 
     override fun onStart() {

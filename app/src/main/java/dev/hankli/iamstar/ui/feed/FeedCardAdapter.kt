@@ -9,6 +9,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
+import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Reaction
 import dev.hankli.iamstar.firestore.ProfileManager
 import dev.hankli.iamstar.utils.ext.display
@@ -25,13 +26,21 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
 
     lateinit var onItemCommentClick: (feedId: String) -> Unit
 
+    lateinit var onItemMediaClick: (media: Media) -> Unit
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.viewOf(R.layout.card_feed)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: Feed) {
-        holder.bind(model, onItemOptionsClick, onItemReactionClick, onItemCommentClick)
+        holder.bind(
+            model,
+            onItemOptionsClick,
+            onItemReactionClick,
+            onItemCommentClick,
+            onItemMediaClick
+        )
         holder.setReaction(model.reaction)
     }
 
@@ -41,7 +50,8 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
             item: Feed,
             onItemOptionsClick: (feedId: String) -> Unit,
             onItemReactionClick: (feedId: String) -> Unit,
-            onItemCommentClick: (feedId: String) -> Unit
+            onItemCommentClick: (feedId: String) -> Unit,
+            onItemMediaClick: (media: Media) -> Unit
         ) {
             with(itemView) {
                 item.influencer?.let { doc ->
@@ -73,6 +83,9 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
                         val media = item.medias[position]
                         view_play.isVisible = media.type == VIDEO
                         Glide.with(this).load(media.thumbnailUrl).into(imageView)
+                    }
+                    view_feed_medias.setImageClickListener { position ->
+                        onItemMediaClick(item.medias[position])
                     }
                 }
 
