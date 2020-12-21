@@ -90,13 +90,16 @@ dependencies {
     implementation "com.firebaseui:firebase-ui-auth:$firebase_ui_version"
     implementation "com.firebaseui:firebase-ui-firestore:$firebase_ui_version"
     implementation "com.firebaseui:firebase-ui-storage:$firebase_ui_version"
-    implementation 'com.google.firebase:firebase-messaging:21.0.0'
+    implementation 'com.google.firebase:firebase-messaging:21.0.1'
 
     // Facebook
     implementation 'com.facebook.android:facebook-android-sdk:8.1.0'
 
     // Google Auth
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+
+    // Google ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.12.2'
 
     // round image view
     implementation 'com.mikhaellopez:circularimageview:4.0.2'
