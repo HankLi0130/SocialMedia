@@ -34,7 +34,7 @@
             app:destination="@id/commentFragment" />
         <action
             android:id="@+id/action_feedFragment_to_mediaFragment"
-            app:destination="@id/mediaFragment" />
+            app:destination="@id/mediaReviewFragment" />
 
     </fragment>
 
@@ -86,10 +86,10 @@
         tools:layout="@layout/fragment_edit_profile" />
 
     <fragment
-        android:id="@+id/mediaFragment"
-        android:name="dev.hankli.iamstar.ui.media.MediaFragment"
-        android:label="MediaBottomDialogFragment"
-        tools:layout="@layout/dialog_bottom_sheet_media">
+        android:id="@+id/mediaReviewFragment"
+        android:name="dev.hankli.iamstar.ui.media.MediaReviewFragment"
+        android:label="MediaReviewFragment"
+        tools:layout="@layout/fragment_media_review">
 
         <argument
             android:name="url"
