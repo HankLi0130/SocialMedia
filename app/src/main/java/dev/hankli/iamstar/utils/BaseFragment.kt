@@ -108,6 +108,22 @@ abstract class BaseFragment : Fragment {
         }
     }
 
+    protected fun showMessageDialog(
+        title: String? = null,
+        message: String,
+        cancelable: Boolean = true,
+        onSubmit: (() -> Unit)? = null
+    ) {
+        requireContext().showMessageDialog(
+            title,
+            message,
+            getString(R.string.ok),
+            cancelable
+        ) { _, _ ->
+            onSubmit?.invoke()
+        }
+    }
+
     protected fun showMessagesDialog(
         @StringRes titleId: Int = NO_RESOURCE,
         messageIds: List<Int>,

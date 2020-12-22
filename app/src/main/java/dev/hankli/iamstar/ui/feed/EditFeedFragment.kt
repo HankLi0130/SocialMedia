@@ -115,11 +115,17 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
                             REQUEST_PICK_MEDIAS
                         )
                     } else {
-                        showMessageDialog(R.string.error_title, R.string.up_to_image_maximum)
+                        showMessageDialog(
+                            getString(R.string.error_title),
+                            getString(R.string.up_to_image_maximum, maxImageSelectable)
+                        )
                     }
                 }
                 VIDEO -> {
-                    showMessageDialog(R.string.error_title, R.string.up_to_video_maximum)
+                    showMessageDialog(
+                        getString(R.string.error_title),
+                        getString(R.string.up_to_video_maximum, maxVideoSelectable)
+                    )
                 }
             }
         }

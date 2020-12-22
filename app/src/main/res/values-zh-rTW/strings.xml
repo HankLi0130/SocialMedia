@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">iamStar</string>
+
+    <string name="sign_in">登入</string>
+    <string name="sign_out">登出</string>
+    <string name="sign_in_canceled">取消登入</string>
+
+    <string name="ok">確定</string>
+    <string name="cancel">取消</string>
+    <string name="loading">請稍候…</string>
+
+    <string name="feed">貼文</string>
+    <string name="feed_edit">編輯貼文</string>
+
+    <string name="comments">留言</string>
+
+    <string name="profile">個人資料</string>
+    <string name="profile_edit">編輯個人資料</string>
+    <string name="profile_display_name">暱稱</string>
+    <string name="profile_description">關於我</string>
+    <string name="profile_first_name">名</string>
+    <string name="profile_last_name">性</string>
+    <string name="profile_birthday">生日</string>
+    <string name="profile_email">信箱</string>
+    <string name="profile_phone_number">電話</string>
+    <string name="profile_sex">性別</string>
+    <string name="update_profile">更新</string>
+
+    <string name="add_feed">新增貼文</string>
+
+    <string name="location_not_available">無地點</string>
+
+    <string name="up_to_image_maximum">只能選取 %d 張照片！</string>
+    <string name="up_to_video_maximum">只能選取 %d 部影片！</string>
+
+    <string name="alert_title">警告</string>
+    <string name="alert_delete_feed_failed">刪除貼文失敗</string>
+    <string name="alert_unknown_type">未知的類型</string>
+
+    <string name="error_feed_content_is_empty">貼文文字是空的！</string>
+    <string name="error_title">錯誤</string>
+    <string name="error_unknown">未知錯誤. 請聯絡服務人員.</string>
+    <string name="error_no_internet">尚未連接網路</string>
+    <string name="error_video_duration">長度必須小於 %d 秒 !</string>
+
+    <string name="feed_actions_title">動作</string>
+    <string-array name="feed_actions">
+        <item>更新</item>
+        <item>刪除</item>
+    </string-array>
+
+    <string-array name="media_types">
+        <item>相片</item>
+        <item>影片</item>
+    </string-array>
+
+    <string name="sex_types_title">性別</string>
+    <string-array name="sex_types">
+        <item>男</item>
+        <item>女</item>
+    </string-array>
+</resources>

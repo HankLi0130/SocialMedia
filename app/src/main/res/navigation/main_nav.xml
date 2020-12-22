@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/authFragment"
         android:name="dev.hankli.iamstar.ui.auth.AuthFragment"
-        android:label="AuthFragment"
         tools:layout="@layout/fragment_auth">
 
         <action
@@ -23,7 +22,7 @@
     <fragment
         android:id="@+id/feedFragment"
         android:name="dev.hankli.iamstar.ui.feed.FeedFragment"
-        android:label="FeedFragment"
+        android:label="@string/feed"
         tools:layout="@layout/fragment_feed">
 
         <action
@@ -41,7 +40,7 @@
     <fragment
         android:id="@+id/editPostFragment"
         android:name="dev.hankli.iamstar.ui.feed.EditFeedFragment"
-        android:label="EditPostFragment"
+        android:label="@string/feed_edit"
         tools:layout="@layout/fragment_edit_feed">
 
         <argument
@@ -53,7 +52,7 @@
     <fragment
         android:id="@+id/commentFragment"
         android:name="dev.hankli.iamstar.ui.comment.CommentFragment"
-        android:label="CommentFragment"
+        android:label="@string/comments"
         tools:layout="@layout/fragment_comment">
 
         <argument
@@ -65,7 +64,7 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="dev.hankli.iamstar.ui.profile.ProfileFragment"
-        android:label="ProfileFragment"
+        android:label="@string/profile"
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment_to_editProfileFragment"
@@ -82,13 +81,12 @@
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="dev.hankli.iamstar.ui.profile.EditProfileFragment"
-        android:label="EditProfileFragment"
+        android:label="@string/profile_edit"
         tools:layout="@layout/fragment_edit_profile" />
 
     <fragment
         android:id="@+id/mediaReviewFragment"
         android:name="dev.hankli.iamstar.ui.media.MediaReviewFragment"
-        android:label="MediaReviewFragment"
         tools:layout="@layout/fragment_media_review">
 
         <argument
