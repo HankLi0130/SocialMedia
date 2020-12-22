@@ -60,6 +60,8 @@ class MediaReviewFragment : Fragment(R.layout.fragment_media_review) {
     }
 
     private fun releasePlayer() {
+        if (args.type != VIDEO) return
+
         player?.let {
             playWhenReady = it.playWhenReady
             playbackPosition = it.currentPosition

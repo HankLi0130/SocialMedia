@@ -59,6 +59,7 @@ fun obtainPathResult(data: Intent?): List<String> {
     return data?.let { Matisse.obtainPathResult(it) } ?: emptyList()
 }
 
+// https://github.com/zhihu/Matisse/blob/master/sample/src/main/java/com/zhihu/matisse/sample/GifSizeFilter.java
 class VideoDurationFilter(private val duration: Long = 60000) : Filter() {
     override fun constraintTypes(): Set<MimeType> = videoTypes
 
