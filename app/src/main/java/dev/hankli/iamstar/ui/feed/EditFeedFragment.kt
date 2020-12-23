@@ -12,9 +12,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import dev.hankli.iamstar.R
+import dev.hankli.iamstar.firestore.ProfileManager
 import dev.hankli.iamstar.utils.BaseArchFragment
 import dev.hankli.iamstar.utils.Consts.REQUEST_PERMISSION_MEDIA
 import dev.hankli.iamstar.utils.Consts.REQUEST_PICK_MEDIAS
@@ -47,6 +49,16 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.loadPost(args.feedId)
+
+        ProfileManager.getDoc(app.influencer.id).get()
+            .addOnSuccessListener { snapshot ->
+                val url = snapshot.getString("photoURL")
+                if (url.isNullOrEmpty()) view_feed_head_shot.setImageResource(R.drawable.ic_person)
+                else Glide.with(this).load(url).into(view_feed_head_shot)
+            }
+            .addOnFailureListener {
+                view_feed_head_shot.setImageResource(R.drawable.ic_person)
+            }
 
         view_list_media.run {
             (this.layoutManager as GridLayoutManager).spanCount = 3

@@ -6,24 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".ui.feed.EditFeedFragment">
 
-    <ImageView
-        android:id="@+id/view_feed_head_shot"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/ic_person"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/view_feed_avatar"
+        android:layout_width="@dimen/distance_52_dp"
+        android:layout_height="@dimen/distance_52_dp"
+        android:layout_margin="@dimen/distance_16_dp"
+        app:cardCornerRadius="@dimen/corner_radius_50_dp"
+        app:cardElevation="@dimen/distance_3_dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_person">
+
+        <ImageView
+            android:id="@+id/view_feed_head_shot"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_person" />
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/view_post_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/distance_16_dp"
         android:text="@string/location_not_available"
-        app:layout_constraintBottom_toBottomOf="@+id/view_feed_head_shot"
-        app:layout_constraintStart_toEndOf="@+id/view_feed_head_shot"
-        app:layout_constraintTop_toTopOf="@+id/view_feed_head_shot" />
+        app:layout_constraintBottom_toBottomOf="@+id/view_feed_avatar"
+        app:layout_constraintStart_toEndOf="@+id/view_feed_avatar"
+        app:layout_constraintTop_toTopOf="@+id/view_feed_avatar" />
 
     <EditText
         android:id="@+id/view_input_post_text"
@@ -33,7 +45,7 @@
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_feed_head_shot" />
+        app:layout_constraintTop_toBottomOf="@id/view_feed_avatar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/view_list_media"
