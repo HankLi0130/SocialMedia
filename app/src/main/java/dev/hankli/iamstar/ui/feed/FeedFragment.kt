@@ -12,10 +12,10 @@ import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.utils.BaseArchFragment
-import dev.hankli.iamstar.utils.MarginItemDecoration
 import dev.hankli.iamstar.utils.ext.isInternetConnected
 import kotlinx.android.synthetic.main.fragment_feed.*
 import tw.hankli.brookray.core.constant.EMPTY
+import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 
 class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
 

@@ -10,8 +10,8 @@ import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.utils.BaseArchFragment
-import dev.hankli.iamstar.utils.MarginItemDecoration
 import kotlinx.android.synthetic.main.fragment_comment.*
+import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 
 class CommentFragment : BaseArchFragment<CommentViewModel>(R.layout.fragment_comment) {
 
