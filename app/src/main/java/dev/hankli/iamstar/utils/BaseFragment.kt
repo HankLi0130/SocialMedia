@@ -16,9 +16,9 @@ import dev.hankli.iamstar.App
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.ui.MainActivity
 import tw.hankli.brookray.core.constant.NO_RESOURCE
-import tw.hankli.brookray.core.dialog.ProcessDialog
 import tw.hankli.brookray.core.extension.showListDialog
 import tw.hankli.brookray.core.extension.showMessageDialog
+import tw.hankli.brookray.ui.dialog.ProcessDialog
 
 abstract class BaseFragment : Fragment {
 
