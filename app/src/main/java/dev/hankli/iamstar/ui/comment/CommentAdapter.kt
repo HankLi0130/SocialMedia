@@ -33,6 +33,9 @@ class CommentAdapter(options: FirestoreRecyclerOptions<Comment>) :
                         val url = snapshot.getString("photoURL")
                         if (url.isNullOrEmpty()) view_commenter_head_shot.setImageResource(R.drawable.ic_person)
                         else Glide.with(this).load(url).into(view_commenter_head_shot)
+
+                        val name = snapshot.getString("displayName")
+                        view_commenter_name.text = name
                     }
                 } ?: view_commenter_head_shot.setImageResource(R.drawable.ic_person)
 

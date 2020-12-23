@@ -9,33 +9,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/view_commenter_head_shot"
-            android:layout_width="@dimen/distance_48_dp"
-            android:layout_height="@dimen/distance_48_dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/view_commenter_avatar"
+            android:layout_width="@dimen/distance_52_dp"
+            android:layout_height="@dimen/distance_52_dp"
+            android:layout_margin="@dimen/distance_16_dp"
+            app:cardCornerRadius="@dimen/corner_radius_50_dp"
+            app:cardElevation="@dimen/distance_3_dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_person" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/view_commenter_head_shot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/ic_person" />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/view_commenter_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/distance_16_dp"
             android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@id/view_comment_time"
-            app:layout_constraintStart_toEndOf="@+id/view_commenter_head_shot"
-            app:layout_constraintTop_toTopOf="@+id/view_commenter_head_shot"
+            app:layout_constraintStart_toEndOf="@+id/view_commenter_avatar"
+            app:layout_constraintTop_toTopOf="@+id/view_commenter_avatar"
             tools:text="Michael Jordan" />
 
         <TextView
             android:id="@+id/view_comment_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/distance_16_dp"
             android:maxLines="1"
-            app:layout_constraintBottom_toBottomOf="@+id/view_commenter_head_shot"
-            app:layout_constraintStart_toEndOf="@+id/view_commenter_head_shot"
+            app:layout_constraintBottom_toBottomOf="@+id/view_commenter_avatar"
+            app:layout_constraintStart_toEndOf="@+id/view_commenter_avatar"
             app:layout_constraintTop_toBottomOf="@id/view_commenter_name"
             tools:text="2020/11/11" />
 
@@ -47,7 +59,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_commenter_head_shot"
+            app:layout_constraintTop_toBottomOf="@id/view_commenter_avatar"
             tools:text="Hello everyone, this is my comment !" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

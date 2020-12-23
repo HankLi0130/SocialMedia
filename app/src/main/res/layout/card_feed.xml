@@ -13,9 +13,8 @@
             android:id="@+id/view_profile_avatar"
             android:layout_width="@dimen/distance_52_dp"
             android:layout_height="@dimen/distance_52_dp"
-            android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/distance_16_dp"
-            app:cardCornerRadius="50dp"
+            app:cardCornerRadius="@dimen/corner_radius_50_dp"
             app:cardElevation="@dimen/distance_3_dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
