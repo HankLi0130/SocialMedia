@@ -3,22 +3,22 @@ package dev.hankli.iamstar.utils.media
 import android.net.Uri
 
 interface MediaFile {
-    fun type(): String
+    val type: String
+    val uri: Uri
 }
 
 data class LocalMediaFile(
-    val uri: Uri,
+    override val uri: Uri,
     val path: String,
-    val type: String
-) : MediaFile {
-    override fun type() = type
-}
+    override val type: String
+) : MediaFile
 
 data class RemoteMediaFile(
     val id: String,
     val url: String,
-    val type: String,
+    override val type: String,
     val thumbnailUrl: String
 ) : MediaFile {
-    override fun type() = type
+    override val uri: Uri
+        get() = Uri.parse(url)
 }

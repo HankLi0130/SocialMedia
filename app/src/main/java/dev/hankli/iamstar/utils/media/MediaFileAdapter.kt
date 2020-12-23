@@ -29,14 +29,9 @@ class MediaFileAdapter(private val listener: Listener) :
         fun bind(media: MediaFile, listener: Listener) {
             with(itemView) {
 
-                when (media) {
-                    is LocalMediaFile -> Glide.with(itemView).load(media.uri)
-                        .into(view_media_thumbnail)
-                    is RemoteMediaFile -> Glide.with(itemView).load(media.thumbnailUrl)
-                        .into(view_media_thumbnail)
-                }
+                Glide.with(this).load(media.uri).into(view_media_thumbnail)
 
-                view_cancel.setOnClickListener { listener.onItemCancel(adapterPosition) }
+                view_cancel.setOnClickListener { listener.onItemCancel(bindingAdapterPosition) }
             }
         }
     }

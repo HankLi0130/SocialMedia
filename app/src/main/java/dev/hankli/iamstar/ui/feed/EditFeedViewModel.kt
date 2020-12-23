@@ -147,5 +147,5 @@ class EditFeedViewModel : BaseViewModel() {
 
     fun getMediaFilesCount() = mediaFiles.size
 
-    fun getMediaFilesType() = mediaFiles[0].type()
+    fun getMediaFilesType() = mediaFiles[0].type
 }
