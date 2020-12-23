@@ -5,8 +5,8 @@ import tw.hankli.brookray.core.constant.EMPTY
 import java.util.*
 
 class Reaction(
-    objectId: String = EMPTY,
+    override var objectId: String = EMPTY,
     var reactionType: String = EMPTY,
     var profile: DocumentReference? = null,
     var createdAt: Date = Date()
-) : FirestoreModel(objectId)
+) : FirestoreModel

@@ -4,7 +4,7 @@ import tw.hankli.brookray.core.constant.EMPTY
 import java.util.*
 
 class Profile(
-    objectId: String = EMPTY,
+    override var objectId: String = EMPTY,
     var displayName: String? = null,
     var description: String? = null,
     var firstName: String? = null,
@@ -20,4 +20,4 @@ class Profile(
     var createdAt: Date = Date(),
     var updatedAt: Date? = null
     // TODO AppIdentifiers
-) : FirestoreModel(objectId)
+) : FirestoreModel

@@ -5,7 +5,7 @@ import tw.hankli.brookray.core.constant.EMPTY
 import tw.hankli.brookray.core.constant.ZERO
 
 class Media(
-    objectId: String = EMPTY,
+    override var objectId: String = EMPTY,
     var url: String = EMPTY,
     var type: String = EMPTY,
     var width: Int = ZERO,
@@ -14,4 +14,4 @@ class Media(
     @get:PropertyName("thumbnail")
     @set:PropertyName("thumbnail")
     var thumbnailUrl: String = EMPTY
-) : FirestoreModel(objectId)
+) : FirestoreModel

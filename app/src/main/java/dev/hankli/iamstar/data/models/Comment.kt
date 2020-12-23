@@ -9,7 +9,7 @@ import java.util.*
 
 @IgnoreExtraProperties
 class Comment(
-    objectId: String = EMPTY,
+    override var objectId: String = EMPTY,
     var profile: DocumentReference? = null,
     var content: String = EMPTY,
     var createdAt: Date = Date(),
@@ -20,4 +20,4 @@ class Comment(
 
     @get:Exclude
     var commenterName: String = EMPTY
-) : FirestoreModel(objectId)
+) : FirestoreModel

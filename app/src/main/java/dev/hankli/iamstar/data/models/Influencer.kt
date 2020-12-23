@@ -4,6 +4,6 @@ import com.google.firebase.firestore.DocumentReference
 import tw.hankli.brookray.core.constant.EMPTY
 
 class Influencer(
-    objectId: String = EMPTY,
+    override var objectId: String = EMPTY,
     var profile: DocumentReference? = null,
-) : FirestoreModel(objectId)
+) : FirestoreModel

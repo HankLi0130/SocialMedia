@@ -10,7 +10,7 @@ import java.util.*
 // https://stackoverflow.com/a/40117301/8361227
 @IgnoreExtraProperties
 class Feed(
-    objectId: String = EMPTY,
+    override var objectId: String = EMPTY,
     var influencer: DocumentReference? = null,
     var author: DocumentReference? = null,
     var createdAt: Date = Date(),
@@ -25,4 +25,4 @@ class Feed(
 
     @get:Exclude
     var reaction: Reaction? = null
-) : FirestoreModel(objectId)
+) : FirestoreModel
