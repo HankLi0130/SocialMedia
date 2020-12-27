@@ -20,7 +20,8 @@ import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
 
     override val hasOptionsMenu: Boolean
-        get() = app.influencer.id == app.user.id
+        get() = true
+    //get() = app.influencer.id == app.user.id
 
     override val menuRes: Int
         get() = R.menu.fragment_home
