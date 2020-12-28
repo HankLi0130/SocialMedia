@@ -9,7 +9,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -79,22 +78,21 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
             startActivityForResult(getPlacesIntent(requireContext()), REQUEST_PLACES)
         }
 
-        viewModel.contentData.observe(viewLifecycleOwner, Observer { content ->
+        viewModel.contentData.observe(viewLifecycleOwner, { content ->
             view_input_post_text.setText(content)
             view_input_post_text.setSelection(content.length)
         })
 
-        viewModel.mediaFilesData.observe(viewLifecycleOwner, Observer { mediaFiles ->
+        viewModel.mediaFilesData.observe(viewLifecycleOwner, { mediaFiles ->
             view_list_media.isVisible = mediaFiles.isNotEmpty()
 
             mediaAdapter.items = mediaFiles
             mediaAdapter.notifyDataSetChanged()
         })
 
-        viewModel.locationData.observe(viewLifecycleOwner, Observer { location ->
+        viewModel.locationData.observe(viewLifecycleOwner, { location ->
             view_post_location.text =
-                if (location.isNullOrEmpty()) getText(R.string.location_not_available)
-                else location
+                if (location.isNullOrEmpty()) null else location
         })
     }
 

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">iamStar</string>
 
@@ -27,8 +28,6 @@
     <string name="update_profile">Update</string>
 
     <string name="add_feed">Add feed</string>
-
-    <string name="location_not_available">location not available</string>
 
     <string name="up_to_image_maximum">Only %d images can be selected !</string>
     <string name="up_to_video_maximum">Only %d video can be selected !</string>

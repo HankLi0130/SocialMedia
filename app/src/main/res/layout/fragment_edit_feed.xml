@@ -32,17 +32,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/distance_16_dp"
-        android:text="@string/location_not_available"
         app:layout_constraintBottom_toBottomOf="@+id/view_feed_avatar"
         app:layout_constraintStart_toEndOf="@+id/view_feed_avatar"
-        app:layout_constraintTop_toTopOf="@+id/view_feed_avatar" />
+        app:layout_constraintTop_toTopOf="@+id/view_feed_avatar"
+        tools:text="Kaohsiung City, Taiwan" />
 
     <EditText
         android:id="@+id/view_input_post_text"
         android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/distance_8_dp"
-        android:inputType="textMultiLine"
+        android:inputType="textMultiLine|textAutoCorrect"
+        android:maxHeight="@dimen/distance_180_dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view_feed_avatar" />
@@ -65,7 +66,8 @@
         android:background="@color/darker_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_list_media" />
 
     <ImageView
         android:id="@+id/view_add_location"
