@@ -36,7 +36,7 @@ class EditProfileFragment : BaseArchFragment<EditProfileViewModel>(R.layout.frag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.loadProfile(app.user.id)
+        viewModel.loadProfile()
 
         viewModel.profileData.observe(viewLifecycleOwner) { profile ->
             profile.photoURL?.let {
@@ -119,7 +119,7 @@ class EditProfileFragment : BaseArchFragment<EditProfileViewModel>(R.layout.frag
         if (requestCode == REQUEST_PICK_MEDIAS && resultCode == RESULT_OK) {
             val uris = obtainResult(data)
             if (uris.isNotEmpty()) {
-                viewModel.onHeadShotSelected(app.user.id, uris[0])
+                viewModel.onHeadShotSelected(uris[0])
             }
         }
     }

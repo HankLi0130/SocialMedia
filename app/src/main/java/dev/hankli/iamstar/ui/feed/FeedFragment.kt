@@ -10,6 +10,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Media
+import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.utils.BaseArchFragment
 import dev.hankli.iamstar.utils.ext.isInternetConnected
@@ -20,8 +21,7 @@ import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
 
     override val hasOptionsMenu: Boolean
-        get() = true
-    //get() = app.influencer.id == app.user.id
+        get() = AuthManager.currentUserId == app.influencerId
 
     override val menuRes: Int
         get() = R.menu.fragment_home
@@ -34,10 +34,10 @@ class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
         super.onViewCreated(view, savedInstanceState)
 
         val options = FirestoreRecyclerOptions.Builder<Feed>()
-            .setQuery(FeedManager.queryByInfluencer(app.influencer)) { snapshot ->
+            .setQuery(FeedManager.queryByInfluencer(app.influencerId)) { snapshot ->
                 val feed = snapshot.toObject(Feed::class.java) ?: error("Feed parse failed !")
                 if (requireContext().isInternetConnected()) {
-                    viewModel.retrieveReaction(feed, app.user)
+                    viewModel.retrieveReaction(feed)
                 }
                 return@setQuery feed
             }
@@ -91,7 +91,7 @@ class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
 
     private fun onFeedCardReactionClick(feedId: String) {
         if (requireContext().isInternetConnected()) {
-            viewModel.doReaction(feedId, app.user)
+            viewModel.doReaction(feedId)
         } else viewModel.showNoInternet()
     }
 

@@ -4,7 +4,6 @@ import android.content.ContentResolver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.firestore.DocumentReference
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.repo.FeedRepo
@@ -81,8 +80,7 @@ class EditFeedViewModel : BaseViewModel() {
 
     fun submit(
         contentResolver: ContentResolver,
-        currentUser: DocumentReference,
-        influencer: DocumentReference
+        influencerId: String
     ) {
         val errorMessageRes = checkValid()
         if (errorMessageRes.isNotEmpty()) {
@@ -93,9 +91,6 @@ class EditFeedViewModel : BaseViewModel() {
         // If the post doesn't have an objectId, create a new post
         // Instead of, update the post
         if (feed.objectId == EMPTY) {
-            feed.author = currentUser
-            feed.influencer = influencer
-
             viewModelScope.launch(Main) {
                 callProgress(true)
 
@@ -105,7 +100,7 @@ class EditFeedViewModel : BaseViewModel() {
                 }
 
                 withContext(IO) {
-                    feedRepo.addFeed(this, feed, uploadingMedias)
+                    feedRepo.addFeed(this, feed, influencerId, uploadingMedias)
                 }
 
                 callProgress(false)

@@ -36,8 +36,8 @@ class ProfileRepo {
         ProfileManager.update(profile)
     }
 
-    suspend fun fetchProfile(userId: String): Profile {
-        return ProfileManager.get(userId).toObject(Profile::class.java)!!
+    suspend fun fetchProfile(): Profile {
+        return ProfileManager.get(AuthManager.currentUserId!!).toObject(Profile::class.java)!!
     }
 
     suspend fun updateProfile(profile: Profile) {
@@ -45,7 +45,8 @@ class ProfileRepo {
         ProfileManager.update(profile)
     }
 
-    suspend fun updateHeadshot(userId: String, uri: Uri): String {
+    suspend fun updateHeadshot(uri: Uri): String {
+        val userId = AuthManager.currentUserId!!
         val filePath = "${BUCKET_PROFILE}/${userId}"
         val url = StorageManager.uploadFile(filePath, uri)
         ProfileManager.updateHeadshot(userId, url)

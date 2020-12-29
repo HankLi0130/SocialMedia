@@ -12,6 +12,9 @@ object AuthManager {
     val currentUser: FirebaseUser?
         get() = auth.currentUser
 
+    val currentUserId: String?
+        get() = currentUser?.uid
+
     fun getSignInIntent(): Intent {
         val idpConfigs = listOf(
             AuthUI.IdpConfig.EmailBuilder().build(),

@@ -23,10 +23,10 @@ class EditProfileViewModel : BaseViewModel() {
     val profileData: LiveData<Profile>
         get() = _profileData
 
-    fun loadProfile(userId: String) {
+    fun loadProfile() {
         callProgress(true)
         viewModelScope.launch(IO) {
-            val profile = profileRepo.fetchProfile(userId)
+            val profile = profileRepo.fetchProfile()
             withContext(Main) {
                 callProgress(false)
                 this@EditProfileViewModel.profile = profile
@@ -41,10 +41,10 @@ class EditProfileViewModel : BaseViewModel() {
         _profileData.value = profile
     }
 
-    fun onHeadShotSelected(userId: String, uri: Uri) {
+    fun onHeadShotSelected(uri: Uri) {
         callProgress(true)
         viewModelScope.launch {
-            profile.photoURL = profileRepo.updateHeadshot(userId, uri)
+            profile.photoURL = profileRepo.updateHeadshot(uri)
             withContext(Main) {
                 callProgress(false)
                 refreshProfile()

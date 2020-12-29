@@ -27,7 +27,7 @@ class ProfileFragment : BaseArchFragment<ProfileViewModel>(R.layout.fragment_pro
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.subscribeProfile(app.user.id)
+        viewModel.subscribeProfile()
 
         viewModel.profileData.observe(viewLifecycleOwner) { profile ->
 

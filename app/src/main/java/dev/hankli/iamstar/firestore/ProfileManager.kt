@@ -2,6 +2,7 @@ package dev.hankli.iamstar.firestore
 
 import com.google.firebase.firestore.*
 import dev.hankli.iamstar.data.models.Profile
+import dev.hankli.iamstar.firebase.AuthManager
 import kotlinx.coroutines.tasks.await
 
 object ProfileManager {
@@ -9,6 +10,8 @@ object ProfileManager {
 
     private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val rootCollection: CollectionReference by lazy { db.collection(COLLECTION_PROFILE) }
+
+    fun getCurrentUserDoc() = getDoc(AuthManager.currentUserId!!)
 
     fun getDoc(userId: String) = rootCollection.document(userId)
 

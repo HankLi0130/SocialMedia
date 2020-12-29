@@ -49,7 +49,7 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
 
         viewModel.loadPost(args.feedId)
 
-        ProfileManager.getDoc(app.influencer.id).get()
+        ProfileManager.getDoc(app.influencerId).get()
             .addOnSuccessListener { snapshot ->
                 val url = snapshot.getString("photoURL")
                 if (url.isNullOrEmpty()) view_feed_head_shot.setImageResource(R.drawable.ic_person)
@@ -192,11 +192,7 @@ class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_e
         return when (item.itemId) {
             R.id.action_ok -> {
                 if (requireContext().isInternetConnected()) {
-                    viewModel.submit(
-                        requireContext().contentResolver,
-                        app.user,
-                        app.influencer
-                    )
+                    viewModel.submit(requireContext().contentResolver, app.influencerId)
                 } else viewModel.showNoInternet()
                 true
             }

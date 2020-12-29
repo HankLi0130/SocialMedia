@@ -41,7 +41,7 @@ android {
             resValue "string", "facebook_application_id", "247892093066632"
             resValue "string", "facebook_login_protocol_scheme", "fb247892093066632"
 
-            resValue "string", "influencer_object_id", "q6rM5kbtBVR1A4vmMzVI5EzCtet2"
+            resValue "string", "influencer_id", "q6rM5kbtBVR1A4vmMzVI5EzCtet2"
         }
         development {
             debuggable true
@@ -59,7 +59,7 @@ android {
             resValue "string", "facebook_application_id", "288773521483517"
             resValue "string", "facebook_login_protocol_scheme", "fb288773521483517"
 
-            resValue "string", "influencer_object_id", "q79osCDs2lWGscKBybniTAmz65s1"
+            resValue "string", "influencer_id", "q79osCDs2lWGscKBybniTAmz65s1"
         }
         release {
             minifyEnabled true

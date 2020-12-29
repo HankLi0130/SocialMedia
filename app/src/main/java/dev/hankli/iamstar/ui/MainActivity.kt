@@ -10,7 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import dev.hankli.iamstar.MainNavDirections
+import dev.hankli.iamstar.NavGraphDirections
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.firebase.AuthManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,17 +20,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    private val topLevelDestinations = setOf(R.id.feedFragment, R.id.profileFragment)
+    private val noActionBarDestinations = setOf(R.id.authFragment)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val topLevelDestinations = setOf(R.id.feedFragment, R.id.profileFragment)
         appBarConfiguration = AppBarConfiguration(topLevelDestinations)
 
         navController = findNavController(R.id.view_nav_host)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
 
             // Action Bar
-            if (destination.id == R.id.authFragment) {
+            if (noActionBarDestinations.contains(destination.id)) {
                 supportActionBar?.hide()
             } else {
                 supportActionBar?.show()
@@ -53,9 +55,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onStart() {
         super.onStart()
-        // Auth
-        if (AuthManager.currentUser == null)
-            navController.navigate(MainNavDirections.actionGlobalAuthFragment())
+        if (AuthManager.currentUser == null) {
+            navController.navigate(NavGraphDirections.actionGlobalAuthFragment())
+        }
     }
 
     fun restart() {

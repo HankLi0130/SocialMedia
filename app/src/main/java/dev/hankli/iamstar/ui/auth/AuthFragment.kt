@@ -41,8 +41,7 @@ class AuthFragment : BaseArchFragment<AuthViewModel>(R.layout.fragment_auth) {
 
     override fun notifyFromViewModel(code: Int) {
         if (code == viewModel.profileCreatedCode) {
-            app.loadUser()
-            findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToFeedFragment())
+            findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToNavMain())
         }
     }
 

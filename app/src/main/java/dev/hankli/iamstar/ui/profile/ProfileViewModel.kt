@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.ListenerRegistration
 import dev.hankli.iamstar.data.models.Profile
+import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.firestore.ProfileManager
 import dev.hankli.iamstar.utils.BaseViewModel
 
@@ -15,16 +16,17 @@ class ProfileViewModel : BaseViewModel() {
     val profileData: LiveData<Profile>
         get() = _profileData
 
-    fun subscribeProfile(profileId: String) {
-        registration = ProfileManager.addSnapshotListener(profileId) { snapshot, exception ->
-            if (exception != null) {
-                exception.printStackTrace()
-                return@addSnapshotListener
-            }
+    fun subscribeProfile() {
+        registration =
+            ProfileManager.addSnapshotListener(AuthManager.currentUserId!!) { snapshot, exception ->
+                if (exception != null) {
+                    exception.printStackTrace()
+                    return@addSnapshotListener
+                }
 
-            val profile = snapshot?.toObject(Profile::class.java)
-            _profileData.value = profile
-        }
+                val profile = snapshot?.toObject(Profile::class.java)
+                _profileData.value = profile
+            }
     }
 
     override fun onCleared() {

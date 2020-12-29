@@ -44,7 +44,7 @@ class CommentFragment : BaseArchFragment<CommentViewModel>(R.layout.fragment_com
 
         view_send.setOnClickListener {
             val message = view_input_comment.text.toString()
-            viewModel.sendComment(args.feedId, app.user, message)
+            viewModel.sendComment(args.feedId, message)
             view_input_comment.text.clear()
             view_input_comment.onEditorAction(EditorInfo.IME_ACTION_DONE)
         }
