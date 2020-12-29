@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">iamStar</string>
-
     <string name="sign_in">登入</string>
     <string name="sign_out">登出</string>
     <string name="sign_in_canceled">取消登入</string>
