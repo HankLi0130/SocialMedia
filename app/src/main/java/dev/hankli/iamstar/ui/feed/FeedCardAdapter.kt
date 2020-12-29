@@ -17,7 +17,7 @@ import dev.hankli.iamstar.utils.media.VIDEO
 import kotlinx.android.synthetic.main.card_feed.view.*
 import tw.hankli.brookray.core.extension.viewOf
 
-class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
+class FeedCardAdapter(val showItemOptions: Boolean, options: FirestoreRecyclerOptions<Feed>) :
     FirestoreRecyclerAdapter<Feed, FeedCardAdapter.ViewHolder>(options) {
 
     lateinit var onItemOptionsClick: (feedId: String) -> Unit
@@ -36,6 +36,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: Feed) {
         holder.bind(
             model,
+            showItemOptions,
             onItemOptionsClick,
             onItemReactionClick,
             onItemCommentClick,
@@ -48,6 +49,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
 
         fun bind(
             item: Feed,
+            showItemOptions: Boolean,
             onItemOptionsClick: (feedId: String) -> Unit,
             onItemReactionClick: (feedId: String) -> Unit,
             onItemCommentClick: (feedId: String) -> Unit,
@@ -98,6 +100,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
                 view_feed_comment_count.isVisible = item.commentCount > 0
                 view_feed_comment_count.text = item.commentCount.toString()
 
+                view_feed_more_options.isVisible = showItemOptions
                 view_feed_more_options.setOnClickListener { onItemOptionsClick(item.objectId) }
             }
         }

@@ -43,7 +43,7 @@ class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
             }
             .build()
 
-        feedCardAdapter = FeedCardAdapter(options).apply {
+        feedCardAdapter = FeedCardAdapter(hasOptionsMenu, options).apply {
             stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             onItemOptionsClick = ::onFeedCardOptionsClick
             onItemReactionClick = ::onFeedCardReactionClick
