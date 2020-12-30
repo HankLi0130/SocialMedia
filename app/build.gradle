@@ -28,6 +28,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+        resConfigs "en", "zh-rTW"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -101,13 +102,14 @@ dependencies {
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:26.2.0')
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
-    def firebase_ui_version = "6.4.0"
+    def firebase_ui_version = "7.1.1"
     implementation "com.firebaseui:firebase-ui-auth:$firebase_ui_version"
     implementation "com.firebaseui:firebase-ui-firestore:$firebase_ui_version"
     implementation "com.firebaseui:firebase-ui-storage:$firebase_ui_version"
-    implementation 'com.google.firebase:firebase-messaging:21.0.1'
-    implementation 'com.google.firebase:firebase-analytics-ktx'
 
     // Facebook
     implementation 'com.facebook.android:facebook-android-sdk:8.1.0'
