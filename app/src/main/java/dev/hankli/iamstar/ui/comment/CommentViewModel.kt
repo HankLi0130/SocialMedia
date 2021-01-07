@@ -2,12 +2,12 @@ package dev.hankli.iamstar.ui.comment
 
 import androidx.lifecycle.viewModelScope
 import dev.hankli.iamstar.repo.FeedRepo
-import dev.hankli.iamstar.utils.BaseViewModel
+import dev.hankli.iamstar.utils.ArchViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class CommentViewModel : BaseViewModel() {
+class CommentViewModel : ArchViewModel() {
 
     private val feedRepo = FeedRepo()
 

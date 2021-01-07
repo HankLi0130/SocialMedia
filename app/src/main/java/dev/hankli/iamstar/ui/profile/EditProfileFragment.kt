@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import dev.hankli.iamstar.R
-import dev.hankli.iamstar.utils.BaseArchFragment
+import dev.hankli.iamstar.utils.ArchFragment
 import dev.hankli.iamstar.utils.Consts.REQUEST_PERMISSION_MEDIA
 import dev.hankli.iamstar.utils.Consts.REQUEST_PICK_MEDIAS
 import dev.hankli.iamstar.utils.ext.display
@@ -21,7 +21,7 @@ import dev.hankli.iamstar.utils.media.showImagePicker
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import java.util.*
 
-class EditProfileFragment : BaseArchFragment<EditProfileViewModel>(R.layout.fragment_edit_profile) {
+class EditProfileFragment : ArchFragment<EditProfileViewModel>(R.layout.fragment_edit_profile) {
 
     override val hasOptionsMenu: Boolean
         get() = true

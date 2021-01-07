@@ -3,14 +3,14 @@ package dev.hankli.iamstar.ui.feed
 import androidx.lifecycle.viewModelScope
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.repo.FeedRepo
-import dev.hankli.iamstar.utils.BaseViewModel
+import dev.hankli.iamstar.utils.ArchViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FeedViewModel : BaseViewModel() {
+class FeedViewModel : ArchViewModel() {
 
     val refreshFeedsCode = 1
 

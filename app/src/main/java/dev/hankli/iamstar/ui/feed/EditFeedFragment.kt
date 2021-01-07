@@ -16,7 +16,7 @@ import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.firestore.ProfileManager
-import dev.hankli.iamstar.utils.BaseArchFragment
+import dev.hankli.iamstar.utils.ArchFragment
 import dev.hankli.iamstar.utils.Consts.REQUEST_PERMISSION_MEDIA
 import dev.hankli.iamstar.utils.Consts.REQUEST_PICK_MEDIAS
 import dev.hankli.iamstar.utils.Consts.REQUEST_PLACES
@@ -25,7 +25,7 @@ import dev.hankli.iamstar.utils.getPlacesIntent
 import dev.hankli.iamstar.utils.media.*
 import kotlinx.android.synthetic.main.fragment_edit_feed.*
 
-class EditFeedFragment : BaseArchFragment<EditFeedViewModel>(R.layout.fragment_edit_feed),
+class EditFeedFragment : ArchFragment<EditFeedViewModel>(R.layout.fragment_edit_feed),
     MediaFileAdapter.Listener {
 
     override val hasOptionsMenu: Boolean

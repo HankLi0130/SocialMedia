@@ -6,14 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dev.hankli.iamstar.data.models.Profile
 import dev.hankli.iamstar.repo.ProfileRepo
-import dev.hankli.iamstar.utils.BaseViewModel
+import dev.hankli.iamstar.utils.ArchViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class EditProfileViewModel : BaseViewModel() {
+class EditProfileViewModel : ArchViewModel() {
 
     private lateinit var profile: Profile
 

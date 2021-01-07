@@ -10,11 +10,11 @@ import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.firebase.AuthManager.getSignInIntent
-import dev.hankli.iamstar.utils.BaseArchFragment
+import dev.hankli.iamstar.utils.ArchFragment
 import dev.hankli.iamstar.utils.Consts.REQUEST_SIGN_IN
 import kotlinx.android.synthetic.main.fragment_auth.*
 
-class AuthFragment : BaseArchFragment<AuthViewModel>(R.layout.fragment_auth) {
+class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
 
     override val viewModel: AuthViewModel by viewModels()
 

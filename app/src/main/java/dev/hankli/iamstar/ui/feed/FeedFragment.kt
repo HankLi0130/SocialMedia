@@ -12,13 +12,13 @@ import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.firestore.FeedManager
-import dev.hankli.iamstar.utils.BaseArchFragment
+import dev.hankli.iamstar.utils.ArchFragment
 import dev.hankli.iamstar.utils.ext.isInternetConnected
 import kotlinx.android.synthetic.main.fragment_feed.*
 import tw.hankli.brookray.core.constant.EMPTY
 import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 
-class FeedFragment : BaseArchFragment<FeedViewModel>(R.layout.fragment_feed) {
+class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed) {
 
     override val hasOptionsMenu: Boolean
         get() = AuthManager.currentUserId == app.influencerId

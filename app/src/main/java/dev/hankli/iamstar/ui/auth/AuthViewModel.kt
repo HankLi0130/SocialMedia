@@ -3,12 +3,12 @@ package dev.hankli.iamstar.ui.auth
 import androidx.lifecycle.viewModelScope
 import com.firebase.ui.auth.IdpResponse
 import dev.hankli.iamstar.repo.ProfileRepo
-import dev.hankli.iamstar.utils.BaseViewModel
+import dev.hankli.iamstar.utils.ArchViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AuthViewModel : BaseViewModel() {
+class AuthViewModel : ArchViewModel() {
 
     val profileCreatedCode = 1
 

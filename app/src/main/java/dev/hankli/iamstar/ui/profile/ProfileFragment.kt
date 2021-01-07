@@ -9,12 +9,12 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.firebase.AuthManager
-import dev.hankli.iamstar.utils.BaseArchFragment
+import dev.hankli.iamstar.utils.ArchFragment
 import dev.hankli.iamstar.utils.ext.display
 import kotlinx.android.synthetic.main.card_field.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 
-class ProfileFragment : BaseArchFragment<ProfileViewModel>(R.layout.fragment_profile) {
+class ProfileFragment : ArchFragment<ProfileViewModel>(R.layout.fragment_profile) {
 
     override val hasOptionsMenu: Boolean
         get() = true

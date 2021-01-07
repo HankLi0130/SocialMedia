@@ -6,9 +6,9 @@ import com.google.firebase.firestore.ListenerRegistration
 import dev.hankli.iamstar.data.models.Profile
 import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.firestore.ProfileManager
-import dev.hankli.iamstar.utils.BaseViewModel
+import dev.hankli.iamstar.utils.ArchViewModel
 
-class ProfileViewModel : BaseViewModel() {
+class ProfileViewModel : ArchViewModel() {
 
     private lateinit var registration: ListenerRegistration
 

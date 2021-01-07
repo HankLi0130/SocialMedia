@@ -8,7 +8,7 @@ import dev.hankli.iamstar.R
 import tw.hankli.brookray.core.constant.NO_RESOURCE
 import tw.hankli.brookray.core.event.Event
 
-abstract class BaseViewModel : ViewModel() {
+abstract class ArchViewModel : ViewModel() {
 
     private val _viewEvents = MutableLiveData<Event<ViewAction>>()
     val viewEvents: LiveData<Event<ViewAction>>

@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.repo.FeedRepo
-import dev.hankli.iamstar.utils.BaseViewModel
+import dev.hankli.iamstar.utils.ArchViewModel
 import dev.hankli.iamstar.utils.media.*
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.hankli.brookray.core.constant.EMPTY
 
-class EditFeedViewModel : BaseViewModel() {
+class EditFeedViewModel : ArchViewModel() {
 
     private lateinit var feed: Feed
 

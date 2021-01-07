@@ -5,7 +5,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import dev.hankli.iamstar.R
 
-abstract class BaseArchFragment<T : BaseViewModel> : BaseFragment {
+abstract class ArchFragment<T : ArchViewModel> : BaseFragment {
 
     constructor() : super()
 

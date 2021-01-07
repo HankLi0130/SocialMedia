@@ -9,11 +9,11 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.firestore.FeedManager
-import dev.hankli.iamstar.utils.BaseArchFragment
+import dev.hankli.iamstar.utils.ArchFragment
 import kotlinx.android.synthetic.main.fragment_comment.*
 import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 
-class CommentFragment : BaseArchFragment<CommentViewModel>(R.layout.fragment_comment) {
+class CommentFragment : ArchFragment<CommentViewModel>(R.layout.fragment_comment) {
 
     override val viewModel: CommentViewModel by viewModels()
 
