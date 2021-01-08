@@ -18,13 +18,7 @@ import kotlinx.android.synthetic.main.fragment_feed.*
 import tw.hankli.brookray.core.constant.EMPTY
 import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 
-class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed) {
-
-    override val hasOptionsMenu: Boolean
-        get() = AuthManager.currentUserId == app.influencerId
-
-    override val menuRes: Int
-        get() = R.menu.fragment_home
+class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.fragment_home) {
 
     override val viewModel: FeedViewModel by viewModels()
 
@@ -32,6 +26,10 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Role Permission
+        val writable = AuthManager.currentUserId == app.influencerId
+        setMenuVisibility(writable)
 
         val options = FirestoreRecyclerOptions.Builder<Feed>()
             .setQuery(FeedManager.queryByInfluencer(app.influencerId)) { snapshot ->
@@ -43,7 +41,7 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed) {
             }
             .build()
 
-        feedCardAdapter = FeedCardAdapter(hasOptionsMenu, options).apply {
+        feedCardAdapter = FeedCardAdapter(writable, options).apply {
             stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             onItemOptionsClick = ::onFeedCardOptionsClick
             onItemReactionClick = ::onFeedCardReactionClick

@@ -25,14 +25,9 @@ import dev.hankli.iamstar.utils.getPlacesIntent
 import dev.hankli.iamstar.utils.media.*
 import kotlinx.android.synthetic.main.fragment_edit_feed.*
 
-class EditFeedFragment : ArchFragment<EditFeedViewModel>(R.layout.fragment_edit_feed),
+class EditFeedFragment :
+    ArchFragment<EditFeedViewModel>(R.layout.fragment_edit_feed, R.menu.single_action_ok),
     MediaFileAdapter.Listener {
-
-    override val hasOptionsMenu: Boolean
-        get() = true
-
-    override val menuRes: Int
-        get() = R.menu.single_action_ok
 
     override val viewModel: EditFeedViewModel by viewModels()
 

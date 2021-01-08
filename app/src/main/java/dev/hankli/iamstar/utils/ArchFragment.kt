@@ -3,13 +3,20 @@ package dev.hankli.iamstar.utils
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.annotation.MenuRes
 import dev.hankli.iamstar.R
+import tw.hankli.brookray.core.constant.NO_RESOURCE
 
 abstract class ArchFragment<T : ArchViewModel> : BaseFragment {
 
     constructor() : super()
 
     constructor(@LayoutRes layoutRes: Int) : super(layoutRes)
+
+    constructor(
+        @LayoutRes layoutId: Int,
+        @MenuRes menuRes: Int = NO_RESOURCE
+    ) : super(layoutId, menuRes)
 
     protected abstract val viewModel: T
 

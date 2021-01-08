@@ -21,13 +21,8 @@ import dev.hankli.iamstar.utils.media.showImagePicker
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import java.util.*
 
-class EditProfileFragment : ArchFragment<EditProfileViewModel>(R.layout.fragment_edit_profile) {
-
-    override val hasOptionsMenu: Boolean
-        get() = true
-
-    override val menuRes: Int
-        get() = R.menu.single_action_ok
+class EditProfileFragment :
+    ArchFragment<EditProfileViewModel>(R.layout.fragment_edit_profile, R.menu.single_action_ok) {
 
     override val viewModel: EditProfileViewModel by viewModels()
 

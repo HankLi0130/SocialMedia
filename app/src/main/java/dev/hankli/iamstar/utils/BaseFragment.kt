@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import androidx.annotation.ArrayRes
 import androidx.annotation.LayoutRes
+import androidx.annotation.MenuRes
 import androidx.annotation.StringRes
 import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.core.content.PermissionChecker.checkSelfPermission
@@ -26,9 +27,15 @@ abstract class BaseFragment : Fragment {
 
     constructor(@LayoutRes layoutRes: Int) : super(layoutRes)
 
-    protected open val hasOptionsMenu = false
+    constructor(
+        @LayoutRes layoutId: Int,
+        @MenuRes menuRes: Int = NO_RESOURCE
+    ) : super(layoutId) {
+        this.menuRes = menuRes
+    }
 
-    protected open val menuRes = NO_RESOURCE
+    @MenuRes
+    protected var menuRes = NO_RESOURCE
 
     protected val app: App
         get() = (requireActivity().application) as App
@@ -46,12 +53,11 @@ abstract class BaseFragment : Fragment {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(hasOptionsMenu)
+        setHasOptionsMenu(menuRes != NO_RESOURCE)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (menuRes != NO_RESOURCE) inflater.inflate(menuRes, menu)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     protected fun askingPermissions(permissions: Array<out String>, requestCode: Int) {

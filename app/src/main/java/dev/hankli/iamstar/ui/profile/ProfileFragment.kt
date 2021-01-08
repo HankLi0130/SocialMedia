@@ -14,13 +14,8 @@ import dev.hankli.iamstar.utils.ext.display
 import kotlinx.android.synthetic.main.card_field.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 
-class ProfileFragment : ArchFragment<ProfileViewModel>(R.layout.fragment_profile) {
-
-    override val hasOptionsMenu: Boolean
-        get() = true
-
-    override val menuRes: Int
-        get() = R.menu.fragment_profile
+class ProfileFragment :
+    ArchFragment<ProfileViewModel>(R.layout.fragment_profile, R.menu.fragment_profile) {
 
     override val viewModel: ProfileViewModel by viewModels()
 
