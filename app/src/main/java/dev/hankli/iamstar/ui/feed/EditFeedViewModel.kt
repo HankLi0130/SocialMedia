@@ -36,13 +36,13 @@ class EditFeedViewModel : ArchViewModel() {
     val locationData: LiveData<String?>
         get() = _locationData
 
-    fun loadPost(postId: String) {
-        if (postId == EMPTY) {
+    fun loadFeed(feedId: String) {
+        if (feedId == EMPTY) {
             feed = Feed()
         } else {
             viewModelScope.launch {
                 callProgress(true)
-                withContext(IO) { feed = feedRepo.fetchFeed(postId) }
+                withContext(IO) { feed = feedRepo.fetchFeed(feedId) }
                 setDefaultValues()
                 callProgress(false)
             }

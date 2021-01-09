@@ -1,7 +1,6 @@
 package dev.hankli.iamstar.ui.feed
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
-import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.utils.ArchFragment
@@ -80,7 +78,9 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
     }
 
     private fun onFeedCardClick(feedId: String) {
-        Log.i("test", "$feedId")
+        findNavController().navigate(
+            FeedFragmentDirections.actionFeedFragmentToFeedDetailFragment(feedId)
+        )
     }
 
     private fun onFeedCardOptionsClick(feedId: String) {

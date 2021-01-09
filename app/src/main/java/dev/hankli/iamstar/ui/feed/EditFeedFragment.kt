@@ -42,7 +42,7 @@ class EditFeedFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.loadPost(args.feedId)
+        viewModel.loadFeed(args.feedId)
 
         ProfileManager.getDoc(app.influencerId).get()
             .addOnSuccessListener { snapshot ->
