@@ -1,6 +1,7 @@
 package dev.hankli.iamstar.ui.feed
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -43,10 +44,10 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
 
         feedCardAdapter = FeedCardAdapter(writable, options).apply {
             stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            onItemClick = ::onFeedCardClick
             onItemOptionsClick = ::onFeedCardOptionsClick
             onItemReactionClick = ::onFeedCardReactionClick
             onItemCommentClick = ::onFeedCardCommentClick
-            onItemMediaClick = ::onFeedCardMediaClick
         }
 
         view_feeds.apply {
@@ -78,6 +79,10 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
         )
     }
 
+    private fun onFeedCardClick(feedId: String) {
+        Log.i("test", "$feedId")
+    }
+
     private fun onFeedCardOptionsClick(feedId: String) {
         showListDialog(R.string.feed_actions_title, R.array.feed_actions) { which ->
             when (which) {
@@ -94,20 +99,7 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
     }
 
     private fun onFeedCardCommentClick(feedId: String) {
-        findNavController().navigate(
-            FeedFragmentDirections.actionFeedFragmentToCommentFragment(feedId)
-        )
-    }
 
-    private fun onFeedCardMediaClick(media: Media) {
-        findNavController().navigate(
-            FeedFragmentDirections.actionFeedFragmentToMediaFragment(
-                media.url,
-                media.type,
-                media.width,
-                media.height
-            )
-        )
     }
 
     override fun onStart() {

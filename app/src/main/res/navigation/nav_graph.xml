@@ -30,12 +30,19 @@
         tools:layout="@layout/fragment_feed">
         <action
             android:id="@+id/action_feedFragment_to_editFeedFragment"
-            app:destination="@id/editPostFragment" />
+            app:destination="@id/editFeedFragment" />
         <action
-            android:id="@+id/action_feedFragment_to_commentFragment"
-            app:destination="@id/commentFragment" />
+            android:id="@+id/action_feedFragment_to_feedDetailFragment"
+            app:destination="@id/feedDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/feedDetailFragment"
+        android:name="dev.hankli.iamstar.ui.feed.FeedDetailFragment"
+        android:label="@string/feed"
+        tools:layout="@layout/fragment_feed_detail">
         <action
-            android:id="@+id/action_feedFragment_to_mediaFragment"
+            android:id="@+id/action_feedDetailFragment_to_mediaReviewFragment"
             app:destination="@id/mediaReviewFragment" />
     </fragment>
 
@@ -58,20 +65,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/editPostFragment"
+        android:id="@+id/editFeedFragment"
         android:name="dev.hankli.iamstar.ui.feed.EditFeedFragment"
         android:label="@string/feed_edit"
         tools:layout="@layout/fragment_edit_feed">
-        <argument
-            android:name="feedId"
-            app:argType="string" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/commentFragment"
-        android:name="dev.hankli.iamstar.ui.comment.CommentFragment"
-        android:label="@string/comments"
-        tools:layout="@layout/fragment_comment">
         <argument
             android:name="feedId"
             app:argType="string" />
@@ -91,6 +88,16 @@
         <action
             android:id="@+id/action_profileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/commentFragment"
+        android:name="dev.hankli.iamstar.ui.comment.CommentFragment"
+        android:label="@string/comments"
+        tools:layout="@layout/fragment_comment">
+        <argument
+            android:name="feedId"
+            app:argType="string" />
     </fragment>
 
 </navigation>

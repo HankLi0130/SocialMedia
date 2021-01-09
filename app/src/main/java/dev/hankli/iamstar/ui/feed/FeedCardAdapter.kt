@@ -20,13 +20,13 @@ import tw.hankli.brookray.core.extension.viewOf
 class FeedCardAdapter(val showItemOptions: Boolean, options: FirestoreRecyclerOptions<Feed>) :
     FirestoreRecyclerAdapter<Feed, FeedCardAdapter.ViewHolder>(options) {
 
+    lateinit var onItemClick: (feedId: String) -> Unit
+
     lateinit var onItemOptionsClick: (feedId: String) -> Unit
 
     lateinit var onItemReactionClick: (feedId: String) -> Unit
 
     lateinit var onItemCommentClick: (feedId: String) -> Unit
-
-    lateinit var onItemMediaClick: (media: Media) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.viewOf(R.layout.card_feed)
@@ -37,10 +37,10 @@ class FeedCardAdapter(val showItemOptions: Boolean, options: FirestoreRecyclerOp
         holder.bind(
             model,
             showItemOptions,
+            onItemClick,
             onItemOptionsClick,
             onItemReactionClick,
-            onItemCommentClick,
-            onItemMediaClick
+            onItemCommentClick
         )
         holder.setReaction(model.reaction)
     }
@@ -50,19 +50,21 @@ class FeedCardAdapter(val showItemOptions: Boolean, options: FirestoreRecyclerOp
         fun bind(
             item: Feed,
             showItemOptions: Boolean,
+            onItemClick: (feedId: String) -> Unit,
             onItemOptionsClick: (feedId: String) -> Unit,
             onItemReactionClick: (feedId: String) -> Unit,
-            onItemCommentClick: (feedId: String) -> Unit,
-            onItemMediaClick: (media: Media) -> Unit
+            onItemCommentClick: (feedId: String) -> Unit
         ) {
             with(itemView) {
+                setOnClickListener { onItemClick(item.objectId) }
+
                 item.influencer?.let { doc ->
                     ProfileManager.getDoc(doc.id).get().addOnSuccessListener { snapshot ->
                         val url = snapshot.getString("photoURL")
-                        if (url.isNullOrEmpty()) view_feed_head_shot.setImageResource(R.drawable.ic_person)
-                        else Glide.with(this).load(url).into(view_feed_head_shot)
+                        if (url.isNullOrEmpty()) view_profile_avatar.image.setImageResource(R.drawable.ic_person)
+                        else Glide.with(this).load(url).into(view_profile_avatar.image)
                     }
-                } ?: view_feed_head_shot.setImageResource(R.drawable.ic_person)
+                } ?: view_profile_avatar.image.setImageResource(R.drawable.ic_person)
 
                 view_feed_time.text = item.createdAt.display()
 
@@ -77,18 +79,12 @@ class FeedCardAdapter(val showItemOptions: Boolean, options: FirestoreRecyclerOp
                 view_feed_content.text = item.content
 
                 if (item.medias.isEmpty()) {
-                    view_feed_medias.isVisible = false
+                    view_feed_media.isVisible = false
                 } else {
-                    view_feed_medias.isVisible = true
-                    view_feed_medias.pageCount = item.medias.size
-                    view_feed_medias.setImageListener { position, imageView ->
-                        val media = item.medias[position]
-                        view_play.isVisible = media.type == VIDEO
-                        Glide.with(this).load(media.thumbnailUrl).into(imageView)
-                    }
-                    view_feed_medias.setImageClickListener { position ->
-                        onItemMediaClick(item.medias[position])
-                    }
+                    view_feed_media.isVisible = true
+                    val media = item.medias[0]
+                    Glide.with(this).load(media.thumbnailUrl).into(view_feed_media)
+                    view_play.isVisible = media.type == VIDEO
                 }
 
                 view_feed_reaction.setOnClickListener { onItemReactionClick(item.objectId) }

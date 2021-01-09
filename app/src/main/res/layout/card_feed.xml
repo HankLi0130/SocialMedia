@@ -9,25 +9,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.cardview.widget.CardView
+        <tw.hankli.brookray.ui.card.ImageCardView
             android:id="@+id/view_profile_avatar"
             android:layout_width="@dimen/distance_52_dp"
             android:layout_height="@dimen/distance_52_dp"
             android:layout_margin="@dimen/distance_16_dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
             app:cardCornerRadius="@dimen/corner_radius_50_dp"
             app:cardElevation="@dimen/distance_3_dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/view_feed_head_shot"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                tools:src="@drawable/ic_person" />
-
-        </androidx.cardview.widget.CardView>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_person" />
 
         <TextView
             android:id="@+id/view_feed_time"
@@ -65,28 +58,22 @@
             android:layout_width="@dimen/match_constraint"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            app:layout_constraintBottom_toTopOf="@id/view_feed_medias"
+            app:layout_constraintBottom_toTopOf="@id/view_feed_media"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_profile_avatar"
             tools:text="Hello everyone, this is my feed !" />
 
-        <com.synnapps.carouselview.CarouselView
-            android:id="@+id/view_feed_medias"
+        <ImageView
+            android:id="@+id/view_feed_media"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="@dimen/distance_300_dp"
             android:layout_margin="10dp"
-            app:autoPlay="false"
-            app:fillColor="#FFFFFFFF"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@id/view_feed_reaction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_feed_content"
-            app:pageColor="#00000000"
-            app:radius="6dp"
-            app:slideInterval="3000"
-            app:strokeColor="#FF777777"
-            app:strokeWidth="1dp" />
+            app:layout_constraintTop_toBottomOf="@id/view_feed_content" />
 
         <ImageView
             android:id="@+id/view_play"
@@ -94,10 +81,10 @@
             android:layout_height="@dimen/distance_64_dp"
             android:src="@drawable/ic_baseline_play_circle_outline_24"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/view_feed_medias"
-            app:layout_constraintEnd_toEndOf="@id/view_feed_medias"
-            app:layout_constraintStart_toStartOf="@id/view_feed_medias"
-            app:layout_constraintTop_toTopOf="@id/view_feed_medias" />
+            app:layout_constraintBottom_toBottomOf="@id/view_feed_media"
+            app:layout_constraintEnd_toEndOf="@id/view_feed_media"
+            app:layout_constraintStart_toStartOf="@id/view_feed_media"
+            app:layout_constraintTop_toTopOf="@id/view_feed_media" />
 
         <ImageView
             android:id="@+id/view_feed_reaction"
@@ -107,7 +94,7 @@
             android:src="@drawable/like_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/view_feed_content"
-            app:layout_constraintTop_toBottomOf="@id/view_feed_medias" />
+            app:layout_constraintTop_toBottomOf="@id/view_feed_media" />
 
         <TextView
             android:id="@+id/view_feed_reaction_count"

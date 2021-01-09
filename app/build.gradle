@@ -140,7 +140,7 @@ dependencies {
     implementation 'it.sephiroth.android.library.imagezoom:imagezoom:2.3.0'
 
     // BrookRay
-    def brook_ray_version = '0.2.3'
+    def brook_ray_version = '0.2.4'
     implementation "com.github.HankLi0130.BrookRay:core:$brook_ray_version"
     implementation "com.github.HankLi0130.BrookRay:recyclerview:$brook_ray_version"
     implementation "com.github.HankLi0130.BrookRay:ui:$brook_ray_version"
