@@ -3,7 +3,10 @@ package dev.hankli.iamstar.ui.feed
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.data.models.Feed
+import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.repo.FeedRepo
 import dev.hankli.iamstar.utils.ArchViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -26,5 +29,15 @@ class FeedDetailViewModel : ArchViewModel() {
             callProgress(false)
         }
         return liveData
+    }
+
+    fun getCommentOptions(feedId: String): FirestoreRecyclerOptions<Comment> {
+        return FirestoreRecyclerOptions.Builder<Comment>()
+            .setQuery(FeedManager.queryComments(feedId)) { snapshot ->
+                val comment =
+                    snapshot.toObject(Comment::class.java) ?: error("Comment parse failed !")
+                return@setQuery comment
+            }
+            .build()
     }
 }

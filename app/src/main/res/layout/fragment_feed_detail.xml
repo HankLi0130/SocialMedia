@@ -130,7 +130,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/view_comment_list"
                 android:layout_width="@dimen/match_constraint"
-                android:layout_height="@dimen/match_constraint"
+                android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"

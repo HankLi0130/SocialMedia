@@ -1,6 +1,7 @@
 package dev.hankli.iamstar.ui.feed
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -10,17 +11,21 @@ import com.bumptech.glide.Glide
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.firestore.ProfileManager
+import dev.hankli.iamstar.ui.comment.CommentAdapter
 import dev.hankli.iamstar.utils.ArchFragment
 import dev.hankli.iamstar.utils.ArchViewModel
 import dev.hankli.iamstar.utils.ext.display
 import dev.hankli.iamstar.utils.media.VIDEO
 import kotlinx.android.synthetic.main.fragment_feed_detail.*
+import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 
 class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_detail) {
 
     override val viewModel: FeedDetailViewModel by viewModels()
 
     private val args: FeedDetailFragmentArgs by navArgs()
+
+    private lateinit var commentAdapter: CommentAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -78,6 +83,25 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
             .addOnFailureListener {
                 view_profile_avatar.image.setImageResource(R.drawable.ic_person)
             }
+
+        commentAdapter = CommentAdapter(viewModel.getCommentOptions(args.feedId))
+        view_comment_list.run {
+            setHasFixedSize(true)
+            adapter = commentAdapter
+            addItemDecoration(
+                MarginItemDecoration(resources.getDimension(R.dimen.distance_12_dp).toInt())
+            )
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        commentAdapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        commentAdapter.stopListening()
     }
 
     private fun onMediaClick(media: Media) {
