@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_feedFragment_to_feedDetailFragment"
             app:destination="@id/feedDetailFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
     </fragment>
 
     <fragment

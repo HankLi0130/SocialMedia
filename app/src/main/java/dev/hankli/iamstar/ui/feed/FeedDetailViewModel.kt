@@ -33,11 +33,7 @@ class FeedDetailViewModel : ArchViewModel() {
 
     fun getCommentOptions(feedId: String): FirestoreRecyclerOptions<Comment> {
         return FirestoreRecyclerOptions.Builder<Comment>()
-            .setQuery(FeedManager.queryComments(feedId)) { snapshot ->
-                val comment =
-                    snapshot.toObject(Comment::class.java) ?: error("Comment parse failed !")
-                return@setQuery comment
-            }
+            .setQuery(FeedManager.queryComments(feedId), Comment::class.java)
             .build()
     }
 }
