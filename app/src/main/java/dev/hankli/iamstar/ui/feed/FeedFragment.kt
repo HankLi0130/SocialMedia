@@ -32,7 +32,7 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
 
         val options = FirestoreRecyclerOptions.Builder<Feed>()
             .setQuery(FeedManager.queryByInfluencer(app.influencerId)) { snapshot ->
-                val feed = snapshot.toObject(Feed::class.java) ?: error("Feed parse failed !")
+                val feed = snapshot.toObject(Feed::class.java)!!
                 if (requireContext().isInternetConnected()) {
                     viewModel.retrieveReaction(feed)
                 }

@@ -1,11 +1,13 @@
 package dev.hankli.iamstar.ui.feed
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.data.models.Feed
+import dev.hankli.iamstar.data.models.Profile
 import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.repo.FeedRepo
 import dev.hankli.iamstar.utils.ArchViewModel
@@ -14,6 +16,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import tw.hankli.brookray.core.constant.EMPTY
 
 class FeedDetailViewModel : ArchViewModel() {
 
@@ -34,7 +37,20 @@ class FeedDetailViewModel : ArchViewModel() {
 
     fun getCommentOptions(feedId: String): FirestoreRecyclerOptions<Comment> {
         return FirestoreRecyclerOptions.Builder<Comment>()
-            .setQuery(FeedManager.queryComments(feedId), Comment::class.java)
+            .setQuery(FeedManager.queryComments(feedId)) { commentSnapshot ->
+                val comment = commentSnapshot.toObject(Comment::class.java)!!
+                Log.i("test", "${comment.objectId} query comments")
+                comment.profile?.let { doc ->
+                    doc.get().addOnSuccessListener { profileSnapshot ->
+                        Log.i("test", "${comment.objectId} query profile")
+                        comment.commenterPhotoURL =
+                            profileSnapshot.getString(Profile.PHOTO_URL) ?: EMPTY
+                        comment.commenterName =
+                            profileSnapshot.getString(Profile.DISPLAY_NAME) ?: EMPTY
+                    }
+                }
+                return@setQuery comment
+            }
             .build()
     }
 

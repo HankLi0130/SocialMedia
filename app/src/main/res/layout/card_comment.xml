@@ -9,25 +9,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.cardview.widget.CardView
+        <tw.hankli.brookray.ui.card.ImageCardView
             android:id="@+id/view_commenter_avatar"
             android:layout_width="@dimen/distance_52_dp"
             android:layout_height="@dimen/distance_52_dp"
             android:layout_margin="@dimen/distance_16_dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
             app:cardCornerRadius="@dimen/corner_radius_50_dp"
             app:cardElevation="@dimen/distance_3_dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/view_commenter_head_shot"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                tools:src="@drawable/ic_person" />
-
-        </androidx.cardview.widget.CardView>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_person" />
 
         <TextView
             android:id="@+id/view_commenter_name"

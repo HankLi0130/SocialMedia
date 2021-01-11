@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Media
+import dev.hankli.iamstar.data.models.Profile
 import dev.hankli.iamstar.firestore.ProfileManager
 import dev.hankli.iamstar.ui.comment.CommentAdapter
 import dev.hankli.iamstar.utils.ArchFragment
@@ -74,9 +75,9 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
 
         ProfileManager.getDoc(app.influencerId).get()
             .addOnSuccessListener { snapshot ->
-                val url = snapshot.getString("photoURL")
-                if (url.isNullOrEmpty()) view_profile_avatar.image.setImageResource(R.drawable.ic_person)
-                else Glide.with(this).load(url).into(view_profile_avatar.image)
+                snapshot.getString(Profile.PHOTO_URL)?.let { url ->
+                    Glide.with(this).load(url).into(view_profile_avatar.image)
+                } ?: view_profile_avatar.image.setImageResource(R.drawable.ic_person)
             }
             .addOnFailureListener {
                 view_profile_avatar.image.setImageResource(R.drawable.ic_person)
