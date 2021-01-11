@@ -99,7 +99,10 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
     }
 
     private fun onFeedCardCommentClick(feedId: String) {
-
+        // TODO scroll to comment recyclerview after click this button
+        findNavController().navigate(
+            FeedFragmentDirections.actionFeedFragmentToFeedDetailFragment(feedId)
+        )
     }
 
     override fun onStart() {
