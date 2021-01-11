@@ -9,6 +9,7 @@ import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.repo.FeedRepo
 import dev.hankli.iamstar.utils.ArchViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
@@ -35,5 +36,25 @@ class FeedDetailViewModel : ArchViewModel() {
         return FirestoreRecyclerOptions.Builder<Comment>()
             .setQuery(FeedManager.queryComments(feedId), Comment::class.java)
             .build()
+    }
+
+    fun doReaction(feedId: String) {
+        viewModelScope.launch(IO) {
+            if (feedRepo.hasReaction(feedId)) {
+                feedRepo.unlike(feedId)
+            } else {
+                feedRepo.like(feedId)
+            }
+        }
+    }
+
+    fun sendComment(feedId: String, message: String) {
+        if (message.isEmpty()) return
+
+        viewModelScope.launch {
+            callProgress(true)
+            withContext(Dispatchers.IO) { feedRepo.addComment(feedId, message) }
+            callProgress(false)
+        }
     }
 }

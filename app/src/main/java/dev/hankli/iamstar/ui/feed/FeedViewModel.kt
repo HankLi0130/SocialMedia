@@ -36,7 +36,7 @@ class FeedViewModel : ArchViewModel() {
     }
 
     fun doReaction(feedId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(IO) {
             if (feedRepo.hasReaction(feedId)) {
                 feedRepo.unlike(feedId)
             } else {

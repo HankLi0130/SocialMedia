@@ -1,24 +1,28 @@
 package dev.hankli.iamstar.ui.feed
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
-import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.data.models.Media
-import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.firestore.ProfileManager
 import dev.hankli.iamstar.ui.comment.CommentAdapter
 import dev.hankli.iamstar.utils.ArchFragment
 import dev.hankli.iamstar.utils.ArchViewModel
 import dev.hankli.iamstar.utils.ext.display
+import dev.hankli.iamstar.utils.ext.isInternetConnected
 import dev.hankli.iamstar.utils.media.VIDEO
+import kotlinx.android.synthetic.main.fragment_comment.*
 import kotlinx.android.synthetic.main.fragment_feed_detail.*
+import kotlinx.android.synthetic.main.fragment_feed_detail.view_comment_list
+import kotlinx.android.synthetic.main.fragment_feed_detail.view_input_comment
+import kotlinx.android.synthetic.main.fragment_feed_detail.view_send
 import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 
 class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_detail) {
@@ -56,15 +60,14 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
             }
 
             view_feed_reaction.setOnClickListener {
-                //onItemReactionClick(item.objectId)
+                if (requireContext().isInternetConnected()) {
+                    viewModel.doReaction(args.feedId)
+                } else viewModel.showNoInternet()
             }
 
             view_feed_reaction_count.isVisible = feed.reactionCount > 0
             view_feed_reaction_count.text = feed.reactionCount.toString()
 
-            view_feed_comment.setOnClickListener {
-                //onItemCommentClick(item.objectId)
-            }
             view_feed_comment_count.isVisible = feed.commentCount > 0
             view_feed_comment_count.text = feed.commentCount.toString()
         })
@@ -86,6 +89,15 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
             addItemDecoration(
                 MarginItemDecoration(resources.getDimension(R.dimen.distance_12_dp).toInt())
             )
+        }
+
+        view_send.setOnClickListener {
+            if (requireContext().isInternetConnected()) {
+                val message = view_input_comment.text.toString()
+                viewModel.sendComment(args.feedId, message)
+                view_input_comment.text.clear()
+                view_input_comment.onEditorAction(EditorInfo.IME_ACTION_DONE)
+            } else viewModel.showNoInternet()
         }
     }
 
