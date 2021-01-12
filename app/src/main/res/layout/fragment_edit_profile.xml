@@ -146,11 +146,11 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/view_input_profile_sex"
+            android:id="@+id/view_input_profile_gender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/distance_12_dp"
-            android:hint="@string/profile_sex">
+            android:hint="@string/profile_gender">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"

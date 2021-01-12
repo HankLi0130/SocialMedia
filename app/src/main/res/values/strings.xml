@@ -22,7 +22,7 @@
     <string name="profile_birthday">Birthday</string>
     <string name="profile_email">e-mail</string>
     <string name="profile_phone_number">Phone</string>
-    <string name="profile_sex">Gender</string>
+    <string name="profile_gender">Gender</string>
     <string name="update_profile">Update</string>
 
     <string name="add_feed">Add feed</string>
@@ -56,4 +56,7 @@
         <item>Male</item>
         <item>Female</item>
     </string-array>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+
 </resources>

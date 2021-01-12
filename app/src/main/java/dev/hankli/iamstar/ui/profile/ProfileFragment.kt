@@ -72,10 +72,10 @@ class ProfileFragment :
                 view_phone_number.view_field.text = it
             } ?: run { view_phone_number.isVisible = false }
 
-            profile.sex?.let {
+            profile.gender?.let {
                 view_sex.isVisible = true
-                view_sex.view_title.text = getString(R.string.profile_sex)
-                view_sex.view_field.text = it
+                view_sex.view_title.text = getString(R.string.profile_gender)
+                view_sex.view_field.text = getString(it.stringRes)
             } ?: run { view_sex.isVisible = false }
         }
     }

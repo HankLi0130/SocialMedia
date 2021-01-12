@@ -103,10 +103,7 @@ class FeedCardAdapter(val showItemOptions: Boolean, options: FirestoreRecyclerOp
         }
 
         fun setReaction(reaction: Reaction?) {
-            val src = when (reaction?.reactionType) {
-                ReactionType.LIKE -> R.drawable.ic_reaction_like
-                else -> R.drawable.ic_like
-            }
+            val src = reaction?.reactionType?.drawableRes ?: ReactionType.NO_REACTION.drawableRes
             itemView.view_feed_reaction.setImageResource(src)
         }
     }

@@ -22,7 +22,7 @@
     <string name="profile_birthday">生日</string>
     <string name="profile_email">信箱</string>
     <string name="profile_phone_number">電話</string>
-    <string name="profile_sex">性別</string>
+    <string name="profile_gender">性別</string>
     <string name="update_profile">更新</string>
 
     <string name="add_feed">新增貼文</string>
@@ -56,4 +56,7 @@
         <item>男</item>
         <item>女</item>
     </string-array>
+    <string name="gender_male">男</string>
+    <string name="gender_female">女</string>
+
 </resources>

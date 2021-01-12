@@ -52,7 +52,8 @@ class EditProfileFragment :
 
             view_input_profile_phone_number.editText?.setText(profile.phoneNumber)
 
-            view_input_profile_sex.editText?.setText(profile.sex)
+            val gender = profile.gender?.let { getString(it.stringRes) }
+            view_input_profile_gender.editText?.setText(gender)
         }
 
         view_input_profile_display_name.editText?.doOnTextChanged { text, _, _, _ ->
@@ -97,7 +98,7 @@ class EditProfileFragment :
             picker.show(parentFragmentManager, null)
         }
 
-        view_input_profile_sex.editText?.setOnClickListener {
+        view_input_profile_gender.editText?.setOnClickListener {
             showListDialog(R.string.sex_types_title, R.array.sex_types) {
                 viewModel.onSexChanged(it)
             }

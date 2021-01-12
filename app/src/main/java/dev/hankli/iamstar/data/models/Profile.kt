@@ -1,6 +1,7 @@
 package dev.hankli.iamstar.data.models
 
 import com.google.firebase.firestore.PropertyName
+import dev.hankli.iamstar.data.enums.Gender
 import tw.hankli.brookray.core.constant.EMPTY
 import java.util.*
 
@@ -43,9 +44,9 @@ class Profile(
     @set:PropertyName(PHOTO_URL)
     var photoURL: String? = null,
 
-    @get:PropertyName(SEX)
-    @set:PropertyName(SEX)
-    var sex: String? = null,
+    @get:PropertyName(GENDER)
+    @set:PropertyName(GENDER)
+    var gender: Gender? = null,
 
     @get:PropertyName(FCM_TOKEN)
     @set:PropertyName(FCM_TOKEN)
@@ -74,7 +75,7 @@ class Profile(
         const val EMAIL = "email"
         const val PHONE_NUMBER = "phoneNumber"
         const val PHOTO_URL = "photoURL"
-        const val SEX = "sex"
+        const val GENDER = "sex"
         const val FCM_TOKEN = "fcmToken"
         const val VOIP_TOKEN = "voipToken"
         const val CREATED_AT = "createdAt"

@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dev.hankli.iamstar.data.enums.Gender
 import dev.hankli.iamstar.data.models.Profile
 import dev.hankli.iamstar.repo.ProfileRepo
 import dev.hankli.iamstar.utils.ArchViewModel
@@ -93,10 +94,10 @@ class EditProfileViewModel : ArchViewModel() {
 
     // 0 = Male, 1 = Female
     fun onSexChanged(sexType: Int) {
-        profile.sex = when (sexType) {
-            0 -> "MALE"
-            1 -> "FEMALE"
-            else -> null
+        profile.gender = when (sexType) {
+            0 -> Gender.MALE
+            1 -> Gender.FEMALE
+            else -> error("No such gender !")
         }
         refreshProfile()
     }
