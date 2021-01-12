@@ -1,5 +1,6 @@
 package dev.hankli.iamstar.repo
 
+import dev.hankli.iamstar.data.enums.ReactionType
 import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Media
@@ -100,7 +101,7 @@ class FeedRepo {
 
     suspend fun like(feedId: String) {
         val user = ProfileManager.getCurrentUserDoc()
-        val reaction = Reaction(user.id, "like", user)
+        val reaction = Reaction(user.id, ReactionType.LIKE, user)
         FeedManager.addReaction(feedId, user, reaction)
         FeedManager.updateReactionCount(feedId)
     }

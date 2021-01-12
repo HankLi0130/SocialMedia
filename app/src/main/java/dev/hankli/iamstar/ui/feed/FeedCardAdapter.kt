@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
+import dev.hankli.iamstar.data.enums.ReactionType
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Reaction
@@ -103,7 +104,7 @@ class FeedCardAdapter(val showItemOptions: Boolean, options: FirestoreRecyclerOp
 
         fun setReaction(reaction: Reaction?) {
             val src = when (reaction?.reactionType) {
-                "like" -> R.drawable.ic_reaction_like
+                ReactionType.LIKE -> R.drawable.ic_reaction_like
                 else -> R.drawable.ic_like
             }
             itemView.view_feed_reaction.setImageResource(src)
