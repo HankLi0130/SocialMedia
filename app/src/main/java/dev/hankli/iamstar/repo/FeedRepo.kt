@@ -1,5 +1,6 @@
 package dev.hankli.iamstar.repo
 
+import androidx.lifecycle.asLiveData
 import dev.hankli.iamstar.data.enums.ReactionType
 import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.data.models.Feed
@@ -11,7 +12,11 @@ import dev.hankli.iamstar.firestore.InfluencerManager
 import dev.hankli.iamstar.firestore.ProfileManager
 import dev.hankli.iamstar.utils.media.UploadingMedia
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
 
 class FeedRepo {
 
@@ -64,7 +69,9 @@ class FeedRepo {
         FeedManager.delete(feedId)
     }
 
-    suspend fun fetchFeed(postId: String) = FeedManager.get(postId)
+    suspend fun fetchFeed(feedId: String) = FeedManager.get(feedId)
+
+    fun fetchFeedDocument(feedId: String) = FeedManager.getFeedDocument(feedId)
 
     private suspend fun uploadFeedMedia(scope: CoroutineScope, media: UploadingMedia): Media {
         val filePath = "${BUCKET_FEED}/${media.objectId}"

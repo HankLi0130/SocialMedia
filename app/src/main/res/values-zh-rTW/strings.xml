@@ -36,6 +36,7 @@
 
     <string name="error_feed_content_is_empty">貼文文字是空的！</string>
     <string name="error_title">錯誤</string>
+    <string name="error">錯誤</string>
     <string name="error_unknown">未知錯誤. 請聯絡服務人員.</string>
     <string name="error_no_internet">尚未連接網路</string>
     <string name="error_video_duration">長度必須小於 %d 秒 !</string>

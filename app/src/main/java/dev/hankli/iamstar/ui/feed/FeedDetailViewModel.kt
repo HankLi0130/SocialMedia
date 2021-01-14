@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.ListenerRegistration
+import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Profile
@@ -13,7 +15,6 @@ import dev.hankli.iamstar.repo.FeedRepo
 import dev.hankli.iamstar.utils.ArchViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.hankli.brookray.core.constant.EMPTY
@@ -22,17 +23,22 @@ class FeedDetailViewModel : ArchViewModel() {
 
     private val feedRepo = FeedRepo()
 
-    fun loadFeed(feedId: String): LiveData<Feed> {
-        val liveData = MutableLiveData<Feed>()
-        viewModelScope.launch(Main) {
-            callProgress(true)
-            withContext(IO) {
-                val feed = feedRepo.fetchFeed(feedId)
-                liveData.postValue(feed)
+    private var _feedData = MutableLiveData<Feed>()
+    val feedData: LiveData<Feed>
+        get() = _feedData
+
+    private lateinit var feedRegistration: ListenerRegistration
+
+    fun loadFeed(feedId: String) {
+        feedRegistration = feedRepo.fetchFeedDocument(feedId).addSnapshotListener { value, error ->
+            error?.let {
+                showError(R.string.error)
+                it.printStackTrace()
+                return@addSnapshotListener
             }
-            callProgress(false)
+
+            _feedData.postValue(value?.toObject(Feed::class.java))
         }
-        return liveData
     }
 
     fun getCommentOptions(feedId: String): FirestoreRecyclerOptions<Comment> {
@@ -72,5 +78,10 @@ class FeedDetailViewModel : ArchViewModel() {
             withContext(Dispatchers.IO) { feedRepo.addComment(feedId, message) }
             callProgress(false)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        feedRegistration.remove()
     }
 }

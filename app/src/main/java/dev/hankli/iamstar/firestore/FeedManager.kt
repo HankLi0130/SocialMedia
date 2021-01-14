@@ -43,6 +43,8 @@ object FeedManager {
         return snapshot.toObject(Feed::class.java)!!
     }
 
+    fun getFeedDocument(feedId: String) = rootCollection.document(feedId)
+
     private fun getReactionsRef(feedId: String): CollectionReference {
         return rootCollection.document(feedId).collection(COLLECTION_REACTIONS)
     }

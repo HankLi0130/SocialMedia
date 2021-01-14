@@ -36,6 +36,7 @@
 
     <string name="error_feed_content_is_empty">Feed content is empty !</string>
     <string name="error_title">Error</string>
+    <string name="error">Error</string>
     <string name="error_unknown">Unknown error. Please contact staff for assistance.</string>
     <string name="error_no_internet">There is no internet.</string>
     <string name="error_video_duration">Duration has to less than %d seconds !</string>

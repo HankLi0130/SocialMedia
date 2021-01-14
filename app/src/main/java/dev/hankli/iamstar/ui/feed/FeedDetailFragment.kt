@@ -6,10 +6,12 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import dev.hankli.iamstar.R
+import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Profile
 import dev.hankli.iamstar.firestore.ProfileManager
@@ -37,41 +39,9 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.loadFeed(args.feedId).observe(viewLifecycleOwner, { feed ->
-            view_feed_time.text = feed.createdAt.display()
+        viewModel.loadFeed(args.feedId)
 
-            view_feed_location.text = feed.location
-            view_feed_location.isVisible = !feed.location.isNullOrEmpty()
-
-            view_feed_content.text = feed.content
-
-            if (feed.medias.isEmpty()) {
-                view_feed_medias.isVisible = false
-            } else {
-                view_feed_medias.isVisible = true
-                view_feed_medias.setImageListener { position, imageView ->
-                    val media = feed.medias[position]
-                    view_play.isVisible = media.type == VIDEO
-                    Glide.with(this).load(media.thumbnailUrl).into(imageView)
-                }
-                view_feed_medias.pageCount = feed.medias.size
-                view_feed_medias.setImageClickListener { position ->
-                    onMediaClick(feed.medias[position])
-                }
-            }
-
-            view_feed_reaction.setOnClickListener {
-                if (requireContext().isInternetConnected()) {
-                    viewModel.doReaction(args.feedId)
-                } else viewModel.showNoInternet()
-            }
-
-            view_feed_reaction_count.isVisible = feed.reactionCount > 0
-            view_feed_reaction_count.text = feed.reactionCount.toString()
-
-            view_feed_comment_count.isVisible = feed.commentCount > 0
-            view_feed_comment_count.text = feed.commentCount.toString()
-        })
+        viewModel.feedData.observe(viewLifecycleOwner, { feed -> updateUI(feed) })
 
         ProfileManager.getDoc(app.influencerId).get()
             .addOnSuccessListener { snapshot ->
@@ -100,6 +70,42 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
                 view_input_comment.onEditorAction(EditorInfo.IME_ACTION_DONE)
             } else viewModel.showNoInternet()
         }
+    }
+
+    private fun updateUI(feed: Feed) {
+        view_feed_time.text = feed.createdAt.display()
+
+        view_feed_location.text = feed.location
+        view_feed_location.isVisible = !feed.location.isNullOrEmpty()
+
+        view_feed_content.text = feed.content
+
+        if (feed.medias.isEmpty()) {
+            view_feed_medias.isVisible = false
+        } else {
+            view_feed_medias.isVisible = true
+            view_feed_medias.setImageListener { position, imageView ->
+                val media = feed.medias[position]
+                view_play.isVisible = media.type == VIDEO
+                Glide.with(this).load(media.thumbnailUrl).into(imageView)
+            }
+            view_feed_medias.pageCount = feed.medias.size
+            view_feed_medias.setImageClickListener { position ->
+                onMediaClick(feed.medias[position])
+            }
+        }
+
+        view_feed_reaction.setOnClickListener {
+            if (requireContext().isInternetConnected()) {
+                viewModel.doReaction(args.feedId)
+            } else viewModel.showNoInternet()
+        }
+
+        view_feed_reaction_count.isVisible = feed.reactionCount > 0
+        view_feed_reaction_count.text = feed.reactionCount.toString()
+
+        view_feed_comment_count.isVisible = feed.commentCount > 0
+        view_feed_comment_count.text = feed.commentCount.toString()
     }
 
     override fun onStart() {
