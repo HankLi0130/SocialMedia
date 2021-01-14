@@ -24,15 +24,6 @@ class FeedViewModel : ArchViewModel() {
             }
             callProgress(false)
         }
-
-//        feedRepo.deleteFeed(objectId)
-//            .doOnComplete { callProgress(false) }
-//            .subscribe({
-//
-//            }, {
-//                showAlert(R.string.alert_delete_feed_failed)
-//            })
-//            .addTo(disposables)
     }
 
     fun doReaction(feedId: String) {
