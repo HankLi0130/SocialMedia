@@ -37,7 +37,13 @@ class FeedDetailViewModel : ArchViewModel() {
                 return@addSnapshotListener
             }
 
-            _feedData.postValue(value?.toObject(Feed::class.java))
+            value?.let {
+                viewModelScope.launch(IO) {
+                    val feed = it.toObject(Feed::class.java)!!
+                    feed.reaction = feedRepo.getReaction(feed.objectId)
+                    _feedData.postValue(feed)
+                }
+            }
         }
     }
 

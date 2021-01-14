@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import dev.hankli.iamstar.R
+import dev.hankli.iamstar.data.enums.ReactionType
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Profile
@@ -21,6 +22,7 @@ import dev.hankli.iamstar.utils.ArchViewModel
 import dev.hankli.iamstar.utils.ext.display
 import dev.hankli.iamstar.utils.ext.isInternetConnected
 import dev.hankli.iamstar.utils.media.VIDEO
+import kotlinx.android.synthetic.main.card_feed.view.*
 import kotlinx.android.synthetic.main.fragment_comment.*
 import kotlinx.android.synthetic.main.fragment_feed_detail.*
 import kotlinx.android.synthetic.main.fragment_feed_detail.view_comment_list
@@ -100,6 +102,8 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
                 viewModel.doReaction(args.feedId)
             } else viewModel.showNoInternet()
         }
+        val src = feed.reaction?.reactionType?.drawableRes ?: ReactionType.NO_REACTION.drawableRes
+        view_feed_reaction.setImageResource(src)
 
         view_feed_reaction_count.isVisible = feed.reactionCount > 0
         view_feed_reaction_count.text = feed.reactionCount.toString()
