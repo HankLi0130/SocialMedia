@@ -35,7 +35,7 @@ val viewModelModule = module {
     // feed
     viewModel { FeedViewModel(get(), get()) }
     viewModel { FeedDetailViewModel(get(), get()) }
-    viewModel { EditFeedViewModel(get()) }
+    viewModel { EditFeedViewModel(get(), get()) }
     // comment
     viewModel { CommentViewModel(get()) }
     // profile

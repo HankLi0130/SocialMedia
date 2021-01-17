@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.repo.FeedRepo
+import dev.hankli.iamstar.repo.ProfileRepo
 import dev.hankli.iamstar.utils.ArchViewModel
 import dev.hankli.iamstar.utils.media.*
 import kotlinx.coroutines.Dispatchers.Default
@@ -16,7 +17,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.hankli.brookray.core.constant.EMPTY
 
-class EditFeedViewModel(private val feedRepo: FeedRepo) : ArchViewModel() {
+class EditFeedViewModel(private val feedRepo: FeedRepo, private val profileRepo: ProfileRepo) :
+    ArchViewModel() {
 
     private lateinit var feed: Feed
 
@@ -46,6 +48,8 @@ class EditFeedViewModel(private val feedRepo: FeedRepo) : ArchViewModel() {
             }
         }
     }
+
+    suspend fun getPhotoURL(userId: String): String? = profileRepo.getPhotoURL(userId)
 
     private fun setDefaultValues() {
         _locationData.value = feed.location

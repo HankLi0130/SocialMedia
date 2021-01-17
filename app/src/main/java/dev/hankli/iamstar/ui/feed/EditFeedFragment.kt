@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.lifecycleScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -44,15 +45,11 @@ class EditFeedFragment :
 
         viewModel.loadFeed(args.feedId)
 
-//        ProfileManager.getDoc(app.influencerId).get()
-//            .addOnSuccessListener { snapshot ->
-//                val url = snapshot.getString("photoURL")
-//                if (url.isNullOrEmpty()) view_feed_head_shot.setImageResource(R.drawable.ic_person)
-//                else Glide.with(this).load(url).into(view_feed_head_shot)
-//            }
-//            .addOnFailureListener {
-//                view_feed_head_shot.setImageResource(R.drawable.ic_person)
-//            }
+        lifecycleScope.launchWhenCreated {
+            viewModel.getPhotoURL(app.influencerId)?.let { url ->
+                Glide.with(this@EditFeedFragment).load(url).into(view_feed_head_shot)
+            } ?: view_feed_head_shot.setImageResource(R.drawable.ic_person)
+        }
 
         view_list_media.run {
             (this.layoutManager as GridLayoutManager).spanCount = 3

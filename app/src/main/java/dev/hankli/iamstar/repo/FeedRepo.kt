@@ -17,6 +17,7 @@ import dev.hankli.iamstar.firestore.ProfileManager
 import dev.hankli.iamstar.utils.media.UploadingMedia
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
+import java.util.*
 
 class FeedRepo(
     private val feedManager: FeedManager,
@@ -54,6 +55,8 @@ class FeedRepo(
 
         medias.addAll(newMedias)
         feed.medias = medias
+
+        feed.updatedAt = Date()
         feedManager.set(feed)
     }
 
