@@ -5,19 +5,24 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.repo.FeedRepo
+import dev.hankli.iamstar.repo.ProfileRepo
 import dev.hankli.iamstar.utils.ArchViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FeedViewModel(private val feedRepo: FeedRepo) : ArchViewModel() {
+class FeedViewModel(
+    private val feedRepo: FeedRepo,
+    private val profileRepo: ProfileRepo
+) : ArchViewModel() {
 
     val refreshFeedsCode = 1
 
     fun getFeedOptions(influencerId: String) = FirestoreRecyclerOptions.Builder<Feed>()
         .setQuery(feedRepo.queryByInfluencer(influencerId)) { snapshot ->
             val feed = snapshot.toObject(Feed::class.java)!!
+            retrievePhotoURL(feed, influencerId)
             retrieveReaction(feed)
             return@setQuery feed
         }
@@ -43,7 +48,16 @@ class FeedViewModel(private val feedRepo: FeedRepo) : ArchViewModel() {
         }
     }
 
-    fun retrieveReaction(feed: Feed) {
+    private fun retrievePhotoURL(feed: Feed, influencerId: String) {
+        viewModelScope.launch(Main) {
+            withContext(IO) {
+                feed.photoURL = profileRepo.getPhotoURL(influencerId)
+            }
+            notifyView(refreshFeedsCode)
+        }
+    }
+
+    private fun retrieveReaction(feed: Feed) {
         viewModelScope.launch(Main) {
             withContext(IO) {
                 feed.reactionByCurrentUser = feedRepo.getReaction(feed.objectId, currentUserId!!)

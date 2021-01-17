@@ -58,13 +58,9 @@ class FeedCardAdapter(val showItemOptions: Boolean, options: FirestoreRecyclerOp
             with(itemView) {
                 setOnClickListener { onItemClick(item.objectId) }
 
-//                item.influencer?.let { doc ->
-//                    ProfileManager.getDoc(doc.id).get().addOnSuccessListener { snapshot ->
-//                        val url = snapshot.getString("photoURL")
-//                        if (url.isNullOrEmpty()) view_profile_avatar.image.setImageResource(R.drawable.ic_person)
-//                        else Glide.with(this).load(url).into(view_profile_avatar.image)
-//                    }
-//                } ?: view_profile_avatar.image.setImageResource(R.drawable.ic_person)
+                item.photoURL?.let { url ->
+                    Glide.with(this).load(url).into(view_profile_avatar.image)
+                } ?: view_profile_avatar.image.setImageResource(R.drawable.ic_person)
 
                 view_feed_time.text = item.createdAt.display()
 

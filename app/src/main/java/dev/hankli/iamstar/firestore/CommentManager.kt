@@ -15,6 +15,4 @@ class CommentManager(collection: CollectionReference) : FirestoreManager<Comment
         val docs = rootCollection.get().await().documents
         for (doc in docs) doc.reference.delete().await()
     }
-
-    suspend fun count() = rootCollection.get().await().size()
 }

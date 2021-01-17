@@ -9,6 +9,8 @@ open class FirestoreManager<M : FirestoreModel>(protected val rootCollection: Co
 
     fun getDoc(objectId: String): DocumentReference = rootCollection.document(objectId)
 
+    suspend fun getDocSize() = rootCollection.get().await().size()
+
     suspend fun get(objectId: String, type: Class<M>): M? {
         return getDoc(objectId).get().await().toObject(type)
     }
@@ -24,6 +26,4 @@ open class FirestoreManager<M : FirestoreModel>(protected val rootCollection: Co
     suspend fun remove(objectId: String) = getDoc(objectId).delete().await()
 
     fun getSubcollection(objectId: String, name: String) = getDoc(objectId).collection(name)
-
-    suspend fun getDocSize() = rootCollection.get().await().size()
 }

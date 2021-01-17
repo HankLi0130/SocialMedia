@@ -4,15 +4,12 @@ import android.net.Uri
 import com.firebase.ui.auth.IdpResponse
 import dev.hankli.iamstar.data.models.Profile
 import dev.hankli.iamstar.firebase.AuthManager
+import dev.hankli.iamstar.firebase.BUCKET_PROFILE
 import dev.hankli.iamstar.firebase.StorageManager
 import dev.hankli.iamstar.firestore.ProfileManager
 import java.util.*
 
 class ProfileRepo(private val profileManager: ProfileManager) {
-
-    companion object {
-        private const val BUCKET_PROFILE = "Profile"
-    }
 
     // https://firebase.google.com/docs/projects/provisioning/configure-oauth#add-idp
     suspend fun createProfile(response: IdpResponse) {
@@ -43,6 +40,10 @@ class ProfileRepo(private val profileManager: ProfileManager) {
     suspend fun updateProfile(profile: Profile) {
         profile.updatedAt = Date()
         profileManager.set(profile)
+    }
+
+    suspend fun getPhotoURL(userId: String): String? {
+        return profileManager.getPhotoURL(userId)
     }
 
     suspend fun updateHeadshot(uri: Uri): String {

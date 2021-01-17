@@ -33,7 +33,7 @@ val viewModelModule = module {
     // auth
     viewModel { AuthViewModel(get()) }
     // feed
-    viewModel { FeedViewModel(get()) }
+    viewModel { FeedViewModel(get(), get()) }
     viewModel { FeedDetailViewModel(get()) }
     viewModel { EditFeedViewModel(get()) }
     // comment

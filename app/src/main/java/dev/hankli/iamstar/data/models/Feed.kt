@@ -58,6 +58,9 @@ class Feed(
     var medias: List<Media> = emptyList(),
 
     @get:Exclude
+    var photoURL: String? = null,
+
+    @get:Exclude
     var reactionByCurrentUser: Reaction? = null
 ) : FirestoreModel {
     companion object {
