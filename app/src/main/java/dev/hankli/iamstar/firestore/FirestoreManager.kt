@@ -24,4 +24,6 @@ open class FirestoreManager<M : FirestoreModel>(protected val rootCollection: Co
     suspend fun remove(objectId: String) = getDoc(objectId).delete().await()
 
     fun getSubcollection(objectId: String, name: String) = getDoc(objectId).collection(name)
+
+    suspend fun getDocSize() = rootCollection.get().await().size()
 }

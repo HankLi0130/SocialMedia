@@ -53,10 +53,10 @@ class FeedManager(collection: CollectionReference) : FirestoreManager<Feed>(coll
 //        }
 //    }
 
-//    suspend fun updateReactionCount(feedId: String) {
-//        val count = getReactionsRef(feedId).get().await().size()
-//        rootCollection.document(feedId).update("reactionCount", count).await()
-//    }
+    suspend fun updateReactionCount(feedId: String) {
+        val count = getReactionManager(feedId).getDocSize()
+        rootCollection.document(feedId).update(Feed.REACTION_COUNT, count).await()
+    }
 
 //    suspend fun getReaction(feedId: String, user: DocumentReference): Reaction? {
 //        return getReactionsRef(feedId).document(user.id)
@@ -92,10 +92,10 @@ class FeedManager(collection: CollectionReference) : FirestoreManager<Feed>(coll
 //        }
 //    }
 
-//    suspend fun updateCommentCount(feedId: String) {
-//        val count = getCommentsRef(feedId).get().await().size()
-//        rootCollection.document(feedId).update("commentCount", count).await()
-//    }
+    suspend fun updateCommentCount(feedId: String) {
+        val count = getCommentManager(feedId).getDocSize()
+        rootCollection.document(feedId).update(Feed.COMMENT_COUNT, count).await()
+    }
 
 //    suspend fun updateComment(feedId: String, commentId: String, newContent: String) {
 //        getCommentsRef(feedId).document(commentId)

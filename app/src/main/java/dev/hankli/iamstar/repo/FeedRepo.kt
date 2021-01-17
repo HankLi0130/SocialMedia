@@ -110,14 +110,14 @@ class FeedRepo(
         feedManager.getReactionManager(feedId).set(reaction)
 
         // TODO Do on server
-        // feedManager.updateReactionCount(feedId)
+        feedManager.updateReactionCount(feedId)
     }
 
     suspend fun unlike(feedId: String, userId: String) {
         feedManager.getReactionManager(feedId).remove(userId)
 
         // TODO Do it on server
-        // feedManager.updateReactionCount(feedId)
+        feedManager.updateReactionCount(feedId)
     }
 
     suspend fun getReaction(feedId: String, userId: String): Reaction? {
@@ -130,7 +130,7 @@ class FeedRepo(
         feedManager.getCommentManager(feedId).add(comment)
 
         // TODO Do it on server
-        // feedManager.updateCommentCount(feedId)
+        feedManager.updateCommentCount(feedId)
     }
 
     fun queryByInfluencer(influencerId: String): Query {
