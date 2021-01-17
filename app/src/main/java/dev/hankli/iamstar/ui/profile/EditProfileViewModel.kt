@@ -25,7 +25,7 @@ class EditProfileViewModel(private val profileRepo: ProfileRepo) : ArchViewModel
     fun loadProfile() {
         callProgress(true)
         viewModelScope.launch(IO) {
-            val profile = profileRepo.fetchProfile(currentUserId!!)!!
+            val profile = profileRepo.getProfile(currentUserId!!)!!
             withContext(Main) {
                 callProgress(false)
                 this@EditProfileViewModel.profile = profile

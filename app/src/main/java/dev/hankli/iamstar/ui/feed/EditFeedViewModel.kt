@@ -125,7 +125,7 @@ class EditFeedViewModel(private val feedRepo: FeedRepo, private val profileRepo:
                 }
 
                 withContext(IO) {
-                    feedRepo.setFeed(this, feed, uploadingMedias, removingMediaIds)
+                    feedRepo.updateFeed(this, feed, uploadingMedias, removingMediaIds)
                 }
 
                 callProgress(false)

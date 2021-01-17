@@ -6,9 +6,10 @@ import com.google.firebase.firestore.ListenerRegistration
 import dev.hankli.iamstar.data.models.Profile
 import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.firestore.ProfileManager
+import dev.hankli.iamstar.repo.ProfileRepo
 import dev.hankli.iamstar.utils.ArchViewModel
 
-class ProfileViewModel() : ArchViewModel() {
+class ProfileViewModel(private val profileRepo: ProfileRepo) : ArchViewModel() {
 
     private lateinit var registration: ListenerRegistration
 
@@ -17,20 +18,19 @@ class ProfileViewModel() : ArchViewModel() {
         get() = _profileData
 
     fun subscribeProfile() {
-//        registration =
-//            ProfileManager.addSnapshotListener(AuthManager.currentUserId!!) { snapshot, exception ->
-//                if (exception != null) {
-//                    exception.printStackTrace()
-//                    return@addSnapshotListener
-//                }
-//
-//                val profile = snapshot?.toObject(Profile::class.java)
-//                _profileData.value = profile
-//            }
+        registration = profileRepo.observeProfile(currentUserId!!) { snapshot, exception ->
+            if (exception != null) {
+                exception.printStackTrace()
+                return@observeProfile
+            }
+
+            val profile = snapshot?.toObject(Profile::class.java)
+            _profileData.value = profile
+        }
     }
 
     override fun onCleared() {
         super.onCleared()
-//        registration.remove()
+        registration.remove()
     }
 }

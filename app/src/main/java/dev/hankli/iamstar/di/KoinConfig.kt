@@ -40,7 +40,7 @@ val viewModelModule = module {
     viewModel { CommentViewModel(get()) }
     // profile
     viewModel { EditProfileViewModel(get()) }
-    viewModel { ProfileViewModel() }
+    viewModel { ProfileViewModel(get()) }
 }
 
 val koinModules = listOf(managerModule, repoModule, viewModelModule)

@@ -2,6 +2,8 @@ package dev.hankli.iamstar.repo
 
 import android.net.Uri
 import com.firebase.ui.auth.IdpResponse
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestoreException
 import dev.hankli.iamstar.data.models.Profile
 import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.firebase.BUCKET_PROFILE
@@ -33,7 +35,7 @@ class ProfileRepo(private val profileManager: ProfileManager) {
         profileManager.set(profile)
     }
 
-    suspend fun fetchProfile(userId: String): Profile? {
+    suspend fun getProfile(userId: String): Profile? {
         return profileManager.get(userId, Profile::class.java)
     }
 
@@ -53,4 +55,9 @@ class ProfileRepo(private val profileManager: ProfileManager) {
         profileManager.updateHeadshot(userId, url)
         return url
     }
+
+    fun observeProfile(
+        userId: String,
+        listener: (DocumentSnapshot?, FirebaseFirestoreException?) -> Unit
+    ) = profileManager.observeDoc(userId, listener)
 }

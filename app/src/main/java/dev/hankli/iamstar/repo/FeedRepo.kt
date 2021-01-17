@@ -39,7 +39,7 @@ class FeedRepo(
         feedManager.add(feed)
     }
 
-    suspend fun setFeed(
+    suspend fun updateFeed(
         scope: CoroutineScope,
         feed: Feed,
         uploadingMedias: List<UploadingMedia>,
@@ -79,7 +79,7 @@ class FeedRepo(
     fun observeFeed(
         feedId: String,
         listener: (DocumentSnapshot?, FirebaseFirestoreException?) -> Unit
-    ) = feedManager.getDoc(feedId).addSnapshotListener(listener)
+    ) = feedManager.observeDoc(feedId, listener)
 
     private suspend fun uploadFeedMedia(scope: CoroutineScope, media: UploadingMedia): Media {
         val filePath = "${BUCKET_FEED}/${media.objectId}"

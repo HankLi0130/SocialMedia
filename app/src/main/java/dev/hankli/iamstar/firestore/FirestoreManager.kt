@@ -2,12 +2,19 @@ package dev.hankli.iamstar.firestore
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestoreException
 import dev.hankli.iamstar.data.models.FirestoreModel
 import kotlinx.coroutines.tasks.await
 
 open class FirestoreManager<M : FirestoreModel>(protected val rootCollection: CollectionReference) {
 
     fun getDoc(objectId: String): DocumentReference = rootCollection.document(objectId)
+
+    fun observeDoc(
+        objectId: String,
+        listener: (DocumentSnapshot?, FirebaseFirestoreException?) -> Unit
+    ) = getDoc(objectId).addSnapshotListener(listener)
 
     suspend fun getDocSize() = rootCollection.get().await().size()
 
