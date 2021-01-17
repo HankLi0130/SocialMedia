@@ -40,7 +40,7 @@ class EditFeedViewModel(private val feedRepo: FeedRepo) : ArchViewModel() {
         } else {
             viewModelScope.launch {
                 callProgress(true)
-                withContext(IO) { feed = feedRepo.fetchFeed(feedId)!! }
+                withContext(IO) { feed = feedRepo.getFeed(feedId)!! }
                 setDefaultValues()
                 callProgress(false)
             }
@@ -121,7 +121,7 @@ class EditFeedViewModel(private val feedRepo: FeedRepo) : ArchViewModel() {
                 }
 
                 withContext(IO) {
-                    feedRepo.updateFeed(this, feed, uploadingMedias, removingMediaIds)
+                    feedRepo.setFeed(this, feed, uploadingMedias, removingMediaIds)
                 }
 
                 callProgress(false)

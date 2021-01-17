@@ -1,5 +1,7 @@
 package dev.hankli.iamstar.repo
 
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import dev.hankli.iamstar.data.enums.ReactionType
 import dev.hankli.iamstar.data.models.Comment
@@ -36,7 +38,7 @@ class FeedRepo(
         feedManager.add(feed)
     }
 
-    suspend fun updateFeed(
+    suspend fun setFeed(
         scope: CoroutineScope,
         feed: Feed,
         uploadingMedias: List<UploadingMedia>,
@@ -59,7 +61,7 @@ class FeedRepo(
         feedManager.getCommentManager(feedId).removeAll()
         feedManager.getReactionManager(feedId).removeAll()
 
-        val feed = fetchFeed(feedId)!!
+        val feed = getFeed(feedId)!!
         for (media in feed.medias) {
             removeFeedMedia(media.objectId)
         }
@@ -67,9 +69,14 @@ class FeedRepo(
         feedManager.remove(feedId)
     }
 
-    suspend fun fetchFeed(feedId: String) = feedManager.get(feedId, Feed::class.java)
+    suspend fun getFeed(feedId: String) = feedManager.get(feedId, Feed::class.java)
 
-    fun fetchFeedDocument(feedId: String) = feedManager.getDoc(feedId)
+    fun getFeedDoc(feedId: String) = feedManager.getDoc(feedId)
+
+    fun observeFeed(
+        feedId: String,
+        listener: (DocumentSnapshot?, FirebaseFirestoreException?) -> Unit
+    ) = feedManager.getDoc(feedId).addSnapshotListener(listener)
 
     private suspend fun uploadFeedMedia(scope: CoroutineScope, media: UploadingMedia): Media {
         val filePath = "${BUCKET_FEED}/${media.objectId}"

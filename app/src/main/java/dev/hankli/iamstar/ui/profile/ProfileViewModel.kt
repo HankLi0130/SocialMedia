@@ -31,6 +31,6 @@ class ProfileViewModel() : ArchViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        registration.remove()
+//        registration.remove()
     }
 }

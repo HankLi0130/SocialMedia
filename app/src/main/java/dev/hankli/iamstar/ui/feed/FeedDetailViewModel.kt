@@ -12,6 +12,7 @@ import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Profile
 import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.repo.FeedRepo
+import dev.hankli.iamstar.repo.ProfileRepo
 import dev.hankli.iamstar.utils.ArchViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
@@ -19,7 +20,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.hankli.brookray.core.constant.EMPTY
 
-class FeedDetailViewModel(private val feedRepo: FeedRepo) : ArchViewModel() {
+class FeedDetailViewModel(
+    private val feedRepo: FeedRepo,
+    private val profileRepo: ProfileRepo
+) : ArchViewModel() {
+
+    private lateinit var feedId: String
 
     private var _feedData = MutableLiveData<Feed>()
     val feedData: LiveData<Feed>
@@ -27,19 +33,20 @@ class FeedDetailViewModel(private val feedRepo: FeedRepo) : ArchViewModel() {
 
     private lateinit var feedRegistration: ListenerRegistration
 
-    fun loadFeed(feedId: String) {
-        feedRegistration = feedRepo.fetchFeedDocument(feedId).addSnapshotListener { value, error ->
+    fun loadFeed(feedId: String, influencerId: String) {
+        this.feedId = feedId
+
+        feedRegistration = feedRepo.observeFeed(feedId) { value, error ->
             error?.let {
                 showError(R.string.error)
                 it.printStackTrace()
-                return@addSnapshotListener
+                return@observeFeed
             }
 
-            value?.let {
+            value?.toObject(Feed::class.java)?.let { feed ->
                 viewModelScope.launch(IO) {
-                    val feed = it.toObject(Feed::class.java)!!
-                    feed.reactionByCurrentUser =
-                        feedRepo.getReaction(feed.objectId, AuthManager.currentUserId!!)
+                    feed.photoURL = profileRepo.getPhotoURL(influencerId)
+                    feed.reactionByCurrentUser = feedRepo.getReaction(feedId, currentUserId!!)
                     _feedData.postValue(feed)
                 }
             }

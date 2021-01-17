@@ -37,19 +37,9 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.loadFeed(args.feedId)
+        viewModel.loadFeed(args.feedId, app.influencerId)
 
         viewModel.feedData.observe(viewLifecycleOwner, { feed -> updateUI(feed) })
-
-//        ProfileManager.getDoc(app.influencerId).get()
-//            .addOnSuccessListener { snapshot ->
-//                snapshot.getString(Profile.PHOTO_URL)?.let { url ->
-//                    Glide.with(this).load(url).into(view_profile_avatar.image)
-//                } ?: view_profile_avatar.image.setImageResource(R.drawable.ic_person)
-//            }
-//            .addOnFailureListener {
-//                view_profile_avatar.image.setImageResource(R.drawable.ic_person)
-//            }
 
         commentAdapter = CommentAdapter(viewModel.getCommentOptions(args.feedId))
 
@@ -71,6 +61,10 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
     }
 
     private fun updateUI(feed: Feed) {
+        feed.photoURL?.let { url ->
+            Glide.with(this).load(url).into(view_profile_avatar.image)
+        } ?: view_profile_avatar.image.setImageResource(R.drawable.ic_person)
+
         view_feed_time.text = feed.createdAt.display()
 
         view_feed_location.text = feed.location
