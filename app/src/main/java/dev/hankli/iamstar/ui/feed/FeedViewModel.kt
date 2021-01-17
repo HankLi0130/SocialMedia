@@ -22,8 +22,16 @@ class FeedViewModel(
     fun getFeedOptions(influencerId: String) = FirestoreRecyclerOptions.Builder<Feed>()
         .setQuery(feedRepo.queryByInfluencer(influencerId)) { snapshot ->
             val feed = snapshot.toObject(Feed::class.java)!!
-            retrievePhotoURL(feed, influencerId)
-            retrieveReaction(feed)
+
+            viewModelScope.launch(Main) {
+                withContext(IO) {
+                    feed.photoURL = profileRepo.getPhotoURL(influencerId)
+                    feed.reactionByCurrentUser =
+                        feedRepo.getReaction(feed.objectId, currentUserId!!)
+                }
+                notifyView(refreshFeedsCode)
+            }
+
             return@setQuery feed
         }
         .build()
@@ -45,24 +53,6 @@ class FeedViewModel(
             } else {
                 feedRepo.like(feedId, currentUserId)
             }
-        }
-    }
-
-    private fun retrievePhotoURL(feed: Feed, influencerId: String) {
-        viewModelScope.launch(Main) {
-            withContext(IO) {
-                feed.photoURL = profileRepo.getPhotoURL(influencerId)
-            }
-            notifyView(refreshFeedsCode)
-        }
-    }
-
-    private fun retrieveReaction(feed: Feed) {
-        viewModelScope.launch(Main) {
-            withContext(IO) {
-                feed.reactionByCurrentUser = feedRepo.getReaction(feed.objectId, currentUserId!!)
-            }
-            notifyView(refreshFeedsCode)
         }
     }
 }

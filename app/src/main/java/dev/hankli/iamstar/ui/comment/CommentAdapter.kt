@@ -30,22 +30,12 @@ class CommentAdapter(options: FirestoreRecyclerOptions<Comment>) :
 
         fun bind(item: Comment) {
             with(itemView) {
-                item.profile?.let { doc ->
-                    doc.get().addOnSuccessListener { snapshot ->
-                        val url = snapshot.getString("photoURL")
-                        if (url.isNullOrEmpty()) view_commenter_avatar.image.setImageResource(R.drawable.ic_person)
-                        else Glide.with(this).load(url).into(view_commenter_avatar.image)
 
-                        val name = snapshot.getString("displayName")
-                        view_commenter_name.text = name
-                    }
+                item.photoURL?.let { url ->
+                    Glide.with(this).load(url).into(view_commenter_avatar.image)
                 } ?: view_commenter_avatar.image.setImageResource(R.drawable.ic_person)
 
-//                Log.i("test","${item.objectId} bind function")
-//
-//                Glide.with(this).load(item.commenterPhotoURL).into(view_commenter_avatar.image)
-//
-//                view_commenter_name.text = item.commenterName
+                view_commenter_name.text = item.userName
 
                 view_comment_time.text = item.createdAt.display()
 

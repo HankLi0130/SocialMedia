@@ -29,10 +29,10 @@ class Comment(
     var updatedAt: Date? = null,
 
     @get:Exclude
-    var commenterPhotoURL: String = EMPTY,
+    var photoURL: String? = null,
 
     @get:Exclude
-    var commenterName: String = EMPTY
+    var userName: String? = null
 ) : FirestoreModel {
     companion object {
         const val PROFILE = "profile"

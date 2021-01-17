@@ -103,6 +103,10 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
         view_feed_comment_count.text = feed.commentCount.toString()
     }
 
+    override fun notifyFromViewModel(code: Int) {
+        if (code == viewModel.refreshCommentsCode) commentAdapter.notifyDataSetChanged()
+    }
+
     override fun onStart() {
         super.onStart()
         commentAdapter.startListening()

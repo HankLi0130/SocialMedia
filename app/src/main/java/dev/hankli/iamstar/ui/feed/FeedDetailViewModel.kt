@@ -1,6 +1,5 @@
 package dev.hankli.iamstar.ui.feed
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,7 +9,6 @@ import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Profile
-import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.repo.FeedRepo
 import dev.hankli.iamstar.repo.ProfileRepo
 import dev.hankli.iamstar.utils.ArchViewModel
@@ -18,12 +16,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import tw.hankli.brookray.core.constant.EMPTY
 
 class FeedDetailViewModel(
     private val feedRepo: FeedRepo,
     private val profileRepo: ProfileRepo
 ) : ArchViewModel() {
+
+    val refreshCommentsCode = 1
 
     private lateinit var feedId: String
 
@@ -53,24 +52,19 @@ class FeedDetailViewModel(
         }
     }
 
-    fun getCommentOptions(feedId: String): FirestoreRecyclerOptions<Comment> {
-        return FirestoreRecyclerOptions.Builder<Comment>()
+    fun getCommentOptions(feedId: String): FirestoreRecyclerOptions<Comment> =
+        FirestoreRecyclerOptions.Builder<Comment>()
             .setQuery(feedRepo.queryComments(feedId)) { commentSnapshot ->
                 val comment = commentSnapshot.toObject(Comment::class.java)!!
-                Log.i("test", "${comment.objectId} query comments")
-                comment.profile?.let { doc ->
-                    doc.get().addOnSuccessListener { profileSnapshot ->
-                        Log.i("test", "${comment.objectId} query profile")
-                        comment.commenterPhotoURL =
-                            profileSnapshot.getString(Profile.PHOTO_URL) ?: EMPTY
-                        comment.commenterName =
-                            profileSnapshot.getString(Profile.DISPLAY_NAME) ?: EMPTY
-                    }
+                comment.profile?.get()?.addOnSuccessListener { profileSnapshot ->
+                    comment.photoURL = profileSnapshot.getString(Profile.PHOTO_URL)
+                    comment.userName = profileSnapshot.getString(Profile.DISPLAY_NAME)
+                    notifyView(refreshCommentsCode)
                 }
                 return@setQuery comment
             }
             .build()
-    }
+
 
     fun doReaction(feedId: String) {
         viewModelScope.launch(IO) {
