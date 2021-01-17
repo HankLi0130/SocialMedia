@@ -58,7 +58,7 @@ class Feed(
     var medias: List<Media> = emptyList(),
 
     @get:Exclude
-    var reaction: Reaction? = null
+    var reactionByCurrentUser: Reaction? = null
 ) : FirestoreModel {
     companion object {
         const val INFLUENCER = "influencer"

@@ -1,12 +1,9 @@
 package dev.hankli.iamstar.ui.feed
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -22,17 +19,16 @@ import dev.hankli.iamstar.utils.ArchViewModel
 import dev.hankli.iamstar.utils.ext.display
 import dev.hankli.iamstar.utils.ext.isInternetConnected
 import dev.hankli.iamstar.utils.media.VIDEO
-import kotlinx.android.synthetic.main.card_feed.view.*
-import kotlinx.android.synthetic.main.fragment_comment.*
 import kotlinx.android.synthetic.main.fragment_feed_detail.*
 import kotlinx.android.synthetic.main.fragment_feed_detail.view_comment_list
 import kotlinx.android.synthetic.main.fragment_feed_detail.view_input_comment
 import kotlinx.android.synthetic.main.fragment_feed_detail.view_send
 import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_detail) {
 
-    override val viewModel: FeedDetailViewModel by viewModels()
+    override val viewModel: FeedDetailViewModel by viewModel()
 
     private val args: FeedDetailFragmentArgs by navArgs()
 
@@ -45,15 +41,15 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
 
         viewModel.feedData.observe(viewLifecycleOwner, { feed -> updateUI(feed) })
 
-        ProfileManager.getDoc(app.influencerId).get()
-            .addOnSuccessListener { snapshot ->
-                snapshot.getString(Profile.PHOTO_URL)?.let { url ->
-                    Glide.with(this).load(url).into(view_profile_avatar.image)
-                } ?: view_profile_avatar.image.setImageResource(R.drawable.ic_person)
-            }
-            .addOnFailureListener {
-                view_profile_avatar.image.setImageResource(R.drawable.ic_person)
-            }
+//        ProfileManager.getDoc(app.influencerId).get()
+//            .addOnSuccessListener { snapshot ->
+//                snapshot.getString(Profile.PHOTO_URL)?.let { url ->
+//                    Glide.with(this).load(url).into(view_profile_avatar.image)
+//                } ?: view_profile_avatar.image.setImageResource(R.drawable.ic_person)
+//            }
+//            .addOnFailureListener {
+//                view_profile_avatar.image.setImageResource(R.drawable.ic_person)
+//            }
 
         commentAdapter = CommentAdapter(viewModel.getCommentOptions(args.feedId))
 
@@ -102,7 +98,8 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
                 viewModel.doReaction(args.feedId)
             } else viewModel.showNoInternet()
         }
-        val src = feed.reaction?.reactionType?.drawableRes ?: ReactionType.NO_REACTION.drawableRes
+        val src = feed.reactionByCurrentUser?.reactionType?.drawableRes
+            ?: ReactionType.NO_REACTION.drawableRes
         view_feed_reaction.setImageResource(src)
 
         view_feed_reaction_count.isVisible = feed.reactionCount > 0

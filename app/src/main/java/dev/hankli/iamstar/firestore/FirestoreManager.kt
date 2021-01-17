@@ -1,32 +1,27 @@
 package dev.hankli.iamstar.firestore
 
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
 import dev.hankli.iamstar.data.models.FirestoreModel
 import kotlinx.coroutines.tasks.await
 
-open class FirestoreManager<M : FirestoreModel>(db: FirebaseFirestore, collectionName: String) {
+open class FirestoreManager<M : FirestoreModel>(protected val rootCollection: CollectionReference) {
 
-    val collection = db.collection(collectionName)
+    fun getDoc(objectId: String): DocumentReference = rootCollection.document(objectId)
+
+    suspend fun get(objectId: String, type: Class<M>): M? {
+        return getDoc(objectId).get().await().toObject(type)
+    }
 
     suspend fun add(model: M) {
-        val doc = collection.document()
+        val doc = rootCollection.document()
         model.objectId = doc.id
         doc.set(model).await()
     }
 
-    suspend fun set(model: M) {
-        collection.document(model.objectId)
-            .set(model)
-            .await()
-    }
+    suspend fun set(model: M) = getDoc(model.objectId).set(model).await()
 
-    suspend fun remove(objectId: String) {
-        collection.document(objectId)
-            .delete()
-            .await()
-    }
+    suspend fun remove(objectId: String) = getDoc(objectId).delete().await()
 
-    fun getDoc(objectId: String): DocumentReference = collection.document(objectId)
-
+    fun getSubcollection(objectId: String, name: String) = getDoc(objectId).collection(name)
 }

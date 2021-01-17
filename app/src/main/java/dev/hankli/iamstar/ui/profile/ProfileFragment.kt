@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import dev.hankli.iamstar.R
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 class ProfileFragment :
     ArchFragment<ProfileViewModel>(R.layout.fragment_profile, R.menu.fragment_profile) {
 
-    override val viewModel: ProfileViewModel by viewModels()
+    override val viewModel: ProfileViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

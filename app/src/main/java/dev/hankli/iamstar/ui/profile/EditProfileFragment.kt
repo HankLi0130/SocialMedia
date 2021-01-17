@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import dev.hankli.iamstar.R
@@ -24,7 +24,7 @@ import java.util.*
 class EditProfileFragment :
     ArchFragment<EditProfileViewModel>(R.layout.fragment_edit_profile, R.menu.single_action_ok) {
 
-    override val viewModel: EditProfileViewModel by viewModels()
+    override val viewModel: EditProfileViewModel by viewModel()
 
     private val maxSelectable = 1
 

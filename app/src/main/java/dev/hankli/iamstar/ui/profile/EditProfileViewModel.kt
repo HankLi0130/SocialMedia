@@ -14,11 +14,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class EditProfileViewModel : ArchViewModel() {
+class EditProfileViewModel(private val profileRepo: ProfileRepo) : ArchViewModel() {
 
     private lateinit var profile: Profile
-
-    private val profileRepo = ProfileRepo()
 
     private val _profileData = MutableLiveData<Profile>()
     val profileData: LiveData<Profile>
@@ -27,7 +25,7 @@ class EditProfileViewModel : ArchViewModel() {
     fun loadProfile() {
         callProgress(true)
         viewModelScope.launch(IO) {
-            val profile = profileRepo.fetchProfile()
+            val profile = profileRepo.fetchProfile(currentUserId!!)!!
             withContext(Main) {
                 callProgress(false)
                 this@EditProfileViewModel.profile = profile

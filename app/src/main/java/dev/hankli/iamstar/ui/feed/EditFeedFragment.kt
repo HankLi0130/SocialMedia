@@ -8,7 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -29,7 +29,7 @@ class EditFeedFragment :
     ArchFragment<EditFeedViewModel>(R.layout.fragment_edit_feed, R.menu.single_action_ok),
     MediaFileAdapter.Listener {
 
-    override val viewModel: EditFeedViewModel by viewModels()
+    override val viewModel: EditFeedViewModel by viewModel()
 
     private val args: EditFeedFragmentArgs by navArgs()
 
@@ -44,15 +44,15 @@ class EditFeedFragment :
 
         viewModel.loadFeed(args.feedId)
 
-        ProfileManager.getDoc(app.influencerId).get()
-            .addOnSuccessListener { snapshot ->
-                val url = snapshot.getString("photoURL")
-                if (url.isNullOrEmpty()) view_feed_head_shot.setImageResource(R.drawable.ic_person)
-                else Glide.with(this).load(url).into(view_feed_head_shot)
-            }
-            .addOnFailureListener {
-                view_feed_head_shot.setImageResource(R.drawable.ic_person)
-            }
+//        ProfileManager.getDoc(app.influencerId).get()
+//            .addOnSuccessListener { snapshot ->
+//                val url = snapshot.getString("photoURL")
+//                if (url.isNullOrEmpty()) view_feed_head_shot.setImageResource(R.drawable.ic_person)
+//                else Glide.with(this).load(url).into(view_feed_head_shot)
+//            }
+//            .addOnFailureListener {
+//                view_feed_head_shot.setImageResource(R.drawable.ic_person)
+//            }
 
         view_list_media.run {
             (this.layoutManager as GridLayoutManager).spanCount = 3

@@ -8,7 +8,7 @@ import dev.hankli.iamstar.firebase.StorageManager
 import dev.hankli.iamstar.firestore.ProfileManager
 import java.util.*
 
-class ProfileRepo {
+class ProfileRepo(private val profileManager: ProfileManager) {
 
     companion object {
         private const val BUCKET_PROFILE = "Profile"
@@ -33,23 +33,23 @@ class ProfileRepo {
             photoURL = user.photoUrl?.toString(),
             loginMethod = loginMethod
         )
-        ProfileManager.update(profile)
+        profileManager.set(profile)
     }
 
-    suspend fun fetchProfile(): Profile {
-        return ProfileManager.get(AuthManager.currentUserId!!).toObject(Profile::class.java)!!
+    suspend fun fetchProfile(userId: String): Profile? {
+        return profileManager.get(userId, Profile::class.java)
     }
 
     suspend fun updateProfile(profile: Profile) {
         profile.updatedAt = Date()
-        ProfileManager.update(profile)
+        profileManager.set(profile)
     }
 
     suspend fun updateHeadshot(uri: Uri): String {
         val userId = AuthManager.currentUserId!!
         val filePath = "${BUCKET_PROFILE}/${userId}"
         val url = StorageManager.uploadFile(filePath, uri)
-        ProfileManager.updateHeadshot(userId, url)
+        profileManager.updateHeadshot(userId, url)
         return url
     }
 }

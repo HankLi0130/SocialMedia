@@ -1,41 +1,39 @@
 package dev.hankli.iamstar.repo
 
-import androidx.lifecycle.asLiveData
+import com.google.firebase.firestore.Query
 import dev.hankli.iamstar.data.enums.ReactionType
 import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Media
 import dev.hankli.iamstar.data.models.Reaction
+import dev.hankli.iamstar.firebase.BUCKET_FEED
 import dev.hankli.iamstar.firebase.StorageManager
+import dev.hankli.iamstar.firebase.THUMBNAIL
 import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.firestore.InfluencerManager
 import dev.hankli.iamstar.firestore.ProfileManager
 import dev.hankli.iamstar.utils.media.UploadingMedia
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.callbackFlow
 
-class FeedRepo {
-
-    companion object {
-        private const val BUCKET_FEED = "Feed"
-        private const val THUMBNAIL = "thumbnail"
-    }
+class FeedRepo(
+    private val feedManager: FeedManager,
+    private val influencerManager: InfluencerManager,
+    private val profileManager: ProfileManager
+) {
 
     suspend fun addFeed(
         scope: CoroutineScope,
         feed: Feed,
+        authorUserId: String,
         influencerId: String,
         uploadingMedias: List<UploadingMedia>
     ) {
-        feed.author = ProfileManager.getCurrentUserDoc()
-        feed.influencer = InfluencerManager.getDoc(influencerId)
+        feed.author = profileManager.getDoc(authorUserId)
+        feed.influencer = influencerManager.getDoc(influencerId)
         val medias = uploadingMedias.map { uploadFeedMedia(scope, it) }
         feed.medias = medias
-        FeedManager.add(feed)
+        feedManager.add(feed)
     }
 
     suspend fun updateFeed(
@@ -54,24 +52,24 @@ class FeedRepo {
 
         medias.addAll(newMedias)
         feed.medias = medias
-        FeedManager.update(feed)
+        feedManager.set(feed)
     }
 
     suspend fun removeFeed(feedId: String) {
-        FeedManager.removeComments(feedId)
-        FeedManager.removeReactions(feedId)
+        feedManager.getCommentManager(feedId).removeAll()
+        feedManager.getReactionManager(feedId).removeAll()
 
-        val feed = fetchFeed(feedId)
+        val feed = fetchFeed(feedId)!!
         for (media in feed.medias) {
             removeFeedMedia(media.objectId)
         }
 
-        FeedManager.delete(feedId)
+        feedManager.remove(feedId)
     }
 
-    suspend fun fetchFeed(feedId: String) = FeedManager.get(feedId)
+    suspend fun fetchFeed(feedId: String) = feedManager.get(feedId, Feed::class.java)
 
-    fun fetchFeedDocument(feedId: String) = FeedManager.getFeedDocument(feedId)
+    fun fetchFeedDocument(feedId: String) = feedManager.getDoc(feedId)
 
     private suspend fun uploadFeedMedia(scope: CoroutineScope, media: UploadingMedia): Media {
         val filePath = "${BUCKET_FEED}/${media.objectId}"
@@ -102,29 +100,44 @@ class FeedRepo {
         StorageManager.deleteFile(thumbnailPath)
     }
 
-    suspend fun hasReaction(feedId: String): Boolean {
-        return FeedManager.hasReaction(feedId, ProfileManager.getCurrentUserDoc())
+    suspend fun hasReaction(feedId: String, userId: String): Boolean {
+        return feedManager.getReactionManager(feedId).exists(userId)
     }
 
-    suspend fun like(feedId: String) {
-        val user = ProfileManager.getCurrentUserDoc()
-        val reaction = Reaction(user.id, ReactionType.LIKE, user)
-        FeedManager.addReaction(feedId, user, reaction)
-        FeedManager.updateReactionCount(feedId)
+    suspend fun like(feedId: String, userId: String) {
+        val userDoc = profileManager.getDoc(userId)
+        val reaction = Reaction(userId, ReactionType.LIKE, userDoc)
+        feedManager.getReactionManager(feedId).set(reaction)
+
+        // TODO Do on server
+        // feedManager.updateReactionCount(feedId)
     }
 
-    suspend fun unlike(feedId: String) {
-        FeedManager.removeReaction(feedId, ProfileManager.getCurrentUserDoc())
-        FeedManager.updateReactionCount(feedId)
+    suspend fun unlike(feedId: String, userId: String) {
+        feedManager.getReactionManager(feedId).remove(userId)
+
+        // TODO Do it on server
+        // feedManager.updateReactionCount(feedId)
     }
 
-    suspend fun getReaction(feedId: String): Reaction? {
-        return FeedManager.getReaction(feedId, ProfileManager.getCurrentUserDoc())
+    suspend fun getReaction(feedId: String, userId: String): Reaction? {
+        return feedManager.getReactionManager(feedId).get(userId, Reaction::class.java)
     }
 
-    suspend fun addComment(feedId: String, message: String) {
-        val comment = Comment(profile = ProfileManager.getCurrentUserDoc(), content = message)
-        FeedManager.addComment(feedId, comment)
-        FeedManager.updateCommentCount(feedId)
+    suspend fun addComment(feedId: String, userId: String, message: String) {
+        val userDoc = profileManager.getDoc(userId)
+        val comment = Comment(profile = userDoc, content = message)
+        feedManager.getCommentManager(feedId).add(comment)
+
+        // TODO Do it on server
+        // feedManager.updateCommentCount(feedId)
+    }
+
+    fun queryByInfluencer(influencerId: String): Query {
+        return feedManager.queryByInfluencer(influencerManager.getDoc(influencerId))
+    }
+
+    fun queryComments(feedId: String): Query {
+        return feedManager.getCommentManager(feedId).queryComments()
     }
 }

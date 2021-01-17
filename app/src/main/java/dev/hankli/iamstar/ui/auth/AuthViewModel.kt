@@ -8,11 +8,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AuthViewModel : ArchViewModel() {
+class AuthViewModel(private val profileRepo: ProfileRepo) : ArchViewModel() {
 
     val profileCreatedCode = 1
-
-    private val profileRepo = ProfileRepo()
 
     fun createProfile(response: IdpResponse) {
         callProgress(true)

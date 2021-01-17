@@ -3,14 +3,11 @@ package dev.hankli.iamstar.ui.feed
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import dev.hankli.iamstar.R
-import dev.hankli.iamstar.data.models.Feed
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import dev.hankli.iamstar.firebase.AuthManager
-import dev.hankli.iamstar.firestore.FeedManager
 import dev.hankli.iamstar.utils.ArchFragment
 import dev.hankli.iamstar.utils.ext.isInternetConnected
 import kotlinx.android.synthetic.main.fragment_feed.*
@@ -19,7 +16,7 @@ import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 
 class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.fragment_home) {
 
-    override val viewModel: FeedViewModel by viewModels()
+    override val viewModel: FeedViewModel by viewModel()
 
     private lateinit var feedCardAdapter: FeedCardAdapter
 
@@ -30,17 +27,10 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
         val writable = AuthManager.currentUserId == app.influencerId
         setMenuVisibility(writable)
 
-        val options = FirestoreRecyclerOptions.Builder<Feed>()
-            .setQuery(FeedManager.queryByInfluencer(app.influencerId)) { snapshot ->
-                val feed = snapshot.toObject(Feed::class.java)!!
-                if (requireContext().isInternetConnected()) {
-                    viewModel.retrieveReaction(feed)
-                }
-                return@setQuery feed
-            }
-            .build()
-
-        feedCardAdapter = FeedCardAdapter(writable, options).apply {
+        feedCardAdapter = FeedCardAdapter(
+            writable,
+            viewModel.getFeedOptions(app.influencerId)
+        ).apply {
             stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             onItemClick = ::onFeedCardClick
             onItemOptionsClick = ::onFeedCardOptionsClick

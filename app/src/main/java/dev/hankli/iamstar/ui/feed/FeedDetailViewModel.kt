@@ -10,7 +10,7 @@ import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Profile
-import dev.hankli.iamstar.firestore.FeedManager
+import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.repo.FeedRepo
 import dev.hankli.iamstar.utils.ArchViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,9 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.hankli.brookray.core.constant.EMPTY
 
-class FeedDetailViewModel : ArchViewModel() {
-
-    private val feedRepo = FeedRepo()
+class FeedDetailViewModel(private val feedRepo: FeedRepo) : ArchViewModel() {
 
     private var _feedData = MutableLiveData<Feed>()
     val feedData: LiveData<Feed>
@@ -40,7 +38,8 @@ class FeedDetailViewModel : ArchViewModel() {
             value?.let {
                 viewModelScope.launch(IO) {
                     val feed = it.toObject(Feed::class.java)!!
-                    feed.reaction = feedRepo.getReaction(feed.objectId)
+                    feed.reactionByCurrentUser =
+                        feedRepo.getReaction(feed.objectId, AuthManager.currentUserId!!)
                     _feedData.postValue(feed)
                 }
             }
@@ -49,7 +48,7 @@ class FeedDetailViewModel : ArchViewModel() {
 
     fun getCommentOptions(feedId: String): FirestoreRecyclerOptions<Comment> {
         return FirestoreRecyclerOptions.Builder<Comment>()
-            .setQuery(FeedManager.queryComments(feedId)) { commentSnapshot ->
+            .setQuery(feedRepo.queryComments(feedId)) { commentSnapshot ->
                 val comment = commentSnapshot.toObject(Comment::class.java)!!
                 Log.i("test", "${comment.objectId} query comments")
                 comment.profile?.let { doc ->
@@ -68,10 +67,10 @@ class FeedDetailViewModel : ArchViewModel() {
 
     fun doReaction(feedId: String) {
         viewModelScope.launch(IO) {
-            if (feedRepo.hasReaction(feedId)) {
-                feedRepo.unlike(feedId)
+            if (feedRepo.hasReaction(feedId, currentUserId!!)) {
+                feedRepo.unlike(feedId, currentUserId)
             } else {
-                feedRepo.like(feedId)
+                feedRepo.like(feedId, currentUserId)
             }
         }
     }
@@ -81,7 +80,7 @@ class FeedDetailViewModel : ArchViewModel() {
 
         viewModelScope.launch {
             callProgress(true)
-            withContext(Dispatchers.IO) { feedRepo.addComment(feedId, message) }
+            withContext(Dispatchers.IO) { feedRepo.addComment(feedId, currentUserId!!, message) }
             callProgress(false)
         }
     }

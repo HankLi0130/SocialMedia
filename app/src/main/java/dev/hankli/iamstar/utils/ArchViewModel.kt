@@ -5,10 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dev.hankli.iamstar.R
+import dev.hankli.iamstar.firebase.AuthManager
 import tw.hankli.brookray.core.constant.NO_RESOURCE
 import tw.hankli.brookray.core.event.Event
 
 abstract class ArchViewModel : ViewModel() {
+
+    protected val currentUserId = AuthManager.currentUserId
 
     private val _viewEvents = MutableLiveData<Event<ViewAction>>()
     val viewEvents: LiveData<Event<ViewAction>>

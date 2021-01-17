@@ -4,7 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_auth.*
 
 class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
 
-    override val viewModel: AuthViewModel by viewModels()
+    override val viewModel: AuthViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -16,11 +16,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.hankli.brookray.core.constant.EMPTY
 
-class EditFeedViewModel : ArchViewModel() {
+class EditFeedViewModel(private val feedRepo: FeedRepo) : ArchViewModel() {
 
     private lateinit var feed: Feed
-
-    private val feedRepo = FeedRepo()
 
     private val _contentData = MutableLiveData<String>()
     val contentData: LiveData<String>
@@ -42,7 +40,7 @@ class EditFeedViewModel : ArchViewModel() {
         } else {
             viewModelScope.launch {
                 callProgress(true)
-                withContext(IO) { feed = feedRepo.fetchFeed(feedId) }
+                withContext(IO) { feed = feedRepo.fetchFeed(feedId)!! }
                 setDefaultValues()
                 callProgress(false)
             }
@@ -100,7 +98,7 @@ class EditFeedViewModel : ArchViewModel() {
                 }
 
                 withContext(IO) {
-                    feedRepo.addFeed(this, feed, influencerId, uploadingMedias)
+                    feedRepo.addFeed(this, feed, currentUserId!!, influencerId, uploadingMedias)
                 }
 
                 callProgress(false)
