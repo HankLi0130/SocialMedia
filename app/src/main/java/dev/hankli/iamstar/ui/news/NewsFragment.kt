@@ -30,6 +30,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         super.onViewCreated(view, savedInstanceState)
 
         newsPageAdapter = NewsPageAdapter(this, newsUrls)
+        view_pager.isUserInputEnabled = false
         view_pager.adapter = newsPageAdapter
 
         TabLayoutMediator(view_tabs, view_pager) { tab, position ->
