@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/newsFragment"
-        android:icon="@drawable/ic_camera"
+        android:icon="@drawable/ic_baseline_source"
         android:title="@string/news" />
 
     <item
