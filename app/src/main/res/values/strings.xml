@@ -60,5 +60,8 @@
     <string name="gender_female">Female</string>
 
     <string name="news">News</string>
+    <string name="news_centers_for_disease_control">Centers for Disease Control</string>
+    <string name="news_central_weather_bureau_weather">Central Weather Bureau - Weather</string>
+    <string name="news_central_weather_bureau_earthquake">Central Weather Bureau - Earthquake</string>
 
 </resources>

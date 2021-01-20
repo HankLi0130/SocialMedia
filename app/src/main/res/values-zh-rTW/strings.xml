@@ -60,5 +60,8 @@
     <string name="gender_female">女</string>
 
     <string name="news">資訊</string>
+    <string name="news_centers_for_disease_control">疾管局</string>
+    <string name="news_central_weather_bureau_weather">中央氣象局-氣象</string>
+    <string name="news_central_weather_bureau_earthquake">中央氣象局-地震</string>
 
 </resources>
