@@ -4,6 +4,12 @@
         android:id="@+id/feedFragment"
         android:icon="@drawable/ic_home"
         android:title="@string/feed" />
+
+    <item
+        android:id="@+id/newsFragment"
+        android:icon="@drawable/ic_camera"
+        android:title="@string/news" />
+
     <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_person"

@@ -9,6 +9,7 @@
     <string name="loading">Please, wait…</string>
 
     <string name="feed">Feed</string>
+    <string name="add_feed">Add feed</string>
     <string name="feed_edit">Edit feed</string>
 
     <string name="comments">Comments</string>
@@ -24,8 +25,6 @@
     <string name="profile_phone_number">Phone</string>
     <string name="profile_gender">Gender</string>
     <string name="update_profile">Update</string>
-
-    <string name="add_feed">Add feed</string>
 
     <string name="up_to_image_maximum">Only %d images can be selected !</string>
     <string name="up_to_video_maximum">Only %d video can be selected !</string>
@@ -59,5 +58,7 @@
     </string-array>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
+
+    <string name="news">News</string>
 
 </resources>

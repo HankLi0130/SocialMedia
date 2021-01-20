@@ -20,7 +20,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    private val topLevelDestinations = setOf(R.id.feedFragment, R.id.profileFragment)
+    private val topLevelDestinations = setOf(
+        R.id.feedFragment,
+        R.id.newsFragment,
+        R.id.profileFragment
+    )
+
     private val noActionBarDestinations = setOf(R.id.authFragment)
 
     override fun onCreate(savedInstanceState: Bundle?) {

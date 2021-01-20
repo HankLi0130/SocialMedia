@@ -9,6 +9,7 @@
     <string name="loading">請稍候…</string>
 
     <string name="feed">貼文</string>
+    <string name="add_feed">新增貼文</string>
     <string name="feed_edit">編輯貼文</string>
 
     <string name="comments">留言</string>
@@ -24,8 +25,6 @@
     <string name="profile_phone_number">電話</string>
     <string name="profile_gender">性別</string>
     <string name="update_profile">更新</string>
-
-    <string name="add_feed">新增貼文</string>
 
     <string name="up_to_image_maximum">只能選取 %d 張照片！</string>
     <string name="up_to_video_maximum">只能選取 %d 部影片！</string>
@@ -59,5 +58,7 @@
     </string-array>
     <string name="gender_male">男</string>
     <string name="gender_female">女</string>
+
+    <string name="news">資訊</string>
 
 </resources>
