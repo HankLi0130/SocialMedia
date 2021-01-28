@@ -112,4 +112,10 @@
         android:label="NewsFragment"
         tools:layout="@layout/fragment_news" />
 
+    <fragment
+        android:id="@+id/scheduleFragment"
+        android:name="dev.hankli.iamstar.ui.schedule.ScheduleFragment"
+        android:label="ScheduleFragment"
+        tools:layout="@layout/fragment_schedule" />
+
 </navigation>

@@ -12,6 +12,7 @@ import dev.hankli.iamstar.ui.feed.FeedDetailViewModel
 import dev.hankli.iamstar.ui.feed.FeedViewModel
 import dev.hankli.iamstar.ui.profile.EditProfileViewModel
 import dev.hankli.iamstar.ui.profile.ProfileViewModel
+import dev.hankli.iamstar.ui.schedule.ScheduleViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -41,6 +42,8 @@ val viewModelModule = module {
     // profile
     viewModel { EditProfileViewModel(get()) }
     viewModel { ProfileViewModel(get()) }
+    // schedule
+    viewModel { ScheduleViewModel() }
 }
 
 val koinModules = listOf(managerModule, repoModule, viewModelModule)
