@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <tw.hankli.brookray.ui.card.ImageCardView
+        android:id="@+id/view_profile_avatar"
+        android:layout_width="@dimen/distance_52_dp"
+        android:layout_height="@dimen/distance_52_dp"
+        android:layout_margin="@dimen/distance_16_dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:cardCornerRadius="@dimen/corner_radius_50_dp"
+        app:cardElevation="@dimen/distance_3_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_person" />
+
+    <TextView
+        android:id="@+id/view_schedule_datetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/distance_16_dp"
+        android:maxLines="1"
+        android:textSize="@dimen/font_20_sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/view_schedule_title"
+        app:layout_constraintStart_toEndOf="@+id/view_profile_avatar"
+        app:layout_constraintTop_toTopOf="@+id/view_profile_avatar"
+        tools:text="2021-01-26 19:00" />
+
+    <TextView
+        android:id="@+id/view_schedule_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_6_dp"
+        android:layout_marginBottom="@dimen/distance_6_dp"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/view_schedule_location"
+        app:layout_constraintStart_toStartOf="@id/view_schedule_datetime"
+        app:layout_constraintTop_toBottomOf="@+id/view_schedule_datetime"
+        tools:text="2021 愛美星百大女神璀璨之夜" />
+
+    <TextView
+        android:id="@+id/view_schedule_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="@id/view_profile_avatar"
+        app:layout_constraintStart_toStartOf="@id/view_schedule_datetime"
+        app:layout_constraintTop_toBottomOf="@id/view_schedule_title"
+        tools:text="88號樂章 婚宴會館" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
