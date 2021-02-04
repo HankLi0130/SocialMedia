@@ -64,6 +64,7 @@
     <string name="news_central_weather_bureau_weather">中央氣象局-氣象</string>
     <string name="news_central_weather_bureau_earthquake">中央氣象局-地震</string>
 
-    <string name="schedule">Schedule</string>
+    <string name="schedule">行事曆</string>
+    <string name="add_schedule">新增行程</string>
 
 </resources>

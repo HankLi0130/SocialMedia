@@ -65,5 +65,6 @@
     <string name="news_central_weather_bureau_earthquake">Central Weather Bureau - Earthquake</string>
 
     <string name="schedule">Schedule</string>
+    <string name="add_schedule">Add Schedule</string>
 
 </resources>
