@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import dev.hankli.iamstar.R
-import dev.hankli.iamstar.utils.ext.display
+import dev.hankli.iamstar.data.models.Schedule
 import kotlinx.android.synthetic.main.card_schedule.view.*
 import tw.hankli.brookray.core.extension.viewOf
 
@@ -25,7 +25,6 @@ class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(item: Schedule) {
             with(itemView) {
-                view_schedule_datetime.text = item.dateTime.display()
                 view_schedule_title.text = item.title
                 view_schedule_location.text = item.location
             }
