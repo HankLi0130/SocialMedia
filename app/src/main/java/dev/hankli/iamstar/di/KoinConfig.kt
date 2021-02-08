@@ -1,7 +1,6 @@
 package dev.hankli.iamstar.di
 
 import com.google.firebase.firestore.FirebaseFirestore
-import dev.hankli.iamstar.data.models.Influencer
 import dev.hankli.iamstar.firestore.*
 import dev.hankli.iamstar.repo.FeedRepo
 import dev.hankli.iamstar.repo.ProfileRepo
@@ -12,9 +11,9 @@ import dev.hankli.iamstar.ui.feed.FeedDetailViewModel
 import dev.hankli.iamstar.ui.feed.FeedViewModel
 import dev.hankli.iamstar.ui.profile.EditProfileViewModel
 import dev.hankli.iamstar.ui.profile.ProfileViewModel
+import dev.hankli.iamstar.ui.schedule.EditScheduleViewModel
 import dev.hankli.iamstar.ui.schedule.ScheduleViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
@@ -44,6 +43,7 @@ val viewModelModule = module {
     viewModel { ProfileViewModel(get()) }
     // schedule
     viewModel { ScheduleViewModel() }
+    viewModel { EditScheduleViewModel() }
 }
 
 val koinModules = listOf(managerModule, repoModule, viewModelModule)
