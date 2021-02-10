@@ -67,4 +67,7 @@
     <string name="schedule">行事曆</string>
     <string name="add_schedule">新增行程</string>
 
+    <string name="start_date_time">開始時間</string>
+    <string name="end_date_time">結束時間</string>
+
 </resources>

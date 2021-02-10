@@ -67,4 +67,7 @@
     <string name="schedule">Schedule</string>
     <string name="add_schedule">Add Schedule</string>
 
+    <string name="start_date_time">Start Date Time</string>
+    <string name="end_date_time">End Date Time</string>
+
 </resources>

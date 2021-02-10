@@ -29,9 +29,13 @@ data class Schedule(
 
     @get:PropertyName(END_DATE_TIME)
     @set:PropertyName(END_DATE_TIME)
-    var endDateTime: Date? = null
+    var endDateTime: Date? = null,
 
-) : FirestoreModel {
+    @get:PropertyName(PHOTO_URL)
+    @set:PropertyName(PHOTO_URL)
+    var photoURL: String? = null,
+
+    ) : FirestoreModel {
     companion object {
         const val TITLE = "title"
         const val LOCATION = "location"
@@ -39,5 +43,6 @@ data class Schedule(
         const val LONGITUDE = "longitude"
         const val START_DATE_TIME = "startDateTime"
         const val END_DATE_TIME = "endDateTime"
+        const val PHOTO_URL = "photoURL"
     }
 }
