@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.core.widget.doOnTextChanged
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import dev.hankli.iamstar.R
@@ -19,6 +18,7 @@ import dev.hankli.iamstar.utils.media.mediaPickerPermissions
 import dev.hankli.iamstar.utils.media.obtainResult
 import dev.hankli.iamstar.utils.media.showImagePicker
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 class EditProfileFragment :
@@ -89,7 +89,8 @@ class EditProfileFragment :
 
             val picker = MaterialDatePicker.Builder.datePicker()
                 .setSelection(selection)
-                .build().apply {
+                .build()
+                .apply {
                     addOnPositiveButtonClickListener {
                         viewModel.onBirthdayChanged(it)
                         this.clearOnPositiveButtonClickListeners()
