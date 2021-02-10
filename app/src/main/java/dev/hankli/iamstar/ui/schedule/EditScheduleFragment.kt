@@ -3,6 +3,7 @@ package dev.hankli.iamstar.ui.schedule
 import android.os.Bundle
 import android.view.View
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.timepicker.MaterialTimePicker
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.ArchFragment
 import kotlinx.android.synthetic.main.fragment_edit_schedule.*
@@ -14,13 +15,21 @@ class EditScheduleFragment : ArchFragment<EditScheduleViewModel>(R.layout.fragme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view_input_start_date_time.setOnClickListener { showDateTimePicker() }
-        view_input_end_date_time.setOnClickListener { showDateTimePicker() }
+        view_input_start_date.setOnClickListener { showDatePicker() }
+        view_input_start_time.setOnClickListener { showTimePicker() }
+        view_input_end_date.setOnClickListener { showDatePicker() }
+        view_input_end_time.setOnClickListener { showTimePicker() }
     }
 
-    private fun showDateTimePicker() {
+    private fun showDatePicker() {
         MaterialDatePicker.Builder.datePicker()
             .build()
-            .show(parentFragmentManager, null)
+            .showNow(parentFragmentManager, null)
+    }
+
+    private fun showTimePicker() {
+        MaterialTimePicker.Builder()
+            .build()
+            .showNow(parentFragmentManager, null)
     }
 }

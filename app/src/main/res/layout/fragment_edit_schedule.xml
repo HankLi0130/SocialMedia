@@ -58,28 +58,46 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/view_input_start_date_time"
+        android:id="@+id/view_input_start_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/distance_16_dp"
-        android:background="@drawable/res_rounded_border"
-        android:hint="@string/start_date_time"
+        android:hint="@string/start_date"
         android:padding="@dimen/distance_8_dp"
-        app:layout_constraintEnd_toEndOf="@id/view_schedule_location"
+        app:layout_constraintEnd_toStartOf="@id/view_input_start_time"
         app:layout_constraintStart_toStartOf="@id/view_schedule_avatar"
         app:layout_constraintTop_toBottomOf="@id/view_input_schedule_title" />
 
     <TextView
-        android:id="@+id/view_input_end_date_time"
+        android:id="@+id/view_input_start_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/start_time"
+        android:padding="@dimen/distance_8_dp"
+        app:layout_constraintEnd_toEndOf="@id/view_schedule_location"
+        app:layout_constraintStart_toEndOf="@id/view_input_start_date"
+        app:layout_constraintTop_toTopOf="@id/view_input_start_date" />
+
+    <TextView
+        android:id="@+id/view_input_end_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/distance_16_dp"
-        android:background="@drawable/res_rounded_border"
-        android:hint="@string/end_date_time"
+        android:hint="@string/end_date"
+        android:padding="@dimen/distance_8_dp"
+        app:layout_constraintEnd_toStartOf="@id/view_input_end_time"
+        app:layout_constraintStart_toStartOf="@id/view_schedule_avatar"
+        app:layout_constraintTop_toBottomOf="@id/view_input_start_date" />
+
+    <TextView
+        android:id="@+id/view_input_end_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/end_time"
         android:padding="@dimen/distance_8_dp"
         app:layout_constraintEnd_toEndOf="@id/view_schedule_location"
-        app:layout_constraintStart_toStartOf="@id/view_schedule_avatar"
-        app:layout_constraintTop_toBottomOf="@id/view_input_start_date_time" />
+        app:layout_constraintStart_toEndOf="@id/view_input_end_date"
+        app:layout_constraintTop_toTopOf="@id/view_input_end_date" />
 
     <ImageView
         android:id="@+id/view_schedule_image"
@@ -88,7 +106,7 @@
         app:layout_constraintBottom_toTopOf="@id/view_bottom_background"
         app:layout_constraintEnd_toEndOf="@id/view_schedule_location"
         app:layout_constraintStart_toStartOf="@id/view_schedule_avatar"
-        app:layout_constraintTop_toBottomOf="@id/view_input_end_date_time"
+        app:layout_constraintTop_toBottomOf="@id/view_input_end_date"
         tools:src="@mipmap/ic_launcher" />
 
     <View
