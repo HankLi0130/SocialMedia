@@ -2,86 +2,95 @@ package dev.hankli.iamstar.ui.schedule
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.android.material.datepicker.MaterialDatePicker
+import androidx.lifecycle.viewModelScope
+import dev.hankli.iamstar.data.models.Schedule
 import dev.hankli.iamstar.utils.ArchViewModel
-import dev.hankli.iamstar.utils.getClearedCal
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import tw.hankli.brookray.core.constant.EMPTY
 import java.util.*
 
 class EditScheduleViewModel : ArchViewModel() {
 
-    private val _startDateTime = MutableLiveData<Calendar>()
-    val startDateTime: LiveData<Calendar>
+    private lateinit var schedule: Schedule
+
+    private val _startDateTime = MutableLiveData<Date>()
+    val startDateTime: LiveData<Date>
         get() = _startDateTime
 
-    private val _endDateTime = MutableLiveData<Calendar>()
-    val endDateTime: LiveData<Calendar>
+    private val _endDateTime = MutableLiveData<Date>()
+    val endDateTime: LiveData<Date>
         get() = _endDateTime
 
+    private val _locationData = MutableLiveData<String?>()
+    val locationData: LiveData<String?>
+        get() = _locationData
+
     fun loadSchedule(scheduleId: String) {
-
-        initStartDateTime()
-        initEndDateTime()
-    }
-
-    private fun initStartDateTime(startDateTime: Date? = null) {
-        val cal = getClearedCal()
-        _startDateTime.value = if (startDateTime != null) {
-            cal.time = startDateTime
-            cal
+        if (scheduleId == EMPTY) {
+            schedule = Schedule()
         } else {
-            cal.timeInMillis = MaterialDatePicker.todayInUtcMilliseconds()
-            cal.set(Calendar.HOUR_OF_DAY, 8)
-            cal
+            viewModelScope.launch {
+                callProgress(true)
+                withContext(Dispatchers.IO) { }
+                setDefaultValues()
+                callProgress(false)
+            }
         }
     }
 
-    private fun initEndDateTime(endDateTime: Date? = null) {
-        val cal = getClearedCal()
-        _endDateTime.value = if (endDateTime != null) {
-            cal.time = endDateTime
-            cal
-        } else {
-            cal.timeInMillis = MaterialDatePicker.todayInUtcMilliseconds()
-            cal.set(Calendar.HOUR_OF_DAY, 9)
-            cal
-        }
+    private fun setDefaultValues() {
+
     }
 
-    fun getStartDateInMillis() = _startDateTime.value!!.timeInMillis
+    fun getStartDateInMillis() = schedule.startDateTime.time
 
-    fun getStartHour() = _startDateTime.value!!.get(Calendar.HOUR_OF_DAY)
+    fun getStartHour() = schedule.startDateTime.hours
 
-    fun getStartMinute() = _startDateTime.value!!.get(Calendar.MINUTE)
+    fun getStartMinute() = schedule.startDateTime.minutes
 
     fun setStartDateInMillis(date: Long) {
-        val sDateTime = _startDateTime.value!!
-        sDateTime.timeInMillis = date
-        _startDateTime.value = sDateTime
+        _startDateTime.value = schedule.startDateTime.apply {
+            time = date
+        }
     }
 
     fun setStartTime(hour: Int, minute: Int) {
-        val sDateTime = _startDateTime.value!!
-        sDateTime.set(Calendar.HOUR_OF_DAY, hour)
-        sDateTime.set(Calendar.MINUTE, minute)
-        _startDateTime.value = sDateTime
+        _startDateTime.value = schedule.startDateTime.apply {
+            hours = hour
+            minutes = minute
+        }
     }
 
-    fun getEndDateInMillis() = _endDateTime.value!!.timeInMillis
+    fun getEndDateInMillis() = schedule.endDateTime.time
 
-    fun getEndHour() = _endDateTime.value!!.get(Calendar.HOUR_OF_DAY)
+    fun getEndHour() = schedule.endDateTime.hours
 
-    fun getEndMinute() = _endDateTime.value!!.get(Calendar.MINUTE)
+    fun getEndMinute() = schedule.endDateTime.minutes
 
     fun setEndDateInMillis(date: Long) {
-        val eDateTime = _endDateTime.value!!
-        eDateTime.timeInMillis = date
-        _endDateTime.value = eDateTime
+        _endDateTime.value = schedule.endDateTime.apply {
+            time = date
+        }
     }
 
     fun setEndTime(hour: Int, minute: Int) {
-        val eDateTime = _endDateTime.value!!
-        eDateTime.set(Calendar.HOUR_OF_DAY, hour)
-        eDateTime.set(Calendar.MINUTE, minute)
-        _endDateTime.value = eDateTime
+        _endDateTime.value = schedule.endDateTime.apply {
+            hours = hour
+            minutes = minute
+        }
+    }
+
+    fun onTitleChange(text: CharSequence?) {
+        val title = text?.toString() ?: EMPTY
+        schedule.title = title
+    }
+
+    fun setLocation(location: String?, latitude: Double?, longitude: Double?) {
+        schedule.location = location
+        schedule.latitude = latitude
+        schedule.longitude = longitude
+        _locationData.value = schedule.location
     }
 }

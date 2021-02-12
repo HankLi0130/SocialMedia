@@ -25,11 +25,11 @@ data class Schedule(
 
     @get:PropertyName(START_DATE_TIME)
     @set:PropertyName(START_DATE_TIME)
-    var startDateTime: Date? = null,
+    var startDateTime: Date = Date(),
 
     @get:PropertyName(END_DATE_TIME)
     @set:PropertyName(END_DATE_TIME)
-    var endDateTime: Date? = null,
+    var endDateTime: Date = Date(),
 
     @get:PropertyName(PHOTO_URL)
     @set:PropertyName(PHOTO_URL)

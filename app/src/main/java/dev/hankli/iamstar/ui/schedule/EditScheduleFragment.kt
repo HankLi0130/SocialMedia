@@ -1,17 +1,24 @@
 package dev.hankli.iamstar.ui.schedule
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat.is24HourFormat
 import android.view.View
+import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.navArgs
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.ArchFragment
+import dev.hankli.iamstar.utils.Consts
 import dev.hankli.iamstar.utils.ext.toDateString
 import dev.hankli.iamstar.utils.ext.toTimeString
+import dev.hankli.iamstar.utils.getPlacesIntent
 import kotlinx.android.synthetic.main.fragment_edit_schedule.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -28,6 +35,16 @@ class EditScheduleFragment : ArchFragment<EditScheduleViewModel>(R.layout.fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.locationData.observe(viewLifecycleOwner, { location ->
+            view_schedule_location.text = location
+        })
+
+        view_input_schedule_title.editText?.let {
+            it.doOnTextChanged { text, _, _, _ ->
+                viewModel.onTitleChange(text)
+            }
+        }
 
         viewModel.startDateTime.observe(viewLifecycleOwner) { startDateTime ->
             view_input_start_date.text = startDateTime.toDateString()
@@ -67,6 +84,10 @@ class EditScheduleFragment : ArchFragment<EditScheduleViewModel>(R.layout.fragme
                 viewModel.setEndTime(hour, minute)
             }
         }
+
+        view_add_location.setOnClickListener {
+            startActivityForResult(getPlacesIntent(requireContext()), Consts.REQUEST_PLACES)
+        }
     }
 
     private fun showDatePicker(
@@ -105,5 +126,34 @@ class EditScheduleFragment : ArchFragment<EditScheduleViewModel>(R.layout.fragme
                 }
             }
             .show(parentFragmentManager, null)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            Consts.REQUEST_PLACES -> handlePlaces(resultCode, data)
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+    private fun handlePlaces(resultCode: Int, data: Intent?) {
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                data?.let {
+                    Autocomplete.getPlaceFromIntent(it).run {
+                        viewModel.setLocation(
+                            name,
+                            latLng?.latitude,
+                            latLng?.longitude
+                        )
+                    }
+                }
+            }
+            AutocompleteActivity.RESULT_ERROR -> {
+                // TODO handle error
+            }
+            Activity.RESULT_CANCELED -> {
+                // TODO The user canceled the operation.
+            }
+        }
     }
 }
