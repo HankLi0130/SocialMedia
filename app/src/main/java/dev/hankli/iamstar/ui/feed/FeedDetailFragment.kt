@@ -11,20 +11,15 @@ import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.enums.ReactionType
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Media
-import dev.hankli.iamstar.data.models.Profile
-import dev.hankli.iamstar.firestore.ProfileManager
 import dev.hankli.iamstar.ui.comment.CommentAdapter
 import dev.hankli.iamstar.utils.ArchFragment
 import dev.hankli.iamstar.utils.ArchViewModel
-import dev.hankli.iamstar.utils.ext.display
 import dev.hankli.iamstar.utils.ext.isInternetConnected
+import dev.hankli.iamstar.utils.ext.toDateString
 import dev.hankli.iamstar.utils.media.VIDEO
 import kotlinx.android.synthetic.main.fragment_feed_detail.*
-import kotlinx.android.synthetic.main.fragment_feed_detail.view_comment_list
-import kotlinx.android.synthetic.main.fragment_feed_detail.view_input_comment
-import kotlinx.android.synthetic.main.fragment_feed_detail.view_send
-import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 
 class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_detail) {
 
@@ -65,7 +60,7 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
             Glide.with(this).load(url).into(view_profile_avatar.image)
         } ?: view_profile_avatar.image.setImageResource(R.drawable.ic_person)
 
-        view_feed_time.text = feed.createdAt.display()
+        view_feed_time.text = feed.createdAt.toDateString()
 
         view_feed_location.text = feed.location
         view_feed_location.isVisible = !feed.location.isNullOrEmpty()

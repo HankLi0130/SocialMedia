@@ -11,8 +11,7 @@ import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.enums.ReactionType
 import dev.hankli.iamstar.data.models.Feed
 import dev.hankli.iamstar.data.models.Reaction
-import dev.hankli.iamstar.firestore.ProfileManager
-import dev.hankli.iamstar.utils.ext.display
+import dev.hankli.iamstar.utils.ext.toDateString
 import dev.hankli.iamstar.utils.media.VIDEO
 import kotlinx.android.synthetic.main.card_feed.view.*
 import tw.hankli.brookray.core.extension.viewOf
@@ -62,7 +61,7 @@ class FeedCardAdapter(val showItemOptions: Boolean, options: FirestoreRecyclerOp
                     Glide.with(this).load(url).into(view_profile_avatar.image)
                 } ?: view_profile_avatar.image.setImageResource(R.drawable.ic_person)
 
-                view_feed_time.text = item.createdAt.display()
+                view_feed_time.text = item.createdAt.toDateString()
 
                 if (item.location.isNullOrEmpty()) {
                     view_feed_location.text = null

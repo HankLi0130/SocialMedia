@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.utils.ArchFragment
-import dev.hankli.iamstar.utils.ext.display
+import dev.hankli.iamstar.utils.ext.toDateString
 import kotlinx.android.synthetic.main.card_field.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment :
     ArchFragment<ProfileViewModel>(R.layout.fragment_profile, R.menu.fragment_profile) {
@@ -57,7 +57,7 @@ class ProfileFragment :
             profile.birthday?.let {
                 view_birthday.isVisible = true
                 view_birthday.view_title.text = getString(R.string.profile_birthday)
-                view_birthday.view_field.text = it.display()
+                view_birthday.view_field.text = it.toDateString()
             } ?: run { view_birthday.isVisible = false }
 
             profile.email?.let {

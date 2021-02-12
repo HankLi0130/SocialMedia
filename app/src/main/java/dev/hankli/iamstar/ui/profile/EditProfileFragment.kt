@@ -12,8 +12,8 @@ import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.ArchFragment
 import dev.hankli.iamstar.utils.Consts.REQUEST_PERMISSION_MEDIA
 import dev.hankli.iamstar.utils.Consts.REQUEST_PICK_MEDIAS
-import dev.hankli.iamstar.utils.ext.display
 import dev.hankli.iamstar.utils.ext.isInternetConnected
+import dev.hankli.iamstar.utils.ext.toDateString
 import dev.hankli.iamstar.utils.media.mediaPickerPermissions
 import dev.hankli.iamstar.utils.media.obtainResult
 import dev.hankli.iamstar.utils.media.showImagePicker
@@ -46,7 +46,7 @@ class EditProfileFragment :
 
             view_input_profile_last_name.editText?.setText(profile.lastName)
 
-            view_input_profile_birthday.editText?.setText(profile.birthday?.display())
+            view_input_profile_birthday.editText?.setText(profile.birthday?.toDateString())
 
             view_input_profile_email.editText?.setText(profile.email)
 
