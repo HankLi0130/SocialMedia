@@ -48,9 +48,7 @@ class ScheduleFragment :
 
     private fun toEditScheduleFragment(scheduleId: String = EMPTY) {
         findNavController().navigate(
-            ScheduleFragmentDirections.actionScheduleFragmentToEditScheduleFragment(
-                scheduleId
-            )
+            ScheduleFragmentDirections.actionScheduleFragmentToEditScheduleFragment(scheduleId)
         )
     }
 }

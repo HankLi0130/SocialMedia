@@ -9,14 +9,12 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import dev.hankli.iamstar.R
-import dev.hankli.iamstar.firestore.ProfileManager
 import dev.hankli.iamstar.utils.ArchFragment
 import dev.hankli.iamstar.utils.Consts.REQUEST_PERMISSION_MEDIA
 import dev.hankli.iamstar.utils.Consts.REQUEST_PICK_MEDIAS
@@ -25,6 +23,7 @@ import dev.hankli.iamstar.utils.ext.isInternetConnected
 import dev.hankli.iamstar.utils.getPlacesIntent
 import dev.hankli.iamstar.utils.media.*
 import kotlinx.android.synthetic.main.fragment_edit_feed.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditFeedFragment :
     ArchFragment<EditFeedViewModel>(R.layout.fragment_edit_feed, R.menu.single_action_ok),
@@ -83,8 +82,7 @@ class EditFeedFragment :
         })
 
         viewModel.locationData.observe(viewLifecycleOwner, { location ->
-            view_post_location.text =
-                if (location.isNullOrEmpty()) null else location
+            view_post_location.text = location
         })
     }
 
@@ -159,12 +157,13 @@ class EditFeedFragment :
         when (resultCode) {
             RESULT_OK -> {
                 data?.let {
-                    val place = Autocomplete.getPlaceFromIntent(it)
-                    viewModel.setLocation(
-                        place.name,
-                        place.latLng?.latitude,
-                        place.latLng?.longitude
-                    )
+                    Autocomplete.getPlaceFromIntent(it).run {
+                        viewModel.setLocation(
+                            name,
+                            latLng?.latitude,
+                            latLng?.longitude
+                        )
+                    }
                 }
             }
             AutocompleteActivity.RESULT_ERROR -> {
@@ -193,16 +192,4 @@ class EditFeedFragment :
     }
 
     override fun onItemCancel(position: Int) = viewModel.removeMediaItemAt(position)
-
-//    private fun transfer(mediasForBrowsing: List<MediaForBrowsing>): Single<List<MediaForUploading>> {
-//        val actions = mediasForBrowsing.mapNotNull {
-//            when (it.type) {
-//                IMAGE -> imageForUploading(requireContext().contentResolver, it)
-//                VIDEO -> videoForUploading(requireContext().contentResolver, it)
-//                else -> null
-//            }
-//        }
-//
-//        return Single.merge(actions).toList()
-//    }
 }
