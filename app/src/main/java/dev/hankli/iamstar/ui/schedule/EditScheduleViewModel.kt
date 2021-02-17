@@ -1,7 +1,9 @@
 package dev.hankli.iamstar.ui.schedule
 
+import android.content.ContentResolver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Schedule
 import dev.hankli.iamstar.repo.ProfileRepo
 import dev.hankli.iamstar.utils.ArchViewModel
@@ -15,6 +17,9 @@ import java.util.*
 class EditScheduleViewModel(private val profileRepo: ProfileRepo) : ArchViewModel() {
 
     private lateinit var schedule: Schedule
+
+    private val _titleData = MutableLiveData<String?>()
+    val titleData get() = _titleData
 
     private val _startDateTime = MutableLiveData<Date>()
     val startDateTime get() = _startDateTime
@@ -33,6 +38,7 @@ class EditScheduleViewModel(private val profileRepo: ProfileRepo) : ArchViewMode
     fun loadSchedule(scheduleId: String) {
         if (scheduleId == EMPTY) {
             schedule = Schedule()
+            setDefaultValues()
         } else {
             viewModelScope.launch {
                 callProgress(true)
@@ -44,7 +50,10 @@ class EditScheduleViewModel(private val profileRepo: ProfileRepo) : ArchViewMode
     }
 
     private fun setDefaultValues() {
-
+        _titleData.value = schedule.title
+        _startDateTime.value = schedule.startDateTime
+        _endDateTime.value = schedule.endDateTime
+        _locationData.value = schedule.location
     }
 
     suspend fun getPhotoURL(userId: String): String? = profileRepo.getPhotoURL(userId)
@@ -109,5 +118,23 @@ class EditScheduleViewModel(private val profileRepo: ProfileRepo) : ArchViewMode
     fun removeImage() {
         this.image = null
         _imageData.value = this.image
+    }
+
+    fun submit(
+        contentResolver: ContentResolver,
+        influencerId: String
+    ) {
+        val errorMessageRes = checkValid()
+        if (errorMessageRes.isNotEmpty()) {
+            showErrors(errorMessageRes)
+            return
+        }
+    }
+
+    private fun checkValid(): List<Int> {
+        val errorMessageRes = mutableListOf<Int>()
+        if (schedule.title.isNullOrEmpty()) errorMessageRes.add(R.string.error_schedule_title_is_empty)
+        return errorMessageRes
+
     }
 }

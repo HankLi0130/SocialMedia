@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat.is24HourFormat
+import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -19,14 +20,18 @@ import com.google.android.material.timepicker.TimeFormat
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.utils.ArchFragment
 import dev.hankli.iamstar.utils.Consts
+import dev.hankli.iamstar.utils.ext.isInternetConnected
 import dev.hankli.iamstar.utils.ext.toDateString
 import dev.hankli.iamstar.utils.ext.toTimeString
 import dev.hankli.iamstar.utils.getPlacesIntent
 import dev.hankli.iamstar.utils.media.*
+import kotlinx.android.synthetic.main.card_schedule.*
 import kotlinx.android.synthetic.main.fragment_edit_schedule.*
+import kotlinx.android.synthetic.main.fragment_edit_schedule.view_schedule_location
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class EditScheduleFragment : ArchFragment<EditScheduleViewModel>(R.layout.fragment_edit_schedule) {
+class EditScheduleFragment :
+    ArchFragment<EditScheduleViewModel>(R.layout.fragment_edit_schedule, R.menu.single_action_ok) {
     override val viewModel: EditScheduleViewModel by viewModel()
 
     private val argus: EditScheduleFragmentArgs by navArgs()
@@ -56,6 +61,10 @@ class EditScheduleFragment : ArchFragment<EditScheduleViewModel>(R.layout.fragme
             it.doOnTextChanged { text, _, _, _ ->
                 viewModel.onTitleChange(text)
             }
+        }
+
+        viewModel.titleData.observe(viewLifecycleOwner) { title ->
+            view_input_schedule_title.editText?.setText(title)
         }
 
         viewModel.startDateTime.observe(viewLifecycleOwner) { startDateTime ->
@@ -215,6 +224,18 @@ class EditScheduleFragment : ArchFragment<EditScheduleViewModel>(R.layout.fragme
             Activity.RESULT_CANCELED -> {
                 // TODO The user canceled the operation.
             }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_ok -> {
+                if (requireContext().isInternetConnected()) {
+                    viewModel.submit(requireContext().contentResolver, app.influencerId)
+                } else viewModel.showNoInternet()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

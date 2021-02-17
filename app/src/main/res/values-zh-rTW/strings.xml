@@ -34,6 +34,7 @@
     <string name="alert_unknown_type">未知的類型</string>
 
     <string name="error_feed_content_is_empty">貼文文字是空的！</string>
+    <string name="error_schedule_title_is_empty">行事曆標題是空的！</string>
     <string name="error_title">錯誤</string>
     <string name="error">錯誤</string>
     <string name="error_unknown">未知錯誤. 請聯絡服務人員.</string>
