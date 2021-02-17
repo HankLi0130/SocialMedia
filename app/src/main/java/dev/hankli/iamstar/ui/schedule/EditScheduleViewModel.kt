@@ -1,10 +1,10 @@
 package dev.hankli.iamstar.ui.schedule
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dev.hankli.iamstar.data.models.Schedule
 import dev.hankli.iamstar.utils.ArchViewModel
+import dev.hankli.iamstar.utils.media.MediaFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -16,16 +16,18 @@ class EditScheduleViewModel : ArchViewModel() {
     private lateinit var schedule: Schedule
 
     private val _startDateTime = MutableLiveData<Date>()
-    val startDateTime: LiveData<Date>
-        get() = _startDateTime
+    val startDateTime get() = _startDateTime
 
     private val _endDateTime = MutableLiveData<Date>()
-    val endDateTime: LiveData<Date>
-        get() = _endDateTime
+    val endDateTime get() = _endDateTime
 
     private val _locationData = MutableLiveData<String?>()
-    val locationData: LiveData<String?>
-        get() = _locationData
+    val locationData get() = _locationData
+
+    private var image: MediaFile? = null
+
+    private val _imageData = MutableLiveData<MediaFile?>()
+    val imageData get() = _imageData
 
     fun loadSchedule(scheduleId: String) {
         if (scheduleId == EMPTY) {
@@ -92,5 +94,17 @@ class EditScheduleViewModel : ArchViewModel() {
         schedule.latitude = latitude
         schedule.longitude = longitude
         _locationData.value = schedule.location
+    }
+
+    fun isImageSelected() = image != null
+
+    fun addImage(image: MediaFile) {
+        this.image = image
+        _imageData.value = this.image
+    }
+
+    fun removeImage() {
+        this.image = null
+        _imageData.value = this.image
     }
 }

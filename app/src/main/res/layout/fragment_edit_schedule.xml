@@ -101,13 +101,23 @@
 
     <ImageView
         android:id="@+id/view_schedule_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="@dimen/match_constraint"
         app:layout_constraintBottom_toTopOf="@id/view_bottom_background"
         app:layout_constraintEnd_toEndOf="@id/view_schedule_location"
         app:layout_constraintStart_toStartOf="@id/view_schedule_avatar"
         app:layout_constraintTop_toBottomOf="@id/view_input_end_date"
         tools:src="@mipmap/ic_launcher" />
+
+    <ImageView
+        android:id="@+id/view_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/distance_8_dp"
+        android:src="@drawable/ic_cancel"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/view_schedule_image"
+        app:layout_constraintTop_toTopOf="@id/view_schedule_image" />
 
     <View
         android:id="@+id/view_bottom_background"
