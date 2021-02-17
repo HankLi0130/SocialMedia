@@ -3,6 +3,7 @@ package dev.hankli.iamstar.ui.schedule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dev.hankli.iamstar.data.models.Schedule
+import dev.hankli.iamstar.repo.ProfileRepo
 import dev.hankli.iamstar.utils.ArchViewModel
 import dev.hankli.iamstar.utils.media.MediaFile
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +12,7 @@ import kotlinx.coroutines.withContext
 import tw.hankli.brookray.core.constant.EMPTY
 import java.util.*
 
-class EditScheduleViewModel : ArchViewModel() {
+class EditScheduleViewModel(private val profileRepo: ProfileRepo) : ArchViewModel() {
 
     private lateinit var schedule: Schedule
 
@@ -45,6 +46,8 @@ class EditScheduleViewModel : ArchViewModel() {
     private fun setDefaultValues() {
 
     }
+
+    suspend fun getPhotoURL(userId: String): String? = profileRepo.getPhotoURL(userId)
 
     fun getStartDateInMillis() = schedule.startDateTime.time
 

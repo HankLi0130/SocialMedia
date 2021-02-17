@@ -43,7 +43,7 @@ val viewModelModule = module {
     viewModel { ProfileViewModel(get()) }
     // schedule
     viewModel { ScheduleViewModel() }
-    viewModel { EditScheduleViewModel() }
+    viewModel { EditScheduleViewModel(get()) }
 }
 
 val koinModules = listOf(managerModule, repoModule, viewModelModule)

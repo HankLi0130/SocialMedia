@@ -7,6 +7,7 @@ import android.text.format.DateFormat.is24HourFormat
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.libraries.places.widget.Autocomplete
@@ -40,6 +41,12 @@ class EditScheduleFragment : ArchFragment<EditScheduleViewModel>(R.layout.fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        lifecycleScope.launchWhenCreated {
+            viewModel.getPhotoURL(app.influencerId)?.let { url ->
+                Glide.with(this@EditScheduleFragment).load(url).into(view_schedule_head_shot)
+            } ?: view_schedule_head_shot.setImageResource(R.drawable.ic_person)
+        }
 
         viewModel.locationData.observe(viewLifecycleOwner, { location ->
             view_schedule_location.text = location
