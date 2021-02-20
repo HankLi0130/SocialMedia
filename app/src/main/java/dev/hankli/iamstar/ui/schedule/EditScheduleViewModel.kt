@@ -6,15 +6,21 @@ import androidx.lifecycle.viewModelScope
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.data.models.Schedule
 import dev.hankli.iamstar.repo.ProfileRepo
+import dev.hankli.iamstar.repo.ScheduleRepo
 import dev.hankli.iamstar.utils.ArchViewModel
+import dev.hankli.iamstar.utils.media.LocalMediaFile
 import dev.hankli.iamstar.utils.media.MediaFile
+import dev.hankli.iamstar.utils.media.toUploadingMedia
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.hankli.brookray.core.constant.EMPTY
 import java.util.*
 
-class EditScheduleViewModel(private val profileRepo: ProfileRepo) : ArchViewModel() {
+class EditScheduleViewModel(
+    private val profileRepo: ProfileRepo,
+    private val scheduleRepo: ScheduleRepo
+) : ArchViewModel() {
 
     private lateinit var schedule: Schedule
 
@@ -128,6 +134,30 @@ class EditScheduleViewModel(private val profileRepo: ProfileRepo) : ArchViewMode
         if (errorMessageRes.isNotEmpty()) {
             showErrors(errorMessageRes)
             return
+        }
+
+        if (schedule.objectId == EMPTY) {
+            viewModelScope.launch(Dispatchers.Main) {
+                callProgress(true)
+
+                val uploadingMedia = image?.let { mediaFile ->
+                    if (mediaFile is LocalMediaFile) {
+                        withContext(Dispatchers.Default) {
+                            return@withContext toUploadingMedia(contentResolver, mediaFile)
+                        }
+                    }
+                    return@let null
+                }
+
+                withContext(Dispatchers.IO) {
+                    scheduleRepo.add(this, schedule, currentUserId!!, influencerId, uploadingMedia)
+                }
+
+                callProgress(false)
+                popBack()
+            }
+        } else {
+            // TODO Update Schedule
         }
     }
 

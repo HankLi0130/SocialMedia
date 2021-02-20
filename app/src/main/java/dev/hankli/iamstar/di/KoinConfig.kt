@@ -4,6 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dev.hankli.iamstar.firestore.*
 import dev.hankli.iamstar.repo.FeedRepo
 import dev.hankli.iamstar.repo.ProfileRepo
+import dev.hankli.iamstar.repo.ScheduleRepo
 import dev.hankli.iamstar.ui.auth.AuthViewModel
 import dev.hankli.iamstar.ui.comment.CommentViewModel
 import dev.hankli.iamstar.ui.feed.EditFeedViewModel
@@ -22,11 +23,13 @@ val managerModule = module {
     single<FeedManager> { FeedManager(db.collection(COLLECTION_FEED)) }
     single<InfluencerManager> { InfluencerManager(db.collection(COLLECTION_INFLUENCER)) }
     single<ProfileManager> { ProfileManager(db.collection(COLLECTION_PROFILE)) }
+    single<ScheduleManager> { ScheduleManager(db.collection(COLLECTION_SCHEDULE)) }
 }
 
 val repoModule = module {
     single<FeedRepo> { FeedRepo(get(), get(), get()) }
     single<ProfileRepo> { ProfileRepo(get()) }
+    single<ScheduleRepo> { ScheduleRepo(get(), get(), get()) }
 }
 
 val viewModelModule = module {
@@ -43,7 +46,7 @@ val viewModelModule = module {
     viewModel { ProfileViewModel(get()) }
     // schedule
     viewModel { ScheduleViewModel() }
-    viewModel { EditScheduleViewModel(get()) }
+    viewModel { EditScheduleViewModel(get(), get()) }
 }
 
 val koinModules = listOf(managerModule, repoModule, viewModelModule)

@@ -59,12 +59,17 @@ fun toUploadingMedias(
     contentResolver: ContentResolver,
     localMediaFiles: List<LocalMediaFile>
 ): List<UploadingMedia> {
-    return localMediaFiles.map { mediaFile ->
-        return@map when (mediaFile.type) {
-            IMAGE -> produceUploadingImage(contentResolver, mediaFile)
-            VIDEO -> produceUploadingVideo(contentResolver, mediaFile)
-            else -> throw IllegalArgumentException("Unknown type !")
-        }
+    return localMediaFiles.map { mediaFile -> toUploadingMedia(contentResolver, mediaFile) }
+}
+
+fun toUploadingMedia(
+    contentResolver: ContentResolver,
+    mediaFile: LocalMediaFile
+): UploadingMedia {
+    return when (mediaFile.type) {
+        IMAGE -> produceUploadingImage(contentResolver, mediaFile)
+        VIDEO -> produceUploadingVideo(contentResolver, mediaFile)
+        else -> throw IllegalArgumentException("Unknown type !")
     }
 }
 
