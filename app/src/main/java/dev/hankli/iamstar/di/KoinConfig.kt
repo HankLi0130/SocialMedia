@@ -45,7 +45,7 @@ val viewModelModule = module {
     viewModel { EditProfileViewModel(get()) }
     viewModel { ProfileViewModel(get()) }
     // schedule
-    viewModel { ScheduleViewModel() }
+    viewModel { ScheduleViewModel(get()) }
     viewModel { EditScheduleViewModel(get(), get()) }
 }
 

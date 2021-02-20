@@ -21,37 +21,50 @@
 
     <TextView
         android:id="@+id/view_schedule_datetime"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/distance_16_dp"
+        android:layout_marginEnd="@dimen/distance_16_dp"
         android:maxLines="1"
-        android:textSize="@dimen/font_20_sp"
+        android:textSize="@dimen/font_16_sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/view_schedule_title"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/view_profile_avatar"
         app:layout_constraintTop_toTopOf="@+id/view_profile_avatar"
         tools:text="2021-01-26 19:00" />
 
     <TextView
         android:id="@+id/view_schedule_title"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/distance_6_dp"
         android:layout_marginBottom="@dimen/distance_6_dp"
         android:maxLines="1"
         app:layout_constraintBottom_toTopOf="@+id/view_schedule_location"
+        app:layout_constraintEnd_toEndOf="@id/view_schedule_datetime"
         app:layout_constraintStart_toStartOf="@id/view_schedule_datetime"
         app:layout_constraintTop_toBottomOf="@+id/view_schedule_datetime"
         tools:text="2021 愛美星百大女神璀璨之夜" />
 
     <TextView
         android:id="@+id/view_schedule_location"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/match_constraint"
         android:layout_height="wrap_content"
         android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="@id/view_profile_avatar"
+        app:layout_constraintEnd_toEndOf="@id/view_schedule_datetime"
         app:layout_constraintStart_toStartOf="@id/view_schedule_datetime"
         app:layout_constraintTop_toBottomOf="@id/view_schedule_title"
         tools:text="88號樂章 婚宴會館" />
+
+    <ImageView
+        android:id="@+id/view_preview"
+        android:layout_width="@dimen/match_constraint"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/view_schedule_datetime"
+        app:layout_constraintStart_toStartOf="@id/view_profile_avatar"
+        app:layout_constraintTop_toBottomOf="@id/view_schedule_location" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

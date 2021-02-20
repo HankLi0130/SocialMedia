@@ -1,5 +1,6 @@
 package dev.hankli.iamstar.repo
 
+import com.google.firebase.firestore.Query
 import dev.hankli.iamstar.data.models.Schedule
 import dev.hankli.iamstar.firebase.BUCKET_SCHEDULE
 import dev.hankli.iamstar.firebase.StorageManager
@@ -35,5 +36,9 @@ class ScheduleRepo(
         return withContext(scope.coroutineContext) {
             StorageManager.uploadFile(filePath, media.file)
         }
+    }
+
+    fun queryByInfluencer(influencerId: String): Query {
+        return scheduleManager.queryByInfluencer(influencerManager.getDoc(influencerId))
     }
 }

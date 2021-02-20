@@ -17,7 +17,7 @@ class ScheduleFragment :
     ArchFragment<ScheduleViewModel>(R.layout.fragment_schedule, R.menu.fragment_schedule) {
     override val viewModel: ScheduleViewModel by viewModel()
 
-    private val scheduleAdapter = ScheduleAdapter()
+    private lateinit var scheduleAdapter: ScheduleAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -26,14 +26,13 @@ class ScheduleFragment :
         val writable = AuthManager.currentUserId == app.influencerId
         setMenuVisibility(writable)
 
+        scheduleAdapter = ScheduleAdapter(viewModel.getScheduleOptions(app.influencerId))
+
         view_schedule_list.apply {
             setHasFixedSize(true)
             adapter = scheduleAdapter
             addItemDecoration(DividerItemDecoration(requireContext(), VERTICAL))
         }
-
-        scheduleAdapter.item = viewModel.getSchedules()
-        scheduleAdapter.notifyDataSetChanged()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -50,5 +49,15 @@ class ScheduleFragment :
         findNavController().navigate(
             ScheduleFragmentDirections.actionScheduleFragmentToEditScheduleFragment(scheduleId)
         )
+    }
+
+    override fun onStart() {
+        super.onStart()
+        scheduleAdapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        scheduleAdapter.stopListening()
     }
 }

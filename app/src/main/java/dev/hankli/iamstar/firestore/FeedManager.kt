@@ -2,13 +2,9 @@ package dev.hankli.iamstar.firestore
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import dev.hankli.iamstar.data.models.Comment
 import dev.hankli.iamstar.data.models.Feed
-import dev.hankli.iamstar.data.models.Reaction
 import kotlinx.coroutines.tasks.await
-import java.util.*
 
 class FeedManager(collection: CollectionReference) : FirestoreManager<Feed>(collection) {
 
