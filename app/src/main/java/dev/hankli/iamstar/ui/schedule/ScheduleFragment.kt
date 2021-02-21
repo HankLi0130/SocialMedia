@@ -35,6 +35,12 @@ class ScheduleFragment :
         }
     }
 
+    override fun notifyFromViewModel(code: Int) {
+        when (code) {
+            viewModel.refreshSchedulesCode -> scheduleAdapter.notifyDataSetChanged()
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_add_schedule -> {

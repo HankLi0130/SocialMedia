@@ -26,7 +26,7 @@ class ScheduleRepo(
         schedule.author = profileManager.getDoc(currentUserId)
         schedule.influencer = influencerManager.getDoc(influencerId)
         uploadingMedia?.run {
-            schedule.photoURL = uploadScheduleMedia(coroutineScope, this)
+            schedule.previewURL = uploadScheduleMedia(coroutineScope, this)
         }
         scheduleManager.add(schedule)
     }

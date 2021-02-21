@@ -28,6 +28,10 @@ class ScheduleAdapter(options: FirestoreRecyclerOptions<Schedule>) :
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(item: Schedule) {
             with(itemView) {
+                item.photoURL?.let { url ->
+                    Glide.with(this).load(url).into(view_profile_avatar.image)
+                } ?: view_profile_avatar.image.setImageResource(R.drawable.ic_person)
+
                 val start = item.startDateTime.toDateTimeString()
                 val end = item.endDateTime.toDateTimeString()
                 val datetime = "$start ~ $end"
@@ -35,7 +39,7 @@ class ScheduleAdapter(options: FirestoreRecyclerOptions<Schedule>) :
                 view_schedule_title.text = item.title
                 view_schedule_location.text = item.location
 
-                item.photoURL?.let { url ->
+                item.previewURL?.let { url ->
                     Glide.with(this).load(url).into(view_preview)
                 } ?: view_preview.setImageResource(NO_RESOURCE)
             }

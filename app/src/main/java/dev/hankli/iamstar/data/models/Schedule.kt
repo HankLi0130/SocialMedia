@@ -1,6 +1,7 @@
 package dev.hankli.iamstar.data.models
 
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.PropertyName
 import tw.hankli.brookray.core.constant.EMPTY
 import java.util.*
@@ -40,11 +41,13 @@ data class Schedule(
     @set:PropertyName(END_DATE_TIME)
     var endDateTime: Date = Date(),
 
-    @get:PropertyName(PHOTO_URL)
-    @set:PropertyName(PHOTO_URL)
-    var photoURL: String? = null,
+    @get:PropertyName(PREVIEW_URL)
+    @set:PropertyName(PREVIEW_URL)
+    var previewURL: String? = null,
 
-    ) : FirestoreModel {
+    @get:Exclude
+    var photoURL: String? = null
+) : FirestoreModel {
     companion object {
         const val INFLUENCER = "influencer"
         const val AUTHOR = "author"
@@ -54,6 +57,6 @@ data class Schedule(
         const val LONGITUDE = "longitude"
         const val START_DATE_TIME = "startDateTime"
         const val END_DATE_TIME = "endDateTime"
-        const val PHOTO_URL = "photoURL"
+        const val PREVIEW_URL = "previewURL"
     }
 }

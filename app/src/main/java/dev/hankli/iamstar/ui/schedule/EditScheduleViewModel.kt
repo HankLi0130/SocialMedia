@@ -141,12 +141,11 @@ class EditScheduleViewModel(
                 callProgress(true)
 
                 val uploadingMedia = image?.let { mediaFile ->
-                    if (mediaFile is LocalMediaFile) {
+                    return@let if (mediaFile is LocalMediaFile) {
                         withContext(Dispatchers.Default) {
                             return@withContext toUploadingMedia(contentResolver, mediaFile)
                         }
-                    }
-                    return@let null
+                    } else null
                 }
 
                 withContext(Dispatchers.IO) {
