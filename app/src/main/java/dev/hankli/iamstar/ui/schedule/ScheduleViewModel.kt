@@ -32,4 +32,14 @@ class ScheduleViewModel(
             return@setQuery schedule
         }
         .build()
+
+    fun deleteSchedule(scheduleId: String) {
+        viewModelScope.launch(Main) {
+            callProgress(true)
+            withContext(IO) {
+                scheduleRepo.removeSchedule(scheduleId)
+            }
+            callProgress(false)
+        }
+    }
 }

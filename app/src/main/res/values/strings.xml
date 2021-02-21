@@ -65,6 +65,12 @@
     <string name="news_central_weather_bureau_weather">Central Weather Bureau - Weather</string>
     <string name="news_central_weather_bureau_earthquake">Central Weather Bureau - Earthquake</string>
 
+    <string name="schedule_actions_title">Actions</string>
+    <string-array name="schedule_actions">
+        <item>update</item>
+        <item>delete</item>
+    </string-array>
+
     <string name="schedule">Schedule</string>
     <string name="add_schedule">Add Schedule</string>
 

@@ -41,9 +41,9 @@ data class Schedule(
     @set:PropertyName(END_DATE_TIME)
     var endDateTime: Date = Date(),
 
-    @get:PropertyName(PREVIEW_URL)
-    @set:PropertyName(PREVIEW_URL)
-    var previewURL: String? = null,
+    @get:PropertyName(MEDIA)
+    @set:PropertyName(MEDIA)
+    var media: Media? = null,
 
     @get:Exclude
     var photoURL: String? = null
@@ -57,6 +57,6 @@ data class Schedule(
         const val LONGITUDE = "longitude"
         const val START_DATE_TIME = "startDateTime"
         const val END_DATE_TIME = "endDateTime"
-        const val PREVIEW_URL = "previewURL"
+        const val MEDIA = "media"
     }
 }

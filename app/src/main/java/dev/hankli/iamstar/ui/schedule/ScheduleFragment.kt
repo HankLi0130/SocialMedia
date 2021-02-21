@@ -26,7 +26,10 @@ class ScheduleFragment :
         val writable = AuthManager.currentUserId == app.influencerId
         setMenuVisibility(writable)
 
-        scheduleAdapter = ScheduleAdapter(viewModel.getScheduleOptions(app.influencerId))
+        scheduleAdapter = ScheduleAdapter(viewModel.getScheduleOptions(app.influencerId)).apply {
+            if (writable) onItemLongClick = ::onScheduleLongClick
+            onItemClick = ::onScheduleClick
+        }
 
         view_schedule_list.apply {
             setHasFixedSize(true)
@@ -65,5 +68,19 @@ class ScheduleFragment :
     override fun onStop() {
         super.onStop()
         scheduleAdapter.stopListening()
+    }
+
+    private fun onScheduleLongClick(scheduleId: String): Boolean {
+        showListDialog(R.string.schedule_actions_title, R.array.schedule_actions) { which ->
+            when (which) {
+                0 -> toEditScheduleFragment(scheduleId)
+                1 -> viewModel.deleteSchedule(scheduleId)
+            }
+        }
+        return true
+    }
+
+    private fun onScheduleClick(scheduleId: String) {
+
     }
 }

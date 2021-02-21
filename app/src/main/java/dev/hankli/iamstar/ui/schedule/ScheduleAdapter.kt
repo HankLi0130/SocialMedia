@@ -16,17 +16,25 @@ import tw.hankli.brookray.core.extension.viewOf
 class ScheduleAdapter(options: FirestoreRecyclerOptions<Schedule>) :
     FirestoreRecyclerAdapter<Schedule, ScheduleAdapter.ViewHolder>(options) {
 
+    var onItemLongClick: ((scheduleId: String) -> Boolean)? = null
+
+    lateinit var onItemClick: (scheduleId: String) -> Unit
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.viewOf(R.layout.card_schedule)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: Schedule) {
-        holder.bind(model)
+        holder.bind(model, onItemLongClick, onItemClick)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: Schedule) {
+        fun bind(
+            item: Schedule,
+            onItemLongClick: ((scheduleId: String) -> Boolean)?,
+            onItemClick: (scheduleId: String) -> Unit
+        ) {
             with(itemView) {
                 item.photoURL?.let { url ->
                     Glide.with(this).load(url).into(view_profile_avatar.image)
@@ -39,9 +47,12 @@ class ScheduleAdapter(options: FirestoreRecyclerOptions<Schedule>) :
                 view_schedule_title.text = item.title
                 view_schedule_location.text = item.location
 
-                item.previewURL?.let { url ->
-                    Glide.with(this).load(url).into(view_preview)
+                item.media?.let { media ->
+                    Glide.with(this).load(media.url).into(view_preview)
                 } ?: view_preview.setImageResource(NO_RESOURCE)
+
+                this.setOnLongClickListener { onItemLongClick?.invoke(item.objectId) ?: false }
+                this.setOnClickListener { onItemClick(item.objectId) }
             }
         }
     }

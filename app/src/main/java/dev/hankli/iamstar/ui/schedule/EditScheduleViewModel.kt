@@ -10,8 +10,11 @@ import dev.hankli.iamstar.repo.ScheduleRepo
 import dev.hankli.iamstar.utils.ArchViewModel
 import dev.hankli.iamstar.utils.media.LocalMediaFile
 import dev.hankli.iamstar.utils.media.MediaFile
+import dev.hankli.iamstar.utils.media.toMediaFile
 import dev.hankli.iamstar.utils.media.toUploadingMedia
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.hankli.brookray.core.constant.EMPTY
@@ -48,7 +51,7 @@ class EditScheduleViewModel(
         } else {
             viewModelScope.launch {
                 callProgress(true)
-                withContext(Dispatchers.IO) { }
+                withContext(Dispatchers.IO) { schedule = scheduleRepo.get(scheduleId)!! }
                 setDefaultValues()
                 callProgress(false)
             }
@@ -60,6 +63,7 @@ class EditScheduleViewModel(
         _startDateTime.value = schedule.startDateTime
         _endDateTime.value = schedule.endDateTime
         _locationData.value = schedule.location
+        schedule.media?.run { addImage(this.toMediaFile()) }
     }
 
     suspend fun getPhotoURL(userId: String): String? = profileRepo.getPhotoURL(userId)
@@ -137,7 +141,7 @@ class EditScheduleViewModel(
         }
 
         if (schedule.objectId == EMPTY) {
-            viewModelScope.launch(Dispatchers.Main) {
+            viewModelScope.launch(Main) {
                 callProgress(true)
 
                 val uploadingMedia = image?.let { mediaFile ->
@@ -148,7 +152,7 @@ class EditScheduleViewModel(
                     } else null
                 }
 
-                withContext(Dispatchers.IO) {
+                withContext(IO) {
                     scheduleRepo.add(this, schedule, currentUserId!!, influencerId, uploadingMedia)
                 }
 
@@ -156,7 +160,24 @@ class EditScheduleViewModel(
                 popBack()
             }
         } else {
-            // TODO Update Schedule
+            viewModelScope.launch(Main) {
+                callProgress(true)
+
+                val uploadingMedia = image?.let { mediaFile ->
+                    return@let if (mediaFile is LocalMediaFile) {
+                        withContext(Dispatchers.Default) {
+                            return@withContext toUploadingMedia(contentResolver, mediaFile)
+                        }
+                    } else null
+                }
+
+                withContext(IO) {
+                    scheduleRepo.update(this, schedule, uploadingMedia)
+                }
+
+                callProgress(false)
+                popBack()
+            }
         }
     }
 
