@@ -84,4 +84,6 @@
     <string name="end_time">End Time</string>
     <string name="end_time_title">Select End Time</string>
 
+    <string name="channel_name">Messages</string>
+    <string name="channel_description">Messages from Server</string>
 </resources>

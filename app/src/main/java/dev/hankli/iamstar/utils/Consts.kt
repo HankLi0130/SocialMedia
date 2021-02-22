@@ -9,4 +9,7 @@ object Consts {
     // Permissions
     const val REQUEST_PERMISSION_MEDIA = 400
     const val REQUEST_PERMISSION_PLACES = 401
+
+    // Notification
+    const val CHANNEL_ID = "channel1"
 }
