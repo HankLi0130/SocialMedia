@@ -19,7 +19,7 @@ data class Schedule(
 
     @get:PropertyName(TITLE)
     @set:PropertyName(TITLE)
-    var title: String? = null,
+    var title: String = EMPTY,
 
     @get:PropertyName(LOCATION)
     @set:PropertyName(LOCATION)

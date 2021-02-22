@@ -1,12 +1,15 @@
 package dev.hankli.iamstar.ui.schedule
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.MenuItem
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import dev.hankli.iamstar.R
+import dev.hankli.iamstar.data.models.Schedule
 import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.utils.ArchFragment
 import kotlinx.android.synthetic.main.fragment_schedule.*
@@ -80,7 +83,27 @@ class ScheduleFragment :
         return true
     }
 
-    private fun onScheduleClick(scheduleId: String) {
+    private fun onScheduleClick(schedule: Schedule) {
+        showMessageDialog(R.string.add_schedule, R.string.add_schedule_message) {
+            addEventToCalendar(
+                schedule.title,
+                schedule.location,
+                schedule.startDateTime.time,
+                schedule.endDateTime.time
+            )
+        }
+    }
 
+    private fun addEventToCalendar(title: String, location: String?, begin: Long, end: Long) {
+        val intent = Intent(Intent.ACTION_INSERT).apply {
+            data = CalendarContract.Events.CONTENT_URI
+            putExtra(CalendarContract.Events.TITLE, title)
+            location?.let { putExtra(CalendarContract.Events.EVENT_LOCATION, it) }
+            putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, begin)
+            putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end)
+        }
+        if (intent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivity(intent)
+        }
     }
 }

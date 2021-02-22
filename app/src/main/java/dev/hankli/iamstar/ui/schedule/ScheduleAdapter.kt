@@ -18,7 +18,7 @@ class ScheduleAdapter(options: FirestoreRecyclerOptions<Schedule>) :
 
     var onItemLongClick: ((scheduleId: String) -> Boolean)? = null
 
-    lateinit var onItemClick: (scheduleId: String) -> Unit
+    lateinit var onItemClick: (schedule: Schedule) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.viewOf(R.layout.card_schedule)
@@ -33,7 +33,7 @@ class ScheduleAdapter(options: FirestoreRecyclerOptions<Schedule>) :
         fun bind(
             item: Schedule,
             onItemLongClick: ((scheduleId: String) -> Boolean)?,
-            onItemClick: (scheduleId: String) -> Unit
+            onItemClick: (schedule: Schedule) -> Unit
         ) {
             with(itemView) {
                 item.photoURL?.let { url ->
@@ -52,7 +52,7 @@ class ScheduleAdapter(options: FirestoreRecyclerOptions<Schedule>) :
                 } ?: view_preview.setImageResource(NO_RESOURCE)
 
                 this.setOnLongClickListener { onItemLongClick?.invoke(item.objectId) ?: false }
-                this.setOnClickListener { onItemClick(item.objectId) }
+                this.setOnClickListener { onItemClick(item) }
             }
         }
     }
