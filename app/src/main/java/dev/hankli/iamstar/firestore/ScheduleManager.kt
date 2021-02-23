@@ -10,7 +10,7 @@ class ScheduleManager(collection: CollectionReference) : FirestoreManager<Schedu
     fun queryByInfluencer(influencerDoc: DocumentReference, limit: Long = 10): Query {
         return rootCollection
             .whereEqualTo(Schedule.INFLUENCER, influencerDoc)
-            .orderBy(Schedule.START_DATE_TIME, Query.Direction.DESCENDING)
+            .orderBy(Schedule.START_DATE_TIME, Query.Direction.ASCENDING)
             .limit(limit)
     }
 }
