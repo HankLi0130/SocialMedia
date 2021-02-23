@@ -60,4 +60,7 @@ class ProfileRepo(private val profileManager: ProfileManager) {
         userId: String,
         listener: (DocumentSnapshot?, FirebaseFirestoreException?) -> Unit
     ) = profileManager.observeDoc(userId, listener)
+
+    suspend fun updateFcmToken(userId: String, fcmToken: String) =
+        profileManager.updateFcmToken(userId, fcmToken)
 }

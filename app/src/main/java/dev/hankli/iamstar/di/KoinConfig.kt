@@ -14,10 +14,16 @@ import dev.hankli.iamstar.ui.profile.EditProfileViewModel
 import dev.hankli.iamstar.ui.profile.ProfileViewModel
 import dev.hankli.iamstar.ui.schedule.EditScheduleViewModel
 import dev.hankli.iamstar.ui.schedule.ScheduleViewModel
+import dev.hankli.iamstar.utils.SharedPreferencesManager
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+
+val appModule = module {
+    single { SharedPreferencesManager(androidContext()) }
+}
 
 val managerModule = module {
     single<FeedManager> { FeedManager(db.collection(COLLECTION_FEED)) }
@@ -49,4 +55,4 @@ val viewModelModule = module {
     viewModel { EditScheduleViewModel(get(), get()) }
 }
 
-val koinModules = listOf(managerModule, repoModule, viewModelModule)
+val koinModules = listOf(appModule, managerModule, repoModule, viewModelModule)
