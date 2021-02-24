@@ -10,8 +10,11 @@ class SharedPreferencesManager(private val context: Context) {
         private const val NORMAL = "normal"
     }
 
-    fun getSp(name: String = NORMAL, mode: Int = MODE_PRIVATE) =
-        context.getSharedPreferences(name, mode)
+    private fun getSp() = context.getSharedPreferences(NORMAL, MODE_PRIVATE)
+
+    private fun removeKey(key: String) = getSp().edit().remove(key).apply()
+
+    private fun isKeyExists(key: String) = getSp().contains(key)
 
     fun getFcmToken(): String? = getSp().getString(Profile.FCM_TOKEN, null)
 
@@ -20,5 +23,7 @@ class SharedPreferencesManager(private val context: Context) {
         apply()
     }
 
-    fun remoeFcmToken() = getSp().edit().remove(Profile.FCM_TOKEN).apply()
+    fun remoeFcmToken() = removeKey(Profile.FCM_TOKEN)
+
+    fun isFcmTokenExists() = isKeyExists(Profile.FCM_TOKEN)
 }

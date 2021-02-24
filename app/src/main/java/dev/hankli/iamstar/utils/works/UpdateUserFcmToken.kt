@@ -3,6 +3,7 @@ package dev.hankli.iamstar.utils.works
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import dev.hankli.iamstar.data.models.FirestoreModel
 import dev.hankli.iamstar.data.models.Profile
 import dev.hankli.iamstar.repo.ProfileRepo
 import org.koin.core.component.KoinApiExtension
@@ -17,9 +18,15 @@ class UpdateUserFcmToken(context: Context, workerParams: WorkerParameters) :
 
     override suspend fun doWork(): Result {
         val token = inputData.getString(Profile.FCM_TOKEN)
+        val userId = inputData.getString(FirestoreModel.OBJECT_ID)
 
-        // TODO update FCM token of profile
-
-        return Result.success()
+        return if (!token.isNullOrEmpty() && !userId.isNullOrEmpty()) {
+            try {
+                profileRepo.updateFcmToken(userId, token)
+            } catch (e: Throwable) {
+                Result.retry()
+            }
+            Result.success()
+        } else Result.failure()
     }
 }
