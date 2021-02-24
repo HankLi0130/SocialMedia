@@ -1,6 +1,8 @@
 package dev.hankli.iamstar.di
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
+import dev.hankli.iamstar.firebase.NotificationManager
 import dev.hankli.iamstar.firestore.*
 import dev.hankli.iamstar.repo.FeedRepo
 import dev.hankli.iamstar.repo.ProfileRepo
@@ -21,8 +23,13 @@ import org.koin.dsl.module
 
 private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
+val firebaseModule = module {
+    single { FirebaseMessaging.getInstance() }
+}
+
 val appModule = module {
     single { SharedPreferencesManager(androidContext()) }
+    single { NotificationManager(get(), get()) }
 }
 
 val managerModule = module {
@@ -55,4 +62,4 @@ val viewModelModule = module {
     viewModel { EditScheduleViewModel(get(), get()) }
 }
 
-val koinModules = listOf(appModule, managerModule, repoModule, viewModelModule)
+val koinModules = listOf(firebaseModule, appModule, managerModule, repoModule, viewModelModule)

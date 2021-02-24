@@ -25,5 +25,5 @@ class SharedPreferencesManager(private val context: Context) {
 
     fun remoeFcmToken() = removeKey(Profile.FCM_TOKEN)
 
-    fun isFcmTokenExists() = isKeyExists(Profile.FCM_TOKEN)
+    fun fcmTokenExists() = isKeyExists(Profile.FCM_TOKEN)
 }

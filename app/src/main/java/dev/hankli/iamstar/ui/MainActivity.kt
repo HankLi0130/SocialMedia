@@ -13,12 +13,16 @@ import androidx.navigation.ui.setupWithNavController
 import dev.hankli.iamstar.NavGraphDirections
 import dev.hankli.iamstar.R
 import dev.hankli.iamstar.firebase.AuthManager
+import dev.hankli.iamstar.firebase.NotificationManager
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+    private val notificationManager: NotificationManager by inject()
 
     private val topLevelDestinations = setOf(
         R.id.feedFragment,
@@ -63,6 +67,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onStart()
         if (AuthManager.currentUser == null) {
             navController.navigate(NavGraphDirections.actionGlobalAuthFragment())
+        } else {
+            notificationManager.checkFcmToken()
         }
     }
 
