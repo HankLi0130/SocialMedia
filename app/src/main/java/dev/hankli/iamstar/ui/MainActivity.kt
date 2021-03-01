@@ -16,6 +16,7 @@ import dev.hankli.iamstar.firebase.AuthManager
 import dev.hankli.iamstar.firebase.NotificationManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinApiExtension
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -63,12 +64,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    @KoinApiExtension
     override fun onStart() {
         super.onStart()
         if (AuthManager.currentUser == null) {
             navController.navigate(NavGraphDirections.actionGlobalAuthFragment())
         } else {
-            notificationManager.checkFcmToken()
+            notificationManager.uploadFcmToken(this, this)
         }
     }
 
