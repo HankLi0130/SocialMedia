@@ -109,13 +109,13 @@
     <fragment
         android:id="@+id/newsFragment"
         android:name="dev.hankli.iamstar.ui.news.NewsFragment"
-        android:label="NewsFragment"
+        android:label="@string/news"
         tools:layout="@layout/fragment_news" />
 
     <fragment
         android:id="@+id/scheduleFragment"
         android:name="dev.hankli.iamstar.ui.schedule.ScheduleFragment"
-        android:label="ScheduleFragment"
+        android:label="@string/schedule"
         tools:layout="@layout/fragment_schedule">
         <action
             android:id="@+id/action_scheduleFragment_to_editScheduleFragment"
@@ -125,7 +125,7 @@
     <fragment
         android:id="@+id/editScheduleFragment"
         android:name="dev.hankli.iamstar.ui.schedule.EditScheduleFragment"
-        android:label="EditScheduleFragment"
+        android:label="@string/schedule_edit"
         tools:layout="@layout/fragment_edit_schedule">
         <argument
             android:name="scheduleId"
