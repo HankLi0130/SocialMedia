@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.ListenerRegistration
 import dev.hankli.iamstar.data.models.Profile
-import dev.hankli.iamstar.firebase.AuthManager
-import dev.hankli.iamstar.firestore.ProfileManager
 import dev.hankli.iamstar.repo.ProfileRepo
 import dev.hankli.iamstar.utils.ArchViewModel
 
@@ -24,7 +22,7 @@ class ProfileViewModel(private val profileRepo: ProfileRepo) : ArchViewModel() {
                 return@observeProfile
             }
 
-            val profile = snapshot?.toObject(Profile::class.java)
+            val profile = snapshot?.toObject(Profile::class.java)!!
             _profileData.value = profile
         }
     }
