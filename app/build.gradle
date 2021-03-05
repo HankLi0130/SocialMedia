@@ -65,6 +65,19 @@ android {
             resValue "string", "app_name", "百壽里"
             resValue "string", "influencer_id", "q79osCDs2lWGscKBybniTAmz65s1"
         }
+        iamchief {
+            debuggable false
+            applicationIdSuffix ".iamchief"
+            versionNameSuffix "-iamchief"
+            signingConfig signingConfigs.development
+
+            resValue "string", "places_api_key", "AIzaSyDDNHdD0Gh4eGWVowW7CUiMXXPBwH1an04"
+            resValue "string", "facebook_application_id", "288773521483517"
+            resValue "string", "facebook_login_protocol_scheme", "fb288773521483517"
+
+            resValue "string", "app_name", "百壽里"
+            resValue "string", "influencer_id", "ioCQv6Ohe9VbCeoy4gz4eqkHgIn2"
+        }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
