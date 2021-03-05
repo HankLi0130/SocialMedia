@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/authFragment"
-        android:name="dev.hankli.iamstar.ui.auth.AuthFragment"
+        android:name="tw.iamstar.ui.auth.AuthFragment"
         tools:layout="@layout/fragment_auth">
         <action
             android:id="@+id/action_authFragment_to_nav_main"
@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/feedFragment"
-        android:name="dev.hankli.iamstar.ui.feed.FeedFragment"
+        android:name="tw.iamstar.ui.feed.FeedFragment"
         android:label="@string/feed"
         tools:layout="@layout/fragment_feed">
         <action
@@ -41,7 +41,7 @@
 
     <fragment
         android:id="@+id/feedDetailFragment"
-        android:name="dev.hankli.iamstar.ui.feed.FeedDetailFragment"
+        android:name="tw.iamstar.ui.feed.FeedDetailFragment"
         android:label="@string/feed"
         tools:layout="@layout/fragment_feed_detail">
         <action
@@ -54,7 +54,7 @@
 
     <fragment
         android:id="@+id/mediaReviewFragment"
-        android:name="dev.hankli.iamstar.ui.media.MediaReviewFragment"
+        android:name="tw.iamstar.ui.media.MediaReviewFragment"
         tools:layout="@layout/fragment_media_review">
         <argument
             android:name="url"
@@ -72,7 +72,7 @@
 
     <fragment
         android:id="@+id/editFeedFragment"
-        android:name="dev.hankli.iamstar.ui.feed.EditFeedFragment"
+        android:name="tw.iamstar.ui.feed.EditFeedFragment"
         android:label="@string/feed_edit"
         tools:layout="@layout/fragment_edit_feed">
         <argument
@@ -82,13 +82,13 @@
 
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="dev.hankli.iamstar.ui.profile.EditProfileFragment"
+        android:name="tw.iamstar.ui.profile.EditProfileFragment"
         android:label="@string/profile_edit"
         tools:layout="@layout/fragment_edit_profile" />
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="dev.hankli.iamstar.ui.profile.ProfileFragment"
+        android:name="tw.iamstar.ui.profile.ProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile">
         <action
@@ -98,7 +98,7 @@
 
     <fragment
         android:id="@+id/commentFragment"
-        android:name="dev.hankli.iamstar.ui.comment.CommentFragment"
+        android:name="tw.iamstar.ui.comment.CommentFragment"
         android:label="@string/comments"
         tools:layout="@layout/fragment_comment">
         <argument
@@ -108,13 +108,13 @@
 
     <fragment
         android:id="@+id/newsFragment"
-        android:name="dev.hankli.iamstar.ui.news.NewsFragment"
+        android:name="tw.iamstar.ui.news.NewsFragment"
         android:label="@string/news"
         tools:layout="@layout/fragment_news" />
 
     <fragment
         android:id="@+id/scheduleFragment"
-        android:name="dev.hankli.iamstar.ui.schedule.ScheduleFragment"
+        android:name="tw.iamstar.ui.schedule.ScheduleFragment"
         android:label="@string/schedule"
         tools:layout="@layout/fragment_schedule">
         <action
@@ -124,7 +124,7 @@
 
     <fragment
         android:id="@+id/editScheduleFragment"
-        android:name="dev.hankli.iamstar.ui.schedule.EditScheduleFragment"
+        android:name="tw.iamstar.ui.schedule.EditScheduleFragment"
         android:label="@string/schedule_edit"
         tools:layout="@layout/fragment_edit_schedule">
         <argument

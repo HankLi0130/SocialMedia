@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="dev.hankli.iamstar">
+    package="tw.iamstar">
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -21,7 +21,7 @@
         tools:node="remove" />
 
     <application
-        android:name=".App"
+        android:name="tw.iamstar.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -29,7 +29,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.MainActivity">
+        <activity android:name="tw.iamstar.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,7 +44,7 @@
         </activity>
 
         <service
-            android:name=".firebase.NotificationService"
+            android:name="tw.iamstar.firebase.NotificationService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

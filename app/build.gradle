@@ -24,7 +24,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "dev.hankli.iamstar"
+        applicationId "tw.iamstar"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
@@ -52,10 +52,10 @@ android {
             versionNameSuffix "-dev"
             signingConfig signingConfigs.development
         }
-        iamchief_dev {
+        baisoli_dev {
             debuggable true
-            applicationIdSuffix ".iamchief_dev"
-            versionNameSuffix "-iamchief_dev"
+            applicationIdSuffix ".personal.baisoli_dev"
+            versionNameSuffix "-baisoli_dev"
             signingConfig signingConfigs.development
 
             resValue "string", "places_api_key", "AIzaSyDDNHdD0Gh4eGWVowW7CUiMXXPBwH1an04"
@@ -65,10 +65,10 @@ android {
             resValue "string", "app_name", "百壽里"
             resValue "string", "influencer_id", "q79osCDs2lWGscKBybniTAmz65s1"
         }
-        iamchief {
+        baisoli {
             debuggable false
-            applicationIdSuffix ".iamchief"
-            versionNameSuffix "-iamchief"
+            applicationIdSuffix ".personal.baisoli"
+            versionNameSuffix "-baisoli"
             signingConfig signingConfigs.development
 
             resValue "string", "places_api_key", "AIzaSyDDNHdD0Gh4eGWVowW7CUiMXXPBwH1an04"
@@ -105,7 +105,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-beta01'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-beta02'
     implementation "androidx.work:work-runtime-ktx:2.5.0"
 
     def nav_version = "2.3.3"
