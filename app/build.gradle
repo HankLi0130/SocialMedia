@@ -39,12 +39,12 @@ android {
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
 
-            resValue "string", "places_api_key", "AIzaSyC1JDDxa4t1nkbGPUkY_rpi2mtV9-4LCdg"
+            resValue "string", "places_api_key", "AIzaSyBTGHMX2CKs6vYIFVVS0Ovu_XzH9pWQSrs"
             resValue "string", "facebook_application_id", "247892093066632"
             resValue "string", "facebook_login_protocol_scheme", "fb247892093066632"
 
             resValue "string", "app_name", "iamStar"
-            resValue "string", "influencer_id", "q6rM5kbtBVR1A4vmMzVI5EzCtet2"
+            resValue "string", "influencer_id", "Pw81JDGIUXWS8hF07xxUW52fMP03"
         }
         development {
             debuggable true
