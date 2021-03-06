@@ -54,7 +54,7 @@ android {
         }
         baisoli_dev {
             debuggable true
-            applicationIdSuffix ".personal.baisoli_dev"
+            applicationIdSuffix ".personal.baisoli.dev"
             versionNameSuffix "-baisoli_dev"
             signingConfig signingConfigs.development
 
@@ -62,7 +62,7 @@ android {
             resValue "string", "facebook_application_id", "288773521483517"
             resValue "string", "facebook_login_protocol_scheme", "fb288773521483517"
 
-            resValue "string", "app_name", "百壽里"
+            resValue "string", "app_name", "百壽里dev"
             resValue "string", "influencer_id", "q79osCDs2lWGscKBybniTAmz65s1"
         }
         baisoli {
