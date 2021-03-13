@@ -48,14 +48,6 @@ class Profile(
     @set:PropertyName(GENDER)
     var gender: Gender? = null,
 
-    @get:PropertyName(FCM_TOKEN)
-    @set:PropertyName(FCM_TOKEN)
-    var fcmToken: String? = null,
-
-    @get:PropertyName(VOIP_TOKEN)
-    @set:PropertyName(VOIP_TOKEN)
-    var voipToken: String? = null,
-
     @get:PropertyName(CREATED_AT)
     @set:PropertyName(CREATED_AT)
     var createdAt: Date = Date(),
@@ -63,7 +55,7 @@ class Profile(
     @get:PropertyName(UPDATED_AT)
     @set:PropertyName(UPDATED_AT)
     var updatedAt: Date? = null
-    // TODO AppIdentifiers
+
 ) : FirestoreModel {
     companion object {
         const val DISPLAY_NAME = "displayName"
@@ -76,8 +68,6 @@ class Profile(
         const val PHONE_NUMBER = "phoneNumber"
         const val PHOTO_URL = "photoURL"
         const val GENDER = "sex"
-        const val FCM_TOKEN = "fcmToken"
-        const val VOIP_TOKEN = "voipToken"
         const val CREATED_AT = "createdAt"
         const val UPDATED_AT = "updatedAt"
     }
