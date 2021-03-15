@@ -5,7 +5,6 @@ import com.google.firebase.messaging.FirebaseMessaging
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import tw.iamstar.firebase.NotificationManager
 import tw.iamstar.firestore.*
 import tw.iamstar.repo.FeedRepo
 import tw.iamstar.repo.ProfileRepo
@@ -29,7 +28,6 @@ val firebaseModule = module {
 
 val appModule = module {
     single { SharedPreferencesManager(androidContext()) }
-    single { NotificationManager(get(), get()) }
 }
 
 val managerModule = module {

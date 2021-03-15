@@ -7,7 +7,7 @@ import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import tw.iamstar.data.models.FirestoreModel
-import tw.iamstar.data.models.Profile
+import tw.iamstar.data.models.Installation
 import tw.iamstar.firestore.ProfileManager
 
 @KoinApiExtension
@@ -17,12 +17,12 @@ class UpdateUserFcmToken(context: Context, workerParams: WorkerParameters) :
     private val profileManager: ProfileManager by inject()
 
     override suspend fun doWork(): Result {
-        val token = inputData.getString(Profile.FCM_TOKEN)
+        val token = inputData.getString(Installation.FCM_TOKEN)
         val userId = inputData.getString(FirestoreModel.OBJECT_ID)
 
         return if (!token.isNullOrEmpty() && !userId.isNullOrEmpty()) {
             try {
-                profileManager.updateFcmToken(userId, token)
+
             } catch (e: Throwable) {
                 Result.retry()
             }

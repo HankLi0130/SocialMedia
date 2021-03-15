@@ -64,6 +64,7 @@ android {
 
             resValue "string", "app_name", "百壽里dev"
             resValue "string", "influencer_id", "q79osCDs2lWGscKBybniTAmz65s1"
+            resValue "string", "application_id", "GseFXaSrXvLDVSPLchIV"
         }
         baisoli {
             debuggable false
@@ -77,6 +78,7 @@ android {
 
             resValue "string", "app_name", "百壽里"
             resValue "string", "influencer_id", "ioCQv6Ohe9VbCeoy4gz4eqkHgIn2"
+            resValue "string", "application_id", "GseFXaSrXvLDVSPLchIV"
         }
         release {
             minifyEnabled true

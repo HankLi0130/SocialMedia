@@ -11,19 +11,15 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinApiExtension
 import tw.iamstar.NavGraphDirections
 import tw.iamstar.R
 import tw.iamstar.firebase.AuthManager
-import tw.iamstar.firebase.NotificationManager
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
-
-    private val notificationManager: NotificationManager by inject()
 
     private val topLevelDestinations = setOf(
         R.id.feedFragment,
@@ -69,8 +65,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onStart()
         if (AuthManager.currentUser == null) {
             navController.navigate(NavGraphDirections.actionGlobalAuthFragment())
-        } else {
-            notificationManager.uploadFcmToken(this, this)
         }
     }
 

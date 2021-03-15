@@ -12,10 +12,6 @@ data class Installation(
     @set:PropertyName(FCM_TOKEN)
     var fcmToken: String? = null,
 
-    @get:PropertyName(APP_IDENTIFIER)
-    @set:PropertyName(APP_IDENTIFIER)
-    var appIdentifier: String? = null,
-
     @get:PropertyName(PROFILE)
     @set:PropertyName(PROFILE)
     var profile: DocumentReference? = null,
@@ -34,7 +30,6 @@ data class Installation(
 ) : FirestoreModel {
     companion object {
         const val FCM_TOKEN = "fcmToken"
-        const val APP_IDENTIFIER = "appIdentifier"
         const val PROFILE = "profile"
         const val DEVICE_TYPE = "deviceType"
         const val CREATED_AT = "createdAt"

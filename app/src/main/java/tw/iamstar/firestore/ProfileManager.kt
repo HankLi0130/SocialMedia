@@ -12,7 +12,4 @@ class ProfileManager(collection: CollectionReference) : FirestoreManager<Profile
 
     suspend fun updateHeadshot(userId: String, url: String) =
         getDoc(userId).update(Profile.PHOTO_URL, url).await()
-
-    suspend fun updateFcmToken(userId: String, fcmToken: String) =
-        getDoc(userId).update(Profile.FCM_TOKEN, fcmToken).await()
 }
