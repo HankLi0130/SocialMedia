@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
-import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import kotlinx.android.synthetic.main.fragment_auth.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,38 +34,31 @@ class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == REQUEST_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
-
             when {
-                resultCode == RESULT_OK -> onSignInSuccessfully(response)
-                response == null -> onSignInCanceled()
-                else -> onSignInFailed(response)
+                resultCode == RESULT_OK -> {
+                    viewModel.onSignInSuccessfully(response)
+                }
+                response == null -> {
+                    viewModel.showMessage(messageRes = R.string.sign_in_canceled)
+                }
+                else -> {
+                    viewModel.onSignInFailed(response)
+                }
             }
         }
     }
 
     override fun notifyFromViewModel(code: Int) {
         when (code) {
-            viewModel.profileCreatedCode -> findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToNavMain())
-            viewModel.installationCreatedCode -> view_sign_in.isEnabled = true
+            viewModel.profileCreatedCode -> {
+                findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToNavMain())
+            }
+            viewModel.installationCreatedCode -> {
+                view_sign_in.isEnabled = true
+            }
         }
-    }
-
-    private fun onSignInSuccessfully(response: IdpResponse?) {
-        response?.let {
-            if (it.isNewUser) viewModel.createProfile(it) else viewModel.onProfileCreated()
-        } ?: viewModel.showError(R.string.error_unknown)
-    }
-
-    private fun onSignInCanceled() {
-        viewModel.showMessage(messageRes = R.string.sign_in_canceled)
-    }
-
-    private fun onSignInFailed(response: IdpResponse) {
-        response.error?.let { error ->
-            error.printStackTrace()
-            if (error.errorCode == ErrorCodes.NO_NETWORK) viewModel.showNoInternet()
-        } ?: viewModel.showError(R.string.error_unknown)
     }
 }
