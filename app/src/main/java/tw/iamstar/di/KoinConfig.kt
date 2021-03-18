@@ -5,6 +5,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import tw.iamstar.BuildConfig
 import tw.iamstar.firestore.*
 import tw.iamstar.repo.FeedRepo
 import tw.iamstar.repo.ProfileRepo
@@ -23,24 +24,35 @@ import tw.iamstar.utils.SharedPreferencesManager
 private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
 val firebaseModule = module {
-    single { FirebaseMessaging.getInstance() }
+    single {
+        FirebaseMessaging.getInstance()
+    }
 }
 
 val appModule = module {
-    single { SharedPreferencesManager(androidContext()) }
+    single {
+        SharedPreferencesManager(androidContext())
+    }
 }
 
 val managerModule = module {
-    single<FeedManager> { FeedManager(db.collection(COLLECTION_FEED)) }
-    single<InfluencerManager> { InfluencerManager(db.collection(COLLECTION_INFLUENCER)) }
-    single<ProfileManager> { ProfileManager(db.collection(COLLECTION_PROFILE)) }
-    single<ScheduleManager> { ScheduleManager(db.collection(COLLECTION_SCHEDULE)) }
+    single {
+        InstallationManager(
+            db.collection(COLLECTION_APPLICATION)
+                .document(BuildConfig.FS_APPLICATION_ID)
+                .collection(COLLECTION_INSTALLATION)
+        )
+    }
+    single { FeedManager(db.collection(COLLECTION_FEED)) }
+    single { InfluencerManager(db.collection(COLLECTION_INFLUENCER)) }
+    single { ProfileManager(db.collection(COLLECTION_PROFILE)) }
+    single { ScheduleManager(db.collection(COLLECTION_SCHEDULE)) }
 }
 
 val repoModule = module {
-    single<FeedRepo> { FeedRepo(get(), get(), get()) }
-    single<ProfileRepo> { ProfileRepo(get()) }
-    single<ScheduleRepo> { ScheduleRepo(get(), get(), get()) }
+    single { FeedRepo(get(), get(), get()) }
+    single { ProfileRepo(get()) }
+    single { ScheduleRepo(get(), get(), get()) }
 }
 
 val viewModelModule = module {

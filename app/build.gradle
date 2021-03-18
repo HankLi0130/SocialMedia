@@ -39,12 +39,15 @@ android {
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
 
+            // strings.xml
             resValue "string", "places_api_key", "AIzaSyBTGHMX2CKs6vYIFVVS0Ovu_XzH9pWQSrs"
             resValue "string", "facebook_application_id", "247892093066632"
             resValue "string", "facebook_login_protocol_scheme", "fb247892093066632"
-
             resValue "string", "app_name", "iamStar"
-            resValue "string", "influencer_id", "Pw81JDGIUXWS8hF07xxUW52fMP03"
+
+            // BuildConfig.java
+            buildConfigField "String", "FS_INFLUENCER_ID", "\"Pw81JDGIUXWS8hF07xxUW52fMP03\""
+            buildConfigField "String", "FS_APPLICATION_ID", "\"ABC\""
         }
         development {
             debuggable true
@@ -58,13 +61,15 @@ android {
             versionNameSuffix "-baisoli_dev"
             signingConfig signingConfigs.development
 
+            // strings.xml
             resValue "string", "places_api_key", "AIzaSyDDNHdD0Gh4eGWVowW7CUiMXXPBwH1an04"
             resValue "string", "facebook_application_id", "288773521483517"
             resValue "string", "facebook_login_protocol_scheme", "fb288773521483517"
-
             resValue "string", "app_name", "百壽里dev"
-            resValue "string", "influencer_id", "q79osCDs2lWGscKBybniTAmz65s1"
-            resValue "string", "application_id", "GseFXaSrXvLDVSPLchIV"
+
+            // BuildConfig.java
+            buildConfigField "String", "FS_INFLUENCER_ID", "\"q79osCDs2lWGscKBybniTAmz65s1\""
+            buildConfigField "String", "FS_APPLICATION_ID", "\"GseFXaSrXvLDVSPLchIV\""
         }
         baisoli {
             debuggable false
@@ -72,13 +77,15 @@ android {
             versionNameSuffix "-baisoli"
             signingConfig signingConfigs.development
 
+            // strings.xml
             resValue "string", "places_api_key", "AIzaSyDDNHdD0Gh4eGWVowW7CUiMXXPBwH1an04"
             resValue "string", "facebook_application_id", "288773521483517"
             resValue "string", "facebook_login_protocol_scheme", "fb288773521483517"
-
             resValue "string", "app_name", "百壽里"
-            resValue "string", "influencer_id", "ioCQv6Ohe9VbCeoy4gz4eqkHgIn2"
-            resValue "string", "application_id", "GseFXaSrXvLDVSPLchIV"
+
+            // BuildConfig.java
+            buildConfigField "String", "FS_INFLUENCER_ID", "\"ioCQv6Ohe9VbCeoy4gz4eqkHgIn2\""
+            buildConfigField "String", "FS_APPLICATION_ID", "\"GseFXaSrXvLDVSPLchIV\""
         }
         release {
             minifyEnabled true

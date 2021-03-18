@@ -26,7 +26,7 @@ class App : Application() {
         }
 
         Places.initialize(this, getString(R.string.places_api_key))
-        influencerId = getString(R.string.influencer_id)
+        influencerId = BuildConfig.FS_INFLUENCER_ID
 
         createNotificationChannel()
     }
