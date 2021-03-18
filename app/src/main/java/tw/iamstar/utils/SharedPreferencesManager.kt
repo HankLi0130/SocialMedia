@@ -32,4 +32,6 @@ class SharedPreferencesManager(private val context: Context) {
     fun remoeInstallationId() = removeKey(INSTALLATION, FirestoreModel.OBJECT_ID)
 
     fun installationIdExists() = isKeyExists(INSTALLATION, FirestoreModel.OBJECT_ID)
+
+    fun installationIdNotExists() = !installationIdExists()
 }

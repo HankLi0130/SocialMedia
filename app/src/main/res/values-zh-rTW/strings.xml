@@ -40,6 +40,7 @@
     <string name="error_unknown">未知錯誤. 請聯絡服務人員.</string>
     <string name="error_no_internet">尚未連接網路</string>
     <string name="error_video_duration">長度必須小於 %d 秒 !</string>
+    <string name="error_system">發生系統錯誤！請通知管理員</string>
 
     <string name="feed_actions_title">動作</string>
     <string-array name="feed_actions">

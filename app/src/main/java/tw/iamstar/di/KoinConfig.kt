@@ -8,6 +8,7 @@ import org.koin.dsl.module
 import tw.iamstar.BuildConfig
 import tw.iamstar.firestore.*
 import tw.iamstar.repo.FeedRepo
+import tw.iamstar.repo.InstallationRepo
 import tw.iamstar.repo.ProfileRepo
 import tw.iamstar.repo.ScheduleRepo
 import tw.iamstar.ui.auth.AuthViewModel
@@ -50,6 +51,7 @@ val managerModule = module {
 }
 
 val repoModule = module {
+    single { InstallationRepo(get(), get()) }
     single { FeedRepo(get(), get(), get()) }
     single { ProfileRepo(get()) }
     single { ScheduleRepo(get(), get(), get()) }
@@ -57,7 +59,7 @@ val repoModule = module {
 
 val viewModelModule = module {
     // auth
-    viewModel { AuthViewModel(get()) }
+    viewModel { AuthViewModel(get(), get()) }
     // feed
     viewModel { FeedViewModel(get(), get()) }
     viewModel { FeedDetailViewModel(get(), get()) }
