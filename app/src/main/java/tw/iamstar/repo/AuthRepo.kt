@@ -1,5 +1,6 @@
 package tw.iamstar.repo
 
+import android.content.Context
 import tw.iamstar.data.models.Installation
 import tw.iamstar.firebase.AuthManager
 import tw.iamstar.firestore.InstallationManager
@@ -8,7 +9,7 @@ import tw.iamstar.utils.Consts.DEVICE_TYPE
 import tw.iamstar.utils.SharedPreferencesManager
 import java.util.*
 
-class InstallationRepo(
+class AuthRepo(
     private val installationManager: InstallationManager,
     private val profileManager: ProfileManager,
     private val spManager: SharedPreferencesManager
@@ -31,5 +32,14 @@ class InstallationRepo(
                 this.updatedAt = Date()
             }
         installationManager.set(installation)
+    }
+
+    suspend fun signOut(context: Context) {
+        // remove FCM token
+        if (spManager.installationIdExists()) {
+            val installationId = spManager.getInstallationId()!!
+            installationManager.removeFcmToken(installationId)
+        }
+        AuthManager.signOut(context)
     }
 }

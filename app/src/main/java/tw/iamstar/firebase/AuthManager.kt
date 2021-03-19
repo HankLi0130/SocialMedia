@@ -5,6 +5,7 @@ import android.content.Intent
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.tasks.await
 
 object AuthManager {
     private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
@@ -28,7 +29,5 @@ object AuthManager {
             .build()
     }
 
-    fun signOut(context: Context, onCompleted: () -> Unit = {}) {
-        AuthUI.getInstance().signOut(context).addOnCompleteListener { onCompleted() }
-    }
+    suspend fun signOut(context: Context) = AuthUI.getInstance().signOut(context).await()
 }

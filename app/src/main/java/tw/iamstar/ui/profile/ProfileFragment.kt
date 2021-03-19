@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.card_field.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import tw.iamstar.R
-import tw.iamstar.firebase.AuthManager
 import tw.iamstar.utils.ArchFragment
 import tw.iamstar.utils.ext.toDateString
 
@@ -80,6 +79,10 @@ class ProfileFragment :
         }
     }
 
+    override fun notifyFromViewModel(code: Int) {
+        if (code == viewModel.restartCode) mainActivity.restart()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_update_profile -> updateProfile()
@@ -95,7 +98,7 @@ class ProfileFragment :
     }
 
     private fun signOut(): Boolean {
-        AuthManager.signOut(requireContext()) { mainActivity.restart() }
+        viewModel.signOut(requireContext())
         return true
     }
 }

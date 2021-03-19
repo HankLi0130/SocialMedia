@@ -9,13 +9,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.iamstar.R
 import tw.iamstar.firebase.MessagingManager
-import tw.iamstar.repo.InstallationRepo
+import tw.iamstar.repo.AuthRepo
 import tw.iamstar.repo.ProfileRepo
 import tw.iamstar.utils.ArchViewModel
 
 class AuthViewModel(
     private val profileRepo: ProfileRepo,
-    private val installationRepo: InstallationRepo
+    private val authRepo: AuthRepo
 ) : ArchViewModel() {
 
     val profileCreatedCode = 1
@@ -25,7 +25,7 @@ class AuthViewModel(
         viewModelScope.launch(Main) {
             callProgress(true)
             try {
-                withContext(IO) { installationRepo.createInstallation() }
+                withContext(IO) { authRepo.createInstallation() }
             } catch (e: Throwable) {
                 callProgress(false)
                 e.printStackTrace()
@@ -38,7 +38,7 @@ class AuthViewModel(
 
     private suspend fun updateInstallation() {
         val fcmToken = MessagingManager.getToken()
-        installationRepo.updateInstallation(fcmToken)
+        authRepo.updateInstallation(fcmToken)
     }
 
     private suspend fun createProfile(response: IdpResponse) = profileRepo.createProfile(response)
