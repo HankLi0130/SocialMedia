@@ -37,11 +37,13 @@ val appModule = module {
 }
 
 val managerModule = module {
+    single { ApplicationManager(db.collection(COLLECTION_APPLICATION)) }
     single {
         InstallationManager(
-            db.collection(COLLECTION_APPLICATION)
-                .document(BuildConfig.FS_APPLICATION_ID)
-                .collection(COLLECTION_INSTALLATION)
+            get<ApplicationManager>().getSubcollection(
+                BuildConfig.FS_APPLICATION_ID,
+                COLLECTION_INSTALLATION
+            )
         )
     }
     single { FeedManager(db.collection(COLLECTION_FEED)) }
@@ -51,7 +53,7 @@ val managerModule = module {
 }
 
 val repoModule = module {
-    single { AuthRepo(get(), get(), get()) }
+    single { AuthRepo(get(), get(), get(), get()) }
     single { FeedRepo(get(), get(), get()) }
     single { ProfileRepo(get()) }
     single { ScheduleRepo(get(), get(), get()) }

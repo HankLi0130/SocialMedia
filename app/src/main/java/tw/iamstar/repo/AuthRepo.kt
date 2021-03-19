@@ -5,34 +5,23 @@ import com.firebase.ui.auth.IdpResponse
 import tw.iamstar.data.models.Profile
 import tw.iamstar.firebase.AuthManager
 import tw.iamstar.firebase.MessagingManager
+import tw.iamstar.firestore.ApplicationManager
 import tw.iamstar.firestore.InstallationManager
 import tw.iamstar.firestore.ProfileManager
 import tw.iamstar.utils.Consts.DEVICE_TYPE
 import tw.iamstar.utils.SharedPreferencesManager
 
 class AuthRepo(
+    private val applicationManager: ApplicationManager,
     private val installationManager: InstallationManager,
     private val profileManager: ProfileManager,
     private val spManager: SharedPreferencesManager
 ) {
 
-    private suspend fun createInstallation() {
-        val installationId = installationManager.add(
-            fcmToken = MessagingManager.getToken(),
-            profile = profileManager.getDoc(AuthManager.currentUserId!!),
-            deviceType = DEVICE_TYPE
-        )
-        spManager.saveInstallationId(installationId)
-    }
-
-    private suspend fun updateInstallation() {
-        val installationId = spManager.getInstallationId()!!
-        installationManager.update(
-            installationId,
-            MessagingManager.getToken(),
-            profileManager.getDoc(AuthManager.currentUserId!!),
-            DEVICE_TYPE
-        )
+    suspend fun signIn(response: IdpResponse) {
+        if (response.isNewUser) createProfile(response)
+        if (spManager.installationIdExists()) updateInstallation() else createInstallation()
+        subscribeToTopic()
     }
 
     private suspend fun createProfile(response: IdpResponse) {
@@ -56,9 +45,28 @@ class AuthRepo(
         profileManager.set(profile)
     }
 
-    suspend fun signIn(response: IdpResponse) {
-        if (response.isNewUser) createProfile(response)
-        if (spManager.installationIdExists()) updateInstallation() else createInstallation()
+    private suspend fun createInstallation() {
+        val installationId = installationManager.add(
+            fcmToken = MessagingManager.getToken(),
+            profile = profileManager.getDoc(AuthManager.currentUserId!!),
+            deviceType = DEVICE_TYPE
+        )
+        spManager.saveInstallationId(installationId)
+    }
+
+    private suspend fun updateInstallation() {
+        val installationId = spManager.getInstallationId()!!
+        installationManager.update(
+            installationId,
+            MessagingManager.getToken(),
+            profileManager.getDoc(AuthManager.currentUserId!!),
+            DEVICE_TYPE
+        )
+    }
+
+    private suspend fun subscribeToTopic() {
+        val topic = applicationManager.get()!!.name
+        MessagingManager.subscribeToTopic(topic)
     }
 
     suspend fun signOut(context: Context) {
@@ -67,6 +75,8 @@ class AuthRepo(
             val installationId = spManager.getInstallationId()!!
             installationManager.removeFcmToken(installationId)
         }
+        val topic = applicationManager.get()!!.name
+        MessagingManager.unsubscribeFromTopic(topic)
         AuthManager.signOut(context)
     }
 }
