@@ -1,13 +1,14 @@
 package tw.iamstar.repo
 
 import android.content.Context
-import tw.iamstar.data.models.Installation
+import com.firebase.ui.auth.IdpResponse
+import tw.iamstar.data.models.Profile
 import tw.iamstar.firebase.AuthManager
+import tw.iamstar.firebase.MessagingManager
 import tw.iamstar.firestore.InstallationManager
 import tw.iamstar.firestore.ProfileManager
 import tw.iamstar.utils.Consts.DEVICE_TYPE
 import tw.iamstar.utils.SharedPreferencesManager
-import java.util.*
 
 class AuthRepo(
     private val installationManager: InstallationManager,
@@ -15,23 +16,49 @@ class AuthRepo(
     private val spManager: SharedPreferencesManager
 ) {
 
-    suspend fun createInstallation() {
-        if (spManager.installationIdNotExists()) {
-            val installation = Installation(deviceType = DEVICE_TYPE)
-            installationManager.add(installation)
-            spManager.saveInstallationId(installation.objectId)
-        }
+    private suspend fun createInstallation() {
+        val installationId = installationManager.add(
+            fcmToken = MessagingManager.getToken(),
+            profile = profileManager.getDoc(AuthManager.currentUserId!!),
+            deviceType = DEVICE_TYPE
+        )
+        spManager.saveInstallationId(installationId)
     }
 
-    suspend fun updateInstallation(fcmToken: String) {
+    private suspend fun updateInstallation() {
         val installationId = spManager.getInstallationId()!!
-        val installation =
-            installationManager.get(installationId, Installation::class.java)!!.apply {
-                this.fcmToken = fcmToken
-                this.profile = profileManager.getDoc(AuthManager.currentUserId!!)
-                this.updatedAt = Date()
-            }
-        installationManager.set(installation)
+        installationManager.update(
+            installationId,
+            MessagingManager.getToken(),
+            profileManager.getDoc(AuthManager.currentUserId!!),
+            DEVICE_TYPE
+        )
+    }
+
+    private suspend fun createProfile(response: IdpResponse) {
+        val loginMethod = when (response.providerType) {
+            "facebook.com" -> "FACEBOOK"
+            "google.com" -> "GOOGLE"
+            "phone" -> "PHONE"
+            "password" -> "EMAIL"
+            else -> null
+        }
+        val user = AuthManager.currentUser!!
+
+        val profile = Profile(
+            objectId = user.uid,
+            displayName = user.displayName,
+            email = user.email,
+            phoneNumber = user.phoneNumber,
+            photoURL = user.photoUrl?.toString(),
+            loginMethod = loginMethod
+        )
+        profileManager.set(profile)
+    }
+
+    suspend fun signIn(response: IdpResponse) {
+        if (response.isNewUser) createProfile(response)
+        if (spManager.installationIdExists()) updateInstallation() else createInstallation()
     }
 
     suspend fun signOut(context: Context) {

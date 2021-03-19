@@ -30,7 +30,6 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/res_rounded_border"
         android:backgroundTint="@color/colorPrimary"
-        android:enabled="false"
         android:minHeight="50dp"
         android:paddingStart="20dp"
         android:paddingTop="10dp"

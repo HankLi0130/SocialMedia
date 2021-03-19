@@ -22,13 +22,18 @@ open class FirestoreManager<M : FirestoreModel>(protected val rootCollection: Co
         return getDoc(objectId).get().await().toObject(type)
     }
 
-    suspend fun add(model: M) {
+    suspend fun add(model: M): String {
         val doc = rootCollection.document()
         model.objectId = doc.id
         doc.set(model).await()
+        return doc.id
     }
 
     suspend fun set(model: M) = getDoc(model.objectId).set(model).await()
+
+    suspend fun update(objectId: String, updates: HashMap<String, Any>) {
+        rootCollection.document(objectId).update(updates).await()
+    }
 
     suspend fun remove(objectId: String) = getDoc(objectId).delete().await()
 

@@ -12,7 +12,6 @@ import tw.iamstar.R
 import tw.iamstar.firebase.AuthManager.getSignInIntent
 import tw.iamstar.utils.ArchFragment
 import tw.iamstar.utils.Consts.REQUEST_SIGN_IN
-import tw.iamstar.utils.ext.isInternetConnected
 
 class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
 
@@ -20,12 +19,6 @@ class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        if (requireContext().isInternetConnected()) {
-            viewModel.createInstallation()
-        } else {
-            viewModel.showNoInternet()
-        }
 
         view_sign_in.setOnClickListener {
             startActivityForResult(getSignInIntent(), REQUEST_SIGN_IN)
@@ -53,11 +46,8 @@ class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
 
     override fun notifyFromViewModel(code: Int) {
         when (code) {
-            viewModel.profileCreatedCode -> {
+            viewModel.signInSuccessfullyCode -> {
                 findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToNavMain())
-            }
-            viewModel.installationCreatedCode -> {
-                view_sign_in.isEnabled = true
             }
         }
     }
