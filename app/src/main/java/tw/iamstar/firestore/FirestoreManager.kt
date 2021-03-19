@@ -31,8 +31,8 @@ open class FirestoreManager<M : FirestoreModel>(protected val rootCollection: Co
 
     suspend fun set(model: M) = getDoc(model.objectId).set(model).await()
 
-    suspend fun update(objectId: String, updates: HashMap<String, Any>) {
-        rootCollection.document(objectId).update(updates).await()
+    suspend fun update(objectId: String, vararg updates: Pair<String, Any>) {
+        rootCollection.document(objectId).update(hashMapOf(*updates)).await()
     }
 
     suspend fun remove(objectId: String) = getDoc(objectId).delete().await()

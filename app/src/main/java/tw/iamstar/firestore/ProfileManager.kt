@@ -1,15 +1,22 @@
 package tw.iamstar.firestore
 
 import com.google.firebase.firestore.CollectionReference
-import kotlinx.coroutines.tasks.await
 import tw.iamstar.data.models.Profile
+import java.util.*
 
 class ProfileManager(collection: CollectionReference) : FirestoreManager<Profile>(collection) {
 
-    suspend fun getPhotoURL(userId: String): String? {
-        return getDoc(userId).get().await().getString(Profile.PHOTO_URL)
+    suspend fun get(userId: String): Profile? = get(userId, Profile::class.java)
+
+    suspend fun update(profile: Profile) {
+        profile.updatedAt = Date()
+        set(profile)
     }
 
-    suspend fun updateHeadshot(userId: String, url: String) =
-        getDoc(userId).update(Profile.PHOTO_URL, url).await()
+    suspend fun getPhotoUrl(userId: String) = get(userId)?.photoURL
+
+    suspend fun updatePhotoUrl(userId: String, url: String) {
+        update(userId, Profile.PHOTO_URL to url)
+    }
+
 }

@@ -26,16 +26,14 @@ class InstallationManager(collection: CollectionReference) :
     ) {
         update(
             id,
-            hashMapOf(
-                Installation.FCM_TOKEN to fcmToken,
-                Installation.PROFILE to profile,
-                Installation.DEVICE_TYPE to deviceType,
-                Installation.UPDATED_AT to Date()
-            )
+            Installation.FCM_TOKEN to fcmToken,
+            Installation.PROFILE to profile,
+            Installation.DEVICE_TYPE to deviceType,
+            Installation.UPDATED_AT to Date()
         )
     }
 
     suspend fun removeFcmToken(id: String) {
-        update(id, hashMapOf(Installation.FCM_TOKEN to FieldValue.delete()))
+        update(id, Installation.FCM_TOKEN to FieldValue.delete())
     }
 }
