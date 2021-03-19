@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.iamstar.R
+import tw.iamstar.firebase.MessagingManager
 import tw.iamstar.repo.InstallationRepo
 import tw.iamstar.repo.ProfileRepo
 import tw.iamstar.utils.ArchViewModel
@@ -35,22 +36,28 @@ class AuthViewModel(
         }
     }
 
-    fun createProfile(response: IdpResponse) {
-        viewModelScope.launch(Main) {
-            callProgress(true)
-            withContext(IO) {
-                profileRepo.createProfile(response)
-            }
-            callProgress(false)
-            onProfileCreated()
-        }
+    private suspend fun updateInstallation() {
+        val fcmToken = MessagingManager.getToken()
+        installationRepo.updateInstallation(fcmToken)
     }
 
-    fun onProfileCreated() = notifyView(profileCreatedCode)
+    private suspend fun createProfile(response: IdpResponse) = profileRepo.createProfile(response)
+
+    private fun onProfileCreated() = notifyView(profileCreatedCode)
 
     fun onSignInSuccessfully(response: IdpResponse?) {
         response?.let {
-            if (it.isNewUser) createProfile(it) else onProfileCreated()
+            viewModelScope.launch(Main) {
+                callProgress(true)
+                withContext(IO) {
+                    if (it.isNewUser) createProfile(it)
+                }
+                withContext(IO) {
+                    updateInstallation()
+                }
+                callProgress(false)
+                onProfileCreated()
+            }
         } ?: showError(R.string.error_unknown)
     }
 

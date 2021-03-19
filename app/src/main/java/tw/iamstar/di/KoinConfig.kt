@@ -51,7 +51,7 @@ val managerModule = module {
 }
 
 val repoModule = module {
-    single { InstallationRepo(get(), get()) }
+    single { InstallationRepo(get(), get(), get()) }
     single { FeedRepo(get(), get(), get()) }
     single { ProfileRepo(get()) }
     single { ScheduleRepo(get(), get(), get()) }
