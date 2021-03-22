@@ -1,4 +1,4 @@
-package tw.iamstar.firebase
+package tw.iamstar.service
 
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService

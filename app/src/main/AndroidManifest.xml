@@ -44,7 +44,7 @@
         </activity>
 
         <service
-            android:name="tw.iamstar.firebase.NotificationService"
+            android:name="tw.iamstar.service.NotificationService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
