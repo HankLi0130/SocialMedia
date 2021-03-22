@@ -5,8 +5,11 @@ import com.google.firebase.messaging.FirebaseMessaging
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import retrofit2.Retrofit
 import tw.iamstar.BuildConfig
 import tw.iamstar.firestore.*
+import tw.iamstar.network.NotificationRequest
+import tw.iamstar.network.getRetrofit
 import tw.iamstar.repo.AuthRepo
 import tw.iamstar.repo.FeedRepo
 import tw.iamstar.repo.ProfileRepo
@@ -25,15 +28,16 @@ import tw.iamstar.utils.SharedPreferencesManager
 private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
 val firebaseModule = module {
-    single {
-        FirebaseMessaging.getInstance()
-    }
+    single { FirebaseMessaging.getInstance() }
 }
 
 val appModule = module {
-    single {
-        SharedPreferencesManager(androidContext())
-    }
+    single { SharedPreferencesManager(androidContext()) }
+}
+
+val networkModule = module {
+    single { getRetrofit() }
+    single { get<Retrofit>().create(NotificationRequest::class.java) }
 }
 
 val managerModule = module {
@@ -54,7 +58,7 @@ val managerModule = module {
 
 val repoModule = module {
     single { AuthRepo(get(), get(), get(), get()) }
-    single { FeedRepo(get(), get(), get()) }
+    single { FeedRepo(get(), get(), get(), get()) }
     single { ProfileRepo(get()) }
     single { ScheduleRepo(get(), get(), get()) }
 }
@@ -76,4 +80,5 @@ val viewModelModule = module {
     viewModel { EditScheduleViewModel(get(), get()) }
 }
 
-val koinModules = listOf(firebaseModule, appModule, managerModule, repoModule, viewModelModule)
+val koinModules =
+    listOf(firebaseModule, appModule, networkModule, managerModule, repoModule, viewModelModule)

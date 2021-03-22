@@ -16,13 +16,15 @@ import tw.iamstar.firebase.THUMBNAIL
 import tw.iamstar.firestore.FeedManager
 import tw.iamstar.firestore.InfluencerManager
 import tw.iamstar.firestore.ProfileManager
+import tw.iamstar.network.FcmApi
 import tw.iamstar.utils.media.UploadingMedia
 import java.util.*
 
 class FeedRepo(
     private val feedManager: FeedManager,
     private val influencerManager: InfluencerManager,
-    private val profileManager: ProfileManager
+    private val profileManager: ProfileManager,
+    private val fcmApi: FcmApi
 ) {
 
     suspend fun addFeed(
