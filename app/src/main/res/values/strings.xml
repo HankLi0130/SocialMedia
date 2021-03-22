@@ -45,6 +45,7 @@
     <string name="feed_actions_title">Actions</string>
     <string-array name="feed_actions">
         <item>update</item>
+        <item>notify</item>
         <item>delete</item>
     </string-array>
 

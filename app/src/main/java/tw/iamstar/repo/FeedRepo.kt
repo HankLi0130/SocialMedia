@@ -13,14 +13,17 @@ import tw.iamstar.data.models.Reaction
 import tw.iamstar.firebase.BUCKET_FEED
 import tw.iamstar.firebase.StorageManager
 import tw.iamstar.firebase.THUMBNAIL
+import tw.iamstar.firestore.ApplicationManager
 import tw.iamstar.firestore.FeedManager
 import tw.iamstar.firestore.InfluencerManager
 import tw.iamstar.firestore.ProfileManager
 import tw.iamstar.network.FcmApi
+import tw.iamstar.network.NotificationRequest
 import tw.iamstar.utils.media.UploadingMedia
 import java.util.*
 
 class FeedRepo(
+    private val applicationManager: ApplicationManager,
     private val feedManager: FeedManager,
     private val influencerManager: InfluencerManager,
     private val profileManager: ProfileManager,
@@ -151,5 +154,11 @@ class FeedRepo(
 
     fun queryComments(feedId: String): Query {
         return feedManager.getCommentManager(feedId).queryComments()
+    }
+
+    suspend fun sendToChannel(title: String, content: String) {
+        val topic = applicationManager.get()!!.name
+        val request = NotificationRequest(topic, title, content)
+        fcmApi.sendToChannel(request)
     }
 }

@@ -1,7 +1,9 @@
 package tw.iamstar.network
 
+import com.squareup.moshi.Json
+
 data class NotificationRequest(
-    val topic: String,
-    val title: String,
-    val content: String
+    @Json(name = "topic") val topic: String,
+    @Json(name = "title") val title: String,
+    @Json(name = "content") val content: String
 )

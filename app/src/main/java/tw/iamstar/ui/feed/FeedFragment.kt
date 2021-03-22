@@ -77,7 +77,8 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
         showListDialog(R.string.feed_actions_title, R.array.feed_actions) { which ->
             when (which) {
                 0 -> toEditFeedFragment(feedId)
-                1 -> viewModel.deleteFeed(feedId)
+                1 -> viewModel.pushNotification(feedId)
+                2 -> viewModel.deleteFeed(feedId)
             }
         }
     }

@@ -69,7 +69,7 @@ android {
 
             // BuildConfig.java
             buildConfigField "String", "FS_INFLUENCER_ID", "\"q79osCDs2lWGscKBybniTAmz65s1\""
-            buildConfigField "String", "FS_APPLICATION_ID", "\"GseFXaSrXvLDVSPLchIV\""
+            buildConfigField "String", "FS_APPLICATION_ID", "\"3j3iCIiqBr4tTfjmzxf9\""
         }
         baisoli {
             debuggable false

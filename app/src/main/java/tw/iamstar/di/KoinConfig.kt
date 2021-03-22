@@ -8,7 +8,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import tw.iamstar.BuildConfig
 import tw.iamstar.firestore.*
-import tw.iamstar.network.NotificationRequest
+import tw.iamstar.network.FcmApi
 import tw.iamstar.network.getRetrofit
 import tw.iamstar.repo.AuthRepo
 import tw.iamstar.repo.FeedRepo
@@ -37,7 +37,7 @@ val appModule = module {
 
 val networkModule = module {
     single { getRetrofit() }
-    single { get<Retrofit>().create(NotificationRequest::class.java) }
+    single { get<Retrofit>().create(FcmApi::class.java) }
 }
 
 val managerModule = module {
@@ -58,7 +58,7 @@ val managerModule = module {
 
 val repoModule = module {
     single { AuthRepo(get(), get(), get(), get()) }
-    single { FeedRepo(get(), get(), get(), get()) }
+    single { FeedRepo(get(), get(), get(), get(), get()) }
     single { ProfileRepo(get()) }
     single { ScheduleRepo(get(), get(), get()) }
 }

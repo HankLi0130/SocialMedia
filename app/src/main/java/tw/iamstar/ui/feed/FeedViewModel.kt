@@ -54,4 +54,12 @@ class FeedViewModel(
             }
         }
     }
+
+    fun pushNotification(feedId: String) {
+        viewModelScope.launch(Main) {
+            callProgress(true)
+            feedRepo.sendToChannel("Title", "Content: $feedId")
+            callProgress(false)
+        }
+    }
 }
