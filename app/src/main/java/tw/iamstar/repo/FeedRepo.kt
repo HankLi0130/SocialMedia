@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
+import tw.iamstar.BuildConfig
 import tw.iamstar.data.enums.ReactionType
 import tw.iamstar.data.models.firestore.Comment
 import tw.iamstar.data.models.firestore.Feed
@@ -13,7 +14,6 @@ import tw.iamstar.data.models.firestore.Reaction
 import tw.iamstar.firebase.BUCKET_FEED
 import tw.iamstar.firebase.StorageManager
 import tw.iamstar.firebase.THUMBNAIL
-import tw.iamstar.firestore.ApplicationManager
 import tw.iamstar.firestore.FeedManager
 import tw.iamstar.firestore.InfluencerManager
 import tw.iamstar.firestore.ProfileManager
@@ -23,7 +23,6 @@ import tw.iamstar.utils.media.UploadingMedia
 import java.util.*
 
 class FeedRepo(
-    private val applicationManager: ApplicationManager,
     private val feedManager: FeedManager,
     private val influencerManager: InfluencerManager,
     private val profileManager: ProfileManager,
@@ -157,7 +156,7 @@ class FeedRepo(
     }
 
     suspend fun sendToChannel(vararg data: Pair<String, String>) {
-        val topic = applicationManager.get()!!.name
+        val topic = BuildConfig.APPLICATION_ID
         val request = NotificationRequest(topic, mapOf(*data))
         fcmApi.sendToChannel(request)
     }

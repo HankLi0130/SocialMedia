@@ -2,6 +2,7 @@ package tw.iamstar.repo
 
 import android.content.Context
 import com.firebase.ui.auth.IdpResponse
+import tw.iamstar.BuildConfig
 import tw.iamstar.data.models.firestore.Profile
 import tw.iamstar.firebase.AuthManager
 import tw.iamstar.firebase.MessagingManager
@@ -65,7 +66,7 @@ class AuthRepo(
     }
 
     private suspend fun subscribeToTopic() {
-        val topic = applicationManager.get()!!.name
+        val topic = BuildConfig.APPLICATION_ID
         MessagingManager.subscribeToTopic(topic)
     }
 
@@ -75,7 +76,7 @@ class AuthRepo(
             val installationId = spManager.getInstallationId()!!
             installationManager.removeFcmToken(installationId)
         }
-        val topic = applicationManager.get()!!.name
+        val topic = BuildConfig.APPLICATION_ID
         MessagingManager.unsubscribeFromTopic(topic)
         AuthManager.signOut(context)
     }
