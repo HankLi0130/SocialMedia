@@ -4,7 +4,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
-import tw.iamstar.data.models.Feed
+import tw.iamstar.data.models.firestore.Feed
 
 class FeedManager(collection: CollectionReference) : FirestoreManager<Feed>(collection) {
 

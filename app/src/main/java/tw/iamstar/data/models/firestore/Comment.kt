@@ -1,24 +1,24 @@
-package tw.iamstar.data.models
+package tw.iamstar.data.models.firestore
 
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.Exclude
+import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import tw.hankli.brookray.core.constant.EMPTY
+
 import java.util.*
 
-data class Installation(
+@IgnoreExtraProperties
+class Comment(
     override var objectId: String = EMPTY,
-
-    @get:PropertyName(FCM_TOKEN)
-    @set:PropertyName(FCM_TOKEN)
-    var fcmToken: String? = null,
 
     @get:PropertyName(PROFILE)
     @set:PropertyName(PROFILE)
     var profile: DocumentReference? = null,
 
-    @get:PropertyName(DEVICE_TYPE)
-    @set:PropertyName(DEVICE_TYPE)
-    var deviceType: String? = null,
+    @get:PropertyName(CONTENT)
+    @set:PropertyName(CONTENT)
+    var content: String = EMPTY,
 
     @get:PropertyName(CREATED_AT)
     @set:PropertyName(CREATED_AT)
@@ -26,12 +26,17 @@ data class Installation(
 
     @get:PropertyName(UPDATED_AT)
     @set:PropertyName(UPDATED_AT)
-    var updatedAt: Date? = null
+    var updatedAt: Date? = null,
+
+    @get:Exclude
+    var photoURL: String? = null,
+
+    @get:Exclude
+    var userName: String? = null
 ) : FirestoreModel {
     companion object {
-        const val FCM_TOKEN = "fcmToken"
         const val PROFILE = "profile"
-        const val DEVICE_TYPE = "deviceType"
+        const val CONTENT = "content"
         const val CREATED_AT = "createdAt"
         const val UPDATED_AT = "updatedAt"
     }

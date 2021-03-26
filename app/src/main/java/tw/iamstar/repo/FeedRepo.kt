@@ -6,10 +6,10 @@ import com.google.firebase.firestore.Query
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import tw.iamstar.data.enums.ReactionType
-import tw.iamstar.data.models.Comment
-import tw.iamstar.data.models.Feed
-import tw.iamstar.data.models.Media
-import tw.iamstar.data.models.Reaction
+import tw.iamstar.data.models.firestore.Comment
+import tw.iamstar.data.models.firestore.Feed
+import tw.iamstar.data.models.firestore.Media
+import tw.iamstar.data.models.firestore.Reaction
 import tw.iamstar.firebase.BUCKET_FEED
 import tw.iamstar.firebase.StorageManager
 import tw.iamstar.firebase.THUMBNAIL
@@ -156,9 +156,9 @@ class FeedRepo(
         return feedManager.getCommentManager(feedId).queryComments()
     }
 
-    suspend fun sendToChannel(title: String, content: String) {
+    suspend fun sendToChannel(vararg data: Pair<String, String>) {
         val topic = applicationManager.get()!!.name
-        val request = NotificationRequest(topic, title, content)
+        val request = NotificationRequest(topic, mapOf(*data))
         fcmApi.sendToChannel(request)
     }
 }

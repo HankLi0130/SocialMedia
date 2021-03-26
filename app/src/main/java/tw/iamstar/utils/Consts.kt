@@ -12,6 +12,8 @@ object Consts {
 
     // Notification
     const val CHANNEL_ID = "channel1"
+    const val MESSAGING_KEY = "key"
+    const val MESSAGING_VALUE = "value"
 
     // Firestore Installation
     const val DEVICE_TYPE = "Android"

@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.card_schedule.view.*
 import tw.hankli.brookray.core.constant.NO_RESOURCE
 import tw.hankli.brookray.core.extension.viewOf
 import tw.iamstar.R
-import tw.iamstar.data.models.Schedule
+import tw.iamstar.data.models.firestore.Schedule
 import tw.iamstar.utils.ext.toDateTimeString
 
 class ScheduleAdapter(options: FirestoreRecyclerOptions<Schedule>) :

@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.iamstar.data.enums.Gender
-import tw.iamstar.data.models.Profile
+import tw.iamstar.data.models.firestore.Profile
 import tw.iamstar.repo.ProfileRepo
 import tw.iamstar.utils.ArchViewModel
 import java.util.*

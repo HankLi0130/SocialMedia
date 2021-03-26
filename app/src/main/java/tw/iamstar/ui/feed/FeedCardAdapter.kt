@@ -11,8 +11,8 @@ import kotlinx.android.synthetic.main.card_feed.view.*
 import tw.hankli.brookray.core.extension.viewOf
 import tw.iamstar.R
 import tw.iamstar.data.enums.ReactionType
-import tw.iamstar.data.models.Feed
-import tw.iamstar.data.models.Reaction
+import tw.iamstar.data.models.firestore.Feed
+import tw.iamstar.data.models.firestore.Reaction
 import tw.iamstar.utils.ext.toDateString
 import tw.iamstar.utils.media.VIDEO
 

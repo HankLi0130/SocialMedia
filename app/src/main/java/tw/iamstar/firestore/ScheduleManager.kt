@@ -3,7 +3,7 @@ package tw.iamstar.firestore
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
-import tw.iamstar.data.models.Schedule
+import tw.iamstar.data.models.firestore.Schedule
 import tw.iamstar.utils.getToday
 
 class ScheduleManager(collection: CollectionReference) : FirestoreManager<Schedule>(collection) {

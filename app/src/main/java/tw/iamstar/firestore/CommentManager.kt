@@ -3,7 +3,7 @@ package tw.iamstar.firestore
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
-import tw.iamstar.data.models.Comment
+import tw.iamstar.data.models.firestore.Comment
 
 class CommentManager(collection: CollectionReference) : FirestoreManager<Comment>(collection) {
 

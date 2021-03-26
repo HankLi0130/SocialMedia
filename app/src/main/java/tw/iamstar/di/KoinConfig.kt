@@ -2,6 +2,7 @@ package tw.iamstar.di
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import com.squareup.moshi.Moshi
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -33,6 +34,7 @@ val firebaseModule = module {
 
 val appModule = module {
     single { SharedPreferencesManager(androidContext()) }
+    single { Moshi.Builder().build() }
 }
 
 val networkModule = module {
@@ -67,7 +69,7 @@ val viewModelModule = module {
     // auth
     viewModel { AuthViewModel(get(), get()) }
     // feed
-    viewModel { FeedViewModel(get(), get()) }
+    viewModel { FeedViewModel(get(), get(), get()) }
     viewModel { FeedDetailViewModel(get(), get()) }
     viewModel { EditFeedViewModel(get(), get()) }
     // comment

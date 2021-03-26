@@ -2,7 +2,7 @@ package tw.iamstar.repo
 
 import android.content.Context
 import com.firebase.ui.auth.IdpResponse
-import tw.iamstar.data.models.Profile
+import tw.iamstar.data.models.firestore.Profile
 import tw.iamstar.firebase.AuthManager
 import tw.iamstar.firebase.MessagingManager
 import tw.iamstar.firestore.ApplicationManager

@@ -4,8 +4,8 @@ import com.google.firebase.firestore.Query
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import tw.hankli.brookray.core.constant.EMPTY
-import tw.iamstar.data.models.Media
-import tw.iamstar.data.models.Schedule
+import tw.iamstar.data.models.firestore.Media
+import tw.iamstar.data.models.firestore.Schedule
 import tw.iamstar.firebase.BUCKET_SCHEDULE
 import tw.iamstar.firebase.StorageManager
 import tw.iamstar.firestore.InfluencerManager

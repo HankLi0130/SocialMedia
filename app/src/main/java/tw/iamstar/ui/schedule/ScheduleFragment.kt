@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.fragment_schedule.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import tw.hankli.brookray.core.constant.EMPTY
 import tw.iamstar.R
-import tw.iamstar.data.models.Schedule
+import tw.iamstar.data.models.firestore.Schedule
 import tw.iamstar.firebase.AuthManager
 import tw.iamstar.utils.ArchFragment
 

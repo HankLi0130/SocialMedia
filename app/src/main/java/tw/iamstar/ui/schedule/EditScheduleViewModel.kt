@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.hankli.brookray.core.constant.EMPTY
 import tw.iamstar.R
-import tw.iamstar.data.models.Schedule
+import tw.iamstar.data.models.firestore.Schedule
 import tw.iamstar.repo.ProfileRepo
 import tw.iamstar.repo.ScheduleRepo
 import tw.iamstar.utils.ArchViewModel

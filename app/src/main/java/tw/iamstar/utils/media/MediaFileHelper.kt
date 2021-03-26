@@ -4,7 +4,7 @@ import android.content.ContentResolver
 import android.net.Uri
 import tw.hankli.brookray.core.constant.EMPTY
 import tw.hankli.brookray.core.extension.*
-import tw.iamstar.data.models.Media
+import tw.iamstar.data.models.firestore.Media
 import java.io.InputStream
 import java.util.*
 

@@ -3,7 +3,7 @@ package tw.iamstar.utils
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import tw.iamstar.data.models.FirestoreModel
+import tw.iamstar.data.models.firestore.FirestoreModel
 
 class SharedPreferencesManager(private val context: Context) {
 

@@ -9,7 +9,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kotlinx.android.synthetic.main.card_comment.view.*
 import tw.hankli.brookray.core.extension.viewOf
 import tw.iamstar.R
-import tw.iamstar.data.models.Comment
+import tw.iamstar.data.models.firestore.Comment
 import tw.iamstar.utils.ext.toDateString
 
 class CommentAdapter(options: FirestoreRecyclerOptions<Comment>) :

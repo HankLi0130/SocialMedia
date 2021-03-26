@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
-import tw.iamstar.data.models.Profile
+import tw.iamstar.data.models.firestore.Profile
 import tw.iamstar.repo.AuthRepo
 import tw.iamstar.repo.ProfileRepo
 import tw.iamstar.utils.ArchViewModel

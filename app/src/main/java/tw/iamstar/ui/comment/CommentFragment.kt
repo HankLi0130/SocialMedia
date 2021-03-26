@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.fragment_comment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 import tw.iamstar.R
-import tw.iamstar.data.models.Comment
+import tw.iamstar.data.models.firestore.Comment
 import tw.iamstar.utils.ArchFragment
 
 class CommentFragment : ArchFragment<CommentViewModel>(R.layout.fragment_comment) {

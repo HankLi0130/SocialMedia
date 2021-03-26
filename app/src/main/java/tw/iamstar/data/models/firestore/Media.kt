@@ -1,4 +1,4 @@
-package tw.iamstar.data.models
+package tw.iamstar.data.models.firestore
 
 import com.google.firebase.firestore.PropertyName
 import tw.hankli.brookray.core.constant.EMPTY

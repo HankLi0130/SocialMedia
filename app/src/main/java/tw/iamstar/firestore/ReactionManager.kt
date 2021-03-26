@@ -2,7 +2,7 @@ package tw.iamstar.firestore
 
 import com.google.firebase.firestore.CollectionReference
 import kotlinx.coroutines.tasks.await
-import tw.iamstar.data.models.Reaction
+import tw.iamstar.data.models.firestore.Reaction
 
 class ReactionManager(collection: CollectionReference) : FirestoreManager<Reaction>(collection) {
 

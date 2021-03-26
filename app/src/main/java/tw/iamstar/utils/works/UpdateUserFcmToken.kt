@@ -6,8 +6,8 @@ import androidx.work.WorkerParameters
 import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import tw.iamstar.data.models.FirestoreModel
-import tw.iamstar.data.models.Installation
+import tw.iamstar.data.models.firestore.FirestoreModel
+import tw.iamstar.data.models.firestore.Installation
 import tw.iamstar.firestore.ProfileManager
 
 @KoinApiExtension

@@ -10,9 +10,9 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.iamstar.R
-import tw.iamstar.data.models.Comment
-import tw.iamstar.data.models.Feed
-import tw.iamstar.data.models.Profile
+import tw.iamstar.data.models.firestore.Comment
+import tw.iamstar.data.models.firestore.Feed
+import tw.iamstar.data.models.firestore.Profile
 import tw.iamstar.repo.FeedRepo
 import tw.iamstar.repo.ProfileRepo
 import tw.iamstar.utils.ArchViewModel

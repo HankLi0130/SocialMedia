@@ -25,11 +25,9 @@ class NotificationService : FirebaseMessagingService(), KoinComponent {
         // Check if message contains a data payload.
         if (message.data.isNotEmpty()) {
             Log.d(TAG, "Message data payload: ${message.data}")
+
+
         }
 
-        // Check if message contains a notification payload.
-        message.notification?.let {
-            Log.d(TAG, "Message Notification Body: ${it.body}")
-        }
     }
 }

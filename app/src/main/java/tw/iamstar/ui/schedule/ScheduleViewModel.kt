@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import tw.iamstar.data.models.Schedule
+import tw.iamstar.data.models.firestore.Schedule
 import tw.iamstar.repo.ProfileRepo
 import tw.iamstar.repo.ScheduleRepo
 import tw.iamstar.utils.ArchViewModel

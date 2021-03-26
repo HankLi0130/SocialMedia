@@ -3,7 +3,7 @@ package tw.iamstar.firestore
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
-import tw.iamstar.data.models.Installation
+import tw.iamstar.data.models.firestore.Installation
 import java.util.*
 
 class InstallationManager(collection: CollectionReference) :

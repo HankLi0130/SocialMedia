@@ -2,7 +2,7 @@ package tw.iamstar.firestore
 
 import com.google.firebase.firestore.CollectionReference
 import tw.iamstar.BuildConfig
-import tw.iamstar.data.models.Application
+import tw.iamstar.data.models.firestore.Application
 
 class ApplicationManager(rootCollection: CollectionReference) :
     FirestoreManager<Application>(rootCollection) {

@@ -5,7 +5,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.tasks.await
-import tw.iamstar.data.models.FirestoreModel
+import tw.iamstar.data.models.firestore.FirestoreModel
 
 open class FirestoreManager<M : FirestoreModel>(protected val rootCollection: CollectionReference) {
 

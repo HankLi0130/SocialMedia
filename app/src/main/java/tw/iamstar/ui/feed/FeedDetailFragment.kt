@@ -12,8 +12,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 import tw.iamstar.R
 import tw.iamstar.data.enums.ReactionType
-import tw.iamstar.data.models.Feed
-import tw.iamstar.data.models.Media
+import tw.iamstar.data.models.firestore.Feed
+import tw.iamstar.data.models.firestore.Media
 import tw.iamstar.ui.comment.CommentAdapter
 import tw.iamstar.utils.ArchFragment
 import tw.iamstar.utils.ArchViewModel

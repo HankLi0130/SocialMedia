@@ -89,4 +89,6 @@
 
     <string name="channel_name">Messages</string>
     <string name="channel_description">Messages from Server</string>
+
+    <string name="push_notification_successfully">Push notification successfully!</string>
 </resources>

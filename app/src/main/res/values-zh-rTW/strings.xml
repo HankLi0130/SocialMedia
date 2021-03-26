@@ -89,4 +89,6 @@
 
     <string name="channel_name">訊息</string>
     <string name="channel_description">來自伺服器的訊息</string>
+
+    <string name="push_notification_successfully">推播成功！</string>
 </resources>
