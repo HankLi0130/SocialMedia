@@ -1,9 +1,12 @@
 package tw.iamstar.data.models.messaging
 
-sealed class MessagingData
+import android.os.Bundle
 
-data class FeedData(val feedId: String) : MessagingData() {
-    companion object {
-        const val KEY = "feedKey"
-    }
+interface MessagingData {
+
+    fun getTitleResId(): Int
+
+    fun getDestId(): Int
+
+    fun getArgs(): Bundle?
 }

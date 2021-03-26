@@ -3,6 +3,7 @@ package tw.iamstar.repo
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
+import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import tw.iamstar.BuildConfig
@@ -11,6 +12,8 @@ import tw.iamstar.data.models.firestore.Comment
 import tw.iamstar.data.models.firestore.Feed
 import tw.iamstar.data.models.firestore.Media
 import tw.iamstar.data.models.firestore.Reaction
+import tw.iamstar.data.models.messaging.FeedData
+import tw.iamstar.data.models.messaging.MessagingKey
 import tw.iamstar.firebase.BUCKET_FEED
 import tw.iamstar.firebase.StorageManager
 import tw.iamstar.firebase.THUMBNAIL
@@ -19,6 +22,8 @@ import tw.iamstar.firestore.InfluencerManager
 import tw.iamstar.firestore.ProfileManager
 import tw.iamstar.network.FcmApi
 import tw.iamstar.network.NotificationRequest
+import tw.iamstar.utils.Consts.MESSAGING_KEY
+import tw.iamstar.utils.Consts.MESSAGING_VALUE
 import tw.iamstar.utils.media.UploadingMedia
 import java.util.*
 
@@ -26,7 +31,8 @@ class FeedRepo(
     private val feedManager: FeedManager,
     private val influencerManager: InfluencerManager,
     private val profileManager: ProfileManager,
-    private val fcmApi: FcmApi
+    private val fcmApi: FcmApi,
+    private val moshi: Moshi
 ) {
 
     suspend fun addFeed(
@@ -155,9 +161,15 @@ class FeedRepo(
         return feedManager.getCommentManager(feedId).queryComments()
     }
 
-    suspend fun sendToChannel(vararg data: Pair<String, String>) {
+    suspend fun sendToChannel(data: FeedData) {
         val topic = BuildConfig.APPLICATION_ID
-        val request = NotificationRequest(topic, mapOf(*data))
+        val value = moshi.adapter(FeedData::class.java).toJson(data)
+        val request = NotificationRequest(
+            topic, mapOf(
+                MESSAGING_KEY to MessagingKey.KEY_FEED.name,
+                MESSAGING_VALUE to value
+            )
+        )
         fcmApi.sendToChannel(request)
     }
 }

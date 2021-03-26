@@ -10,7 +10,8 @@
 
     <string name="feed">貼文</string>
     <string name="add_feed">新增貼文</string>
-    <string name="feed_edit">編輯貼文</string>
+    <string name="edit_feed">編輯貼文</string>
+    <string name="feed_reminding">貼文提醒</string>
 
     <string name="comments">留言</string>
 

@@ -11,7 +11,7 @@ object Consts {
     const val REQUEST_PERMISSION_PLACES = 401
 
     // Notification
-    const val CHANNEL_ID = "channel1"
+    const val CHANNEL_ID = "Messaging Data"
     const val MESSAGING_KEY = "key"
     const val MESSAGING_VALUE = "value"
 

@@ -60,7 +60,7 @@ val managerModule = module {
 
 val repoModule = module {
     single { AuthRepo(get(), get(), get(), get()) }
-    single { FeedRepo(get(), get(), get(), get()) }
+    single { FeedRepo(get(), get(), get(), get(), get()) }
     single { ProfileRepo(get()) }
     single { ScheduleRepo(get(), get(), get()) }
 }
@@ -69,7 +69,7 @@ val viewModelModule = module {
     // auth
     viewModel { AuthViewModel(get(), get()) }
     // feed
-    viewModel { FeedViewModel(get(), get(), get()) }
+    viewModel { FeedViewModel(get(), get()) }
     viewModel { FeedDetailViewModel(get(), get()) }
     viewModel { EditFeedViewModel(get(), get()) }
     // comment

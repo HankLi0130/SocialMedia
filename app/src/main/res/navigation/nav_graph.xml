@@ -73,7 +73,7 @@
     <fragment
         android:id="@+id/editFeedFragment"
         android:name="tw.iamstar.ui.feed.EditFeedFragment"
-        android:label="@string/feed_edit"
+        android:label="@string/edit_feed"
         tools:layout="@layout/fragment_edit_feed">
         <argument
             android:name="feedId"

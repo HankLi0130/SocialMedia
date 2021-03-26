@@ -2,8 +2,6 @@ package tw.iamstar.ui.feed
 
 import androidx.lifecycle.viewModelScope
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.squareup.moshi.Moshi
-import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
@@ -14,13 +12,10 @@ import tw.iamstar.data.models.messaging.FeedData
 import tw.iamstar.repo.FeedRepo
 import tw.iamstar.repo.ProfileRepo
 import tw.iamstar.utils.ArchViewModel
-import tw.iamstar.utils.Consts.MESSAGING_KEY
-import tw.iamstar.utils.Consts.MESSAGING_VALUE
 
 class FeedViewModel(
     private val feedRepo: FeedRepo,
-    private val profileRepo: ProfileRepo,
-    private val moshi: Moshi
+    private val profileRepo: ProfileRepo
 ) : ArchViewModel() {
 
     val refreshFeedsCode = 1
@@ -65,14 +60,7 @@ class FeedViewModel(
     fun pushNotification(feedId: String) {
         viewModelScope.launch(Main) {
             callProgress(true)
-            val value = withContext(Default) {
-                moshi.adapter(FeedData::class.java)
-                    .toJson(FeedData(feedId))
-            }
-            feedRepo.sendToChannel(
-                MESSAGING_KEY to FeedData.KEY,
-                MESSAGING_VALUE to value
-            )
+            feedRepo.sendToChannel(FeedData(feedId))
             callProgress(false)
             showMessage(messageRes = R.string.push_notification_successfully)
         }

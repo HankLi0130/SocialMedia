@@ -10,7 +10,8 @@
 
     <string name="feed">Feed</string>
     <string name="add_feed">Add feed</string>
-    <string name="feed_edit">Edit feed</string>
+    <string name="edit_feed">Edit feed</string>
+    <string name="feed_reminding">Feed reminding</string>
 
     <string name="comments">Comments</string>
 
