@@ -172,4 +172,8 @@ class FeedRepo(
         )
         fcmApi.sendToChannel(request)
     }
+
+    suspend fun pinFeed(feedId: String) = feedManager.updatePinState(feedId, true)
+
+    suspend fun unpinFeed(feedId: String) = feedManager.updatePinState(feedId, false)
 }

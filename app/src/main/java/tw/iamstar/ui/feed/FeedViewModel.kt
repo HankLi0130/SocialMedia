@@ -65,4 +65,20 @@ class FeedViewModel(
             showMessage(messageRes = R.string.push_notification_successfully)
         }
     }
+
+    fun pinFeed(feedId: String) {
+        viewModelScope.launch(Main) {
+            callProgress(true)
+            feedRepo.pinFeed(feedId)
+            callProgress(false)
+        }
+    }
+
+    fun unpinFeed(feedId: String) {
+        viewModelScope.launch(Main) {
+            callProgress(true)
+            feedRepo.unpinFeed(feedId)
+            callProgress(false)
+        }
+    }
 }
