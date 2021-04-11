@@ -1,11 +1,13 @@
 package tw.iamstar.data.models.firestore
 
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import tw.hankli.brookray.core.constant.EMPTY
 import tw.iamstar.data.enums.ReactionType
 import java.util.*
 
+@IgnoreExtraProperties
 class Reaction(
     override var objectId: String = EMPTY,
 

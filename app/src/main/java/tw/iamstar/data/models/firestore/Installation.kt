@@ -1,10 +1,12 @@
 package tw.iamstar.data.models.firestore
 
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import tw.hankli.brookray.core.constant.EMPTY
 import java.util.*
 
+@IgnoreExtraProperties
 data class Installation(
     override var objectId: String = EMPTY,
 

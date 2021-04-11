@@ -1,9 +1,11 @@
 package tw.iamstar.data.models.firestore
 
+import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import tw.hankli.brookray.core.constant.EMPTY
 import tw.hankli.brookray.core.constant.ZERO
 
+@IgnoreExtraProperties
 class Media(
     override var objectId: String = EMPTY,
 

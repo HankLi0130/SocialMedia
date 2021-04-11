@@ -1,10 +1,12 @@
 package tw.iamstar.data.models.firestore
 
+import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import tw.hankli.brookray.core.constant.EMPTY
 import tw.iamstar.data.enums.Gender
 import java.util.*
 
+@IgnoreExtraProperties
 class Profile(
     override var objectId: String = EMPTY,
 
