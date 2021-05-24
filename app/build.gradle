@@ -114,17 +114,17 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-beta02'
-    implementation "androidx.work:work-runtime-ktx:2.5.0"
+    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+    implementation "androidx.work:work-runtime-ktx:2.6.0-alpha02"
 
-    def nav_version = "2.3.4"
+    def nav_version = "2.3.5"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'com.google.android.libraries.places:places:2.4.0'
 
-    def lifecycle_version = "2.3.0"
+    def lifecycle_version = "2.3.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
@@ -146,7 +146,7 @@ dependencies {
     implementation "com.firebaseui:firebase-ui-storage:$firebase_ui_version"
 
     // OKHttp
-    def okhttp_version = "3.14.9"
+    def okhttp_version = "4.9.0"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
@@ -162,7 +162,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
     // Google ExoPlayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.12.2'
+    implementation 'com.google.android.exoplayer:exoplayer:2.14.0'
 
     // round image view
     implementation 'com.mikhaellopez:circularimageview:4.0.2'
@@ -184,13 +184,13 @@ dependencies {
     implementation 'it.sephiroth.android.library.imagezoom:imagezoom:2.3.0'
 
     // BrookRay
-    def brook_ray_version = '0.2.5'
+    def brook_ray_version = '0.2.6'
     implementation "com.github.HankLi0130.BrookRay:core:$brook_ray_version"
     implementation "com.github.HankLi0130.BrookRay:recyclerview:$brook_ray_version"
     implementation "com.github.HankLi0130.BrookRay:ui:$brook_ray_version"
 
     // Testing
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
