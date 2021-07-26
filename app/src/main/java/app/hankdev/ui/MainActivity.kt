@@ -14,7 +14,6 @@ import app.hankdev.NavGraphDirections
 import app.hankdev.R
 import app.hankdev.firebase.AuthManager
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.core.component.KoinApiExtension
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -60,7 +59,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    @KoinApiExtension
     override fun onStart() {
         super.onStart()
         if (AuthManager.currentUser == null) {

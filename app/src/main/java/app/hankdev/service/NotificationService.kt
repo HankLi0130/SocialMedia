@@ -14,11 +14,9 @@ import app.hankdev.utils.Consts.MESSAGING_VALUE
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.squareup.moshi.Moshi
-import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-@KoinApiExtension
 class NotificationService : FirebaseMessagingService(), KoinComponent {
 
     private val TAG = "HankTest"

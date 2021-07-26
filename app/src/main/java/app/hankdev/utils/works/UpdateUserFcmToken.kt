@@ -6,11 +6,9 @@ import androidx.work.WorkerParameters
 import app.hankdev.data.models.firestore.FirestoreModel
 import app.hankdev.data.models.firestore.Installation
 import app.hankdev.firestore.ProfileManager
-import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-@KoinApiExtension
 class UpdateUserFcmToken(context: Context, workerParams: WorkerParameters) :
     CoroutineWorker(context, workerParams), KoinComponent {
 
