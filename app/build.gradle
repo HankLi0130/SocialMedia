@@ -7,24 +7,10 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'koin'
 
 android {
-    signingConfigs {
-        development {
-            storeFile file('/Users/hankli/Programming/Android/keystore/iamstar/development.keystore')
-            storePassword 'android'
-            keyAlias 'androiddevelopmentkey'
-            keyPassword 'android'
-        }
-        release {
-            storeFile file('/Users/hankli/Programming/Android/keystore/iamstar/release.keystore')
-            storePassword 'android'
-            keyAlias 'androidreleasekey'
-            keyPassword 'android'
-        }
-    }
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "tw.iamstar"
+        applicationId "app.hankdev"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 3
@@ -36,61 +22,20 @@ android {
     buildTypes {
         debug {
             debuggable true
-            applicationIdSuffix ".debug"
-            versionNameSuffix "-debug"
 
             // strings.xml
             resValue "string", "places_api_key", "AIzaSyBTGHMX2CKs6vYIFVVS0Ovu_XzH9pWQSrs"
             resValue "string", "facebook_application_id", "247892093066632"
             resValue "string", "facebook_login_protocol_scheme", "fb247892093066632"
-            resValue "string", "app_name", "iamStar"
+            resValue "string", "app_name", "SocialMedia"
 
             // BuildConfig.java
             buildConfigField "String", "FS_INFLUENCER_ID", "\"Pw81JDGIUXWS8hF07xxUW52fMP03\""
             buildConfigField "String", "FS_APPLICATION_ID", "\"ABC\""
         }
-        development {
-            debuggable true
-            applicationIdSuffix ".dev"
-            versionNameSuffix "-dev"
-            signingConfig signingConfigs.development
-        }
-        baisoli_dev {
-            debuggable true
-            applicationIdSuffix ".personal.baisoli.dev"
-            versionNameSuffix "-baisoli_dev"
-            signingConfig signingConfigs.development
-
-            // strings.xml
-            resValue "string", "places_api_key", "AIzaSyDDNHdD0Gh4eGWVowW7CUiMXXPBwH1an04"
-            resValue "string", "facebook_application_id", "288773521483517"
-            resValue "string", "facebook_login_protocol_scheme", "fb288773521483517"
-            resValue "string", "app_name", "百壽里dev"
-
-            // BuildConfig.java
-            buildConfigField "String", "FS_INFLUENCER_ID", "\"q79osCDs2lWGscKBybniTAmz65s1\""
-            buildConfigField "String", "FS_APPLICATION_ID", "\"3j3iCIiqBr4tTfjmzxf9\""
-        }
-        baisoli {
-            debuggable false
-            applicationIdSuffix ".personal.baisoli"
-            versionNameSuffix "-baisoli"
-            signingConfig signingConfigs.development
-
-            // strings.xml
-            resValue "string", "places_api_key", "AIzaSyDDNHdD0Gh4eGWVowW7CUiMXXPBwH1an04"
-            resValue "string", "facebook_application_id", "288773521483517"
-            resValue "string", "facebook_login_protocol_scheme", "fb288773521483517"
-            resValue "string", "app_name", "百壽里"
-
-            // BuildConfig.java
-            buildConfigField "String", "FS_INFLUENCER_ID", "\"ioCQv6Ohe9VbCeoy4gz4eqkHgIn2\""
-            buildConfigField "String", "FS_APPLICATION_ID", "\"GseFXaSrXvLDVSPLchIV\""
-        }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
     }
     compileOptions {
