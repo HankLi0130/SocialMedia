@@ -35,7 +35,6 @@
     <string name="alert_unknown_type">Unknown type</string>
 
     <string name="error_feed_content_is_empty">Feed content is empty !</string>
-    <string name="error_schedule_title_is_empty">Schedule title is empty !</string>
     <string name="error_title">Error</string>
     <string name="error">Error</string>
     <string name="error_unknown">Unknown error. Please contact staff for assistance.</string>
@@ -63,22 +62,6 @@
     </string-array>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
-
-    <string name="news">News</string>
-    <string name="news_centers_for_disease_control">Centers for Disease Control</string>
-    <string name="news_central_weather_bureau_weather">Central Weather Bureau - Weather</string>
-    <string name="news_central_weather_bureau_earthquake">Central Weather Bureau - Earthquake</string>
-
-    <string name="schedule_actions_title">Actions</string>
-    <string-array name="schedule_actions">
-        <item>update</item>
-        <item>delete</item>
-    </string-array>
-
-    <string name="schedule">Schedule</string>
-    <string name="add_schedule">Add Schedule</string>
-    <string name="add_schedule_message">Would you like to add this event to your calendar?</string>
-    <string name="schedule_edit">Edit schedule</string>
 
     <string name="start_date">Start Date</string>
     <string name="start_date_title">Select Start Date</string>

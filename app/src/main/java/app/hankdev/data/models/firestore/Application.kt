@@ -9,16 +9,16 @@ import java.util.*
 data class Application(
     override var objectId: String = EMPTY,
 
-    @get:PropertyName(Application.Companion.NAME)
-    @set:PropertyName(Application.Companion.NAME)
+    @get:PropertyName(NAME)
+    @set:PropertyName(NAME)
     var name: String = EMPTY,
 
-    @get:PropertyName(Application.Companion.CREATED_AT)
-    @set:PropertyName(Application.Companion.CREATED_AT)
+    @get:PropertyName(CREATED_AT)
+    @set:PropertyName(CREATED_AT)
     var createdAt: Date = Date(),
 
-    @get:PropertyName(Application.Companion.UPDATED_AT)
-    @set:PropertyName(Application.Companion.UPDATED_AT)
+    @get:PropertyName(UPDATED_AT)
+    @set:PropertyName(UPDATED_AT)
     var updatedAt: Date? = null
 
 ) : FirestoreModel {

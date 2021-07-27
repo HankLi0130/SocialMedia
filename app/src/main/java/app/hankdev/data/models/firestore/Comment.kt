@@ -12,20 +12,20 @@ import java.util.*
 class Comment(
     override var objectId: String = EMPTY,
 
-    @get:PropertyName(Comment.Companion.PROFILE)
-    @set:PropertyName(Comment.Companion.PROFILE)
+    @get:PropertyName(PROFILE)
+    @set:PropertyName(PROFILE)
     var profile: DocumentReference? = null,
 
-    @get:PropertyName(Comment.Companion.CONTENT)
-    @set:PropertyName(Comment.Companion.CONTENT)
+    @get:PropertyName(CONTENT)
+    @set:PropertyName(CONTENT)
     var content: String = EMPTY,
 
-    @get:PropertyName(Comment.Companion.CREATED_AT)
-    @set:PropertyName(Comment.Companion.CREATED_AT)
+    @get:PropertyName(CREATED_AT)
+    @set:PropertyName(CREATED_AT)
     var createdAt: Date = Date(),
 
-    @get:PropertyName(Comment.Companion.UPDATED_AT)
-    @set:PropertyName(Comment.Companion.UPDATED_AT)
+    @get:PropertyName(UPDATED_AT)
+    @set:PropertyName(UPDATED_AT)
     var updatedAt: Date? = null,
 
     @get:Exclude

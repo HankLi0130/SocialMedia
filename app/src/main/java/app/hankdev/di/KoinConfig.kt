@@ -7,7 +7,6 @@ import app.hankdev.network.getRetrofit
 import app.hankdev.repo.AuthRepo
 import app.hankdev.repo.FeedRepo
 import app.hankdev.repo.ProfileRepo
-import app.hankdev.repo.ScheduleRepo
 import app.hankdev.ui.auth.AuthViewModel
 import app.hankdev.ui.comment.CommentViewModel
 import app.hankdev.ui.feed.EditFeedViewModel
@@ -15,8 +14,6 @@ import app.hankdev.ui.feed.FeedDetailViewModel
 import app.hankdev.ui.feed.FeedViewModel
 import app.hankdev.ui.profile.EditProfileViewModel
 import app.hankdev.ui.profile.ProfileViewModel
-import app.hankdev.ui.schedule.EditScheduleViewModel
-import app.hankdev.ui.schedule.ScheduleViewModel
 import app.hankdev.utils.SharedPreferencesManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
@@ -55,14 +52,12 @@ val managerModule = module {
     single { FeedManager(db.collection(COLLECTION_FEED)) }
     single { InfluencerManager(db.collection(COLLECTION_INFLUENCER)) }
     single { ProfileManager(db.collection(COLLECTION_PROFILE)) }
-    single { ScheduleManager(db.collection(COLLECTION_SCHEDULE)) }
 }
 
 val repoModule = module {
     single { AuthRepo(get(), get(), get(), get()) }
     single { FeedRepo(get(), get(), get(), get(), get()) }
     single { ProfileRepo(get()) }
-    single { ScheduleRepo(get(), get(), get()) }
 }
 
 val viewModelModule = module {
@@ -77,9 +72,6 @@ val viewModelModule = module {
     // profile
     viewModel { EditProfileViewModel(get()) }
     viewModel { ProfileViewModel(get(), get()) }
-    // schedule
-    viewModel { ScheduleViewModel(get(), get()) }
-    viewModel { EditScheduleViewModel(get(), get()) }
 }
 
 val koinModules =

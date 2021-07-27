@@ -9,24 +9,24 @@ import tw.hankli.brookray.core.constant.ZERO
 class Media(
     override var objectId: String = EMPTY,
 
-    @get:PropertyName(Media.Companion.URL)
-    @set:PropertyName(Media.Companion.URL)
+    @get:PropertyName(URL)
+    @set:PropertyName(URL)
     var url: String = EMPTY,
 
-    @get:PropertyName(Media.Companion.TYPE)
-    @set:PropertyName(Media.Companion.TYPE)
+    @get:PropertyName(TYPE)
+    @set:PropertyName(TYPE)
     var type: String = EMPTY,
 
-    @get:PropertyName(Media.Companion.WIDTH)
-    @set:PropertyName(Media.Companion.WIDTH)
+    @get:PropertyName(WIDTH)
+    @set:PropertyName(WIDTH)
     var width: Int = ZERO,
 
-    @get:PropertyName(Media.Companion.HEIGHT)
-    @set:PropertyName(Media.Companion.HEIGHT)
+    @get:PropertyName(HEIGHT)
+    @set:PropertyName(HEIGHT)
     var height: Int = ZERO,
 
-    @get:PropertyName(Media.Companion.THUMBNAIL_URL)
-    @set:PropertyName(Media.Companion.THUMBNAIL_URL)
+    @get:PropertyName(THUMBNAIL_URL)
+    @set:PropertyName(THUMBNAIL_URL)
     var thumbnailUrl: String = EMPTY
 ) : FirestoreModel {
     companion object {

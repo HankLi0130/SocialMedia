@@ -9,8 +9,8 @@ import tw.hankli.brookray.core.constant.EMPTY
 class Influencer(
     override var objectId: String = EMPTY,
 
-    @get:PropertyName(Influencer.Companion.PROFILE)
-    @set:PropertyName(Influencer.Companion.PROFILE)
+    @get:PropertyName(PROFILE)
+    @set:PropertyName(PROFILE)
     var profile: DocumentReference? = null,
 ) : FirestoreModel {
     companion object {

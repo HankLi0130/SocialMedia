@@ -10,24 +10,24 @@ import java.util.*
 data class Installation(
     override var objectId: String = EMPTY,
 
-    @get:PropertyName(Installation.Companion.FCM_TOKEN)
-    @set:PropertyName(Installation.Companion.FCM_TOKEN)
+    @get:PropertyName(FCM_TOKEN)
+    @set:PropertyName(FCM_TOKEN)
     var fcmToken: String? = null,
 
-    @get:PropertyName(Installation.Companion.PROFILE)
-    @set:PropertyName(Installation.Companion.PROFILE)
+    @get:PropertyName(PROFILE)
+    @set:PropertyName(PROFILE)
     var profile: DocumentReference? = null,
 
-    @get:PropertyName(Installation.Companion.DEVICE_TYPE)
-    @set:PropertyName(Installation.Companion.DEVICE_TYPE)
+    @get:PropertyName(DEVICE_TYPE)
+    @set:PropertyName(DEVICE_TYPE)
     var deviceType: String? = null,
 
-    @get:PropertyName(Installation.Companion.CREATED_AT)
-    @set:PropertyName(Installation.Companion.CREATED_AT)
+    @get:PropertyName(CREATED_AT)
+    @set:PropertyName(CREATED_AT)
     var createdAt: Date = Date(),
 
-    @get:PropertyName(Installation.Companion.UPDATED_AT)
-    @set:PropertyName(Installation.Companion.UPDATED_AT)
+    @get:PropertyName(UPDATED_AT)
+    @set:PropertyName(UPDATED_AT)
     var updatedAt: Date? = null
 ) : FirestoreModel {
     companion object {

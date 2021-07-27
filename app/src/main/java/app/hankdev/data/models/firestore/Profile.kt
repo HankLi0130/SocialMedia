@@ -9,52 +9,52 @@ import java.util.*
 class Profile(
     override var objectId: String = EMPTY,
 
-    @get:PropertyName(Profile.Companion.DISPLAY_NAME)
-    @set:PropertyName(Profile.Companion.DISPLAY_NAME)
+    @get:PropertyName(DISPLAY_NAME)
+    @set:PropertyName(DISPLAY_NAME)
     var displayName: String? = null,
 
-    @get:PropertyName(Profile.Companion.DESCRIPTION)
-    @set:PropertyName(Profile.Companion.DESCRIPTION)
+    @get:PropertyName(DESCRIPTION)
+    @set:PropertyName(DESCRIPTION)
     var description: String? = null,
 
-    @get:PropertyName(Profile.Companion.FIRST_NAME)
-    @set:PropertyName(Profile.Companion.FIRST_NAME)
+    @get:PropertyName(FIRST_NAME)
+    @set:PropertyName(FIRST_NAME)
     var firstName: String? = null,
 
-    @get:PropertyName(Profile.Companion.LAST_NAME)
-    @set:PropertyName(Profile.Companion.LAST_NAME)
+    @get:PropertyName(LAST_NAME)
+    @set:PropertyName(LAST_NAME)
     var lastName: String? = null,
 
-    @get:PropertyName(Profile.Companion.BIRTHDAY)
-    @set:PropertyName(Profile.Companion.BIRTHDAY)
+    @get:PropertyName(BIRTHDAY)
+    @set:PropertyName(BIRTHDAY)
     var birthday: Date? = null,
 
-    @get:PropertyName(Profile.Companion.LOGIN_METHOD)
-    @set:PropertyName(Profile.Companion.LOGIN_METHOD)
+    @get:PropertyName(LOGIN_METHOD)
+    @set:PropertyName(LOGIN_METHOD)
     var loginMethod: String? = null,
 
-    @get:PropertyName(Profile.Companion.EMAIL)
-    @set:PropertyName(Profile.Companion.EMAIL)
+    @get:PropertyName(EMAIL)
+    @set:PropertyName(EMAIL)
     var email: String? = null,
 
-    @get:PropertyName(Profile.Companion.PHONE_NUMBER)
-    @set:PropertyName(Profile.Companion.PHONE_NUMBER)
+    @get:PropertyName(PHONE_NUMBER)
+    @set:PropertyName(PHONE_NUMBER)
     var phoneNumber: String? = null,
 
-    @get:PropertyName(Profile.Companion.PHOTO_URL)
-    @set:PropertyName(Profile.Companion.PHOTO_URL)
+    @get:PropertyName(PHOTO_URL)
+    @set:PropertyName(PHOTO_URL)
     var photoURL: String? = null,
 
-    @get:PropertyName(Profile.Companion.GENDER)
-    @set:PropertyName(Profile.Companion.GENDER)
+    @get:PropertyName(GENDER)
+    @set:PropertyName(GENDER)
     var gender: app.hankdev.data.enums.Gender? = null,
 
-    @get:PropertyName(Profile.Companion.CREATED_AT)
-    @set:PropertyName(Profile.Companion.CREATED_AT)
+    @get:PropertyName(CREATED_AT)
+    @set:PropertyName(CREATED_AT)
     var createdAt: Date = Date(),
 
-    @get:PropertyName(Profile.Companion.UPDATED_AT)
-    @set:PropertyName(Profile.Companion.UPDATED_AT)
+    @get:PropertyName(UPDATED_AT)
+    @set:PropertyName(UPDATED_AT)
     var updatedAt: Date? = null
 
 ) : FirestoreModel {

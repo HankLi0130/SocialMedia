@@ -6,16 +6,6 @@
         android:title="@string/feed" />
 
     <item
-        android:id="@+id/newsFragment"
-        android:icon="@drawable/ic_baseline_source"
-        android:title="@string/news" />
-
-    <item
-        android:id="@+id/scheduleFragment"
-        android:icon="@drawable/ic_baseline_calendar"
-        android:title="@string/schedule" />
-
-    <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_person"
         android:title="@string/profile" />

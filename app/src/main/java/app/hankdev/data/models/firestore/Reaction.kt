@@ -10,16 +10,16 @@ import java.util.*
 class Reaction(
     override var objectId: String = EMPTY,
 
-    @get:PropertyName(Reaction.Companion.REACTION_TYPE)
-    @set:PropertyName(Reaction.Companion.REACTION_TYPE)
+    @get:PropertyName(REACTION_TYPE)
+    @set:PropertyName(REACTION_TYPE)
     var reactionType: app.hankdev.data.enums.ReactionType? = null,
 
-    @get:PropertyName(Reaction.Companion.PROFILE)
-    @set:PropertyName(Reaction.Companion.PROFILE)
+    @get:PropertyName(PROFILE)
+    @set:PropertyName(PROFILE)
     var profile: DocumentReference? = null,
 
-    @get:PropertyName(Reaction.Companion.CREATED_AT)
-    @set:PropertyName(Reaction.Companion.CREATED_AT)
+    @get:PropertyName(CREATED_AT)
+    @set:PropertyName(CREATED_AT)
     var createdAt: Date = Date()
 ) : FirestoreModel {
     companion object {

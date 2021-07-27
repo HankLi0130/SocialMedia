@@ -13,52 +13,52 @@ import java.util.*
 class Feed(
     override var objectId: String = EMPTY,
 
-    @get:PropertyName(Feed.Companion.INFLUENCER)
-    @set:PropertyName(Feed.Companion.INFLUENCER)
+    @get:PropertyName(INFLUENCER)
+    @set:PropertyName(INFLUENCER)
     var influencer: DocumentReference? = null,
 
-    @get:PropertyName(Feed.Companion.AUTHOR)
-    @set:PropertyName(Feed.Companion.AUTHOR)
+    @get:PropertyName(AUTHOR)
+    @set:PropertyName(AUTHOR)
     var author: DocumentReference? = null,
 
-    @get:PropertyName(Feed.Companion.CREATED_AT)
-    @set:PropertyName(Feed.Companion.CREATED_AT)
+    @get:PropertyName(CREATED_AT)
+    @set:PropertyName(CREATED_AT)
     var createdAt: Date = Date(),
 
-    @get:PropertyName(Feed.Companion.UPDATED_AT)
-    @set:PropertyName(Feed.Companion.UPDATED_AT)
+    @get:PropertyName(UPDATED_AT)
+    @set:PropertyName(UPDATED_AT)
     var updatedAt: Date? = null,
 
-    @get:PropertyName(Feed.Companion.LOCATION)
-    @set:PropertyName(Feed.Companion.LOCATION)
+    @get:PropertyName(LOCATION)
+    @set:PropertyName(LOCATION)
     var location: String? = null,
 
-    @get:PropertyName(Feed.Companion.LATITUDE)
-    @set:PropertyName(Feed.Companion.LATITUDE)
+    @get:PropertyName(LATITUDE)
+    @set:PropertyName(LATITUDE)
     var latitude: Double? = null,
 
-    @get:PropertyName(Feed.Companion.LONGITUDE)
-    @set:PropertyName(Feed.Companion.LONGITUDE)
+    @get:PropertyName(LONGITUDE)
+    @set:PropertyName(LONGITUDE)
     var longitude: Double? = null,
 
-    @get:PropertyName(Feed.Companion.COMMENT_COUNT)
-    @set:PropertyName(Feed.Companion.COMMENT_COUNT)
+    @get:PropertyName(COMMENT_COUNT)
+    @set:PropertyName(COMMENT_COUNT)
     var commentCount: Int = ZERO,
 
-    @get:PropertyName(Feed.Companion.REACTION_COUNT)
-    @set:PropertyName(Feed.Companion.REACTION_COUNT)
+    @get:PropertyName(REACTION_COUNT)
+    @set:PropertyName(REACTION_COUNT)
     var reactionCount: Int = ZERO,
 
-    @get:PropertyName(Feed.Companion.CONTENT)
-    @set:PropertyName(Feed.Companion.CONTENT)
+    @get:PropertyName(CONTENT)
+    @set:PropertyName(CONTENT)
     var content: String = EMPTY,
 
-    @get:PropertyName(Feed.Companion.MEDIAS)
-    @set:PropertyName(Feed.Companion.MEDIAS)
+    @get:PropertyName(MEDIAS)
+    @set:PropertyName(MEDIAS)
     var medias: List<Media> = emptyList(),
 
-    @get:PropertyName(Feed.Companion.PIN_STATE)
-    @set:PropertyName(Feed.Companion.PIN_STATE)
+    @get:PropertyName(PIN_STATE)
+    @set:PropertyName(PIN_STATE)
     var pinState: Boolean = false,
 
     @get:Exclude

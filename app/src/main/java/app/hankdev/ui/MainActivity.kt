@@ -22,8 +22,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val topLevelDestinations = setOf(
         R.id.feedFragment,
-        R.id.newsFragment,
-        R.id.scheduleFragment,
         R.id.profileFragment
     )
 

@@ -3,7 +3,7 @@ package app.hankdev.data.models.messaging
 import app.hankdev.R
 import app.hankdev.ui.feed.FeedDetailFragmentArgs
 
-data class FeedData(val feedId: String) : app.hankdev.data.models.messaging.MessagingData {
+data class FeedData(val feedId: String) : MessagingData {
 
     override fun getTitleResId() = R.string.feed_reminding
 

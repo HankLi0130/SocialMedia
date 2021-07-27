@@ -8,7 +8,7 @@ interface FirestoreModel {
         const val OBJECT_ID = "objectId"
     }
 
-    @get:PropertyName(FirestoreModel.Companion.OBJECT_ID)
-    @set:PropertyName(FirestoreModel.Companion.OBJECT_ID)
+    @get:PropertyName(OBJECT_ID)
+    @set:PropertyName(OBJECT_ID)
     var objectId: String
 }
