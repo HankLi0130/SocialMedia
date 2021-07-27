@@ -5,7 +5,6 @@ import app.hankdev.BuildConfig
 import app.hankdev.data.models.firestore.Profile
 import app.hankdev.firebase.AuthManager
 import app.hankdev.firebase.MessagingManager
-import app.hankdev.firestore.ApplicationManager
 import app.hankdev.firestore.InstallationManager
 import app.hankdev.firestore.ProfileManager
 import app.hankdev.utils.Consts.DEVICE_TYPE
@@ -13,7 +12,6 @@ import app.hankdev.utils.SharedPreferencesManager
 import com.firebase.ui.auth.IdpResponse
 
 class AuthRepo(
-    private val applicationManager: ApplicationManager,
     private val installationManager: InstallationManager,
     private val profileManager: ProfileManager,
     private val spManager: SharedPreferencesManager

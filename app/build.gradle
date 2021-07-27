@@ -32,7 +32,6 @@ android {
 
             // BuildConfig.java
             buildConfigField "String", "FS_INFLUENCER_ID", "\"1Z5YxgkFL1UKMOORneljq5beXTz1\""
-            buildConfigField "String", "FS_APPLICATION_ID", "\"ABC\""
         }
         release {
             minifyEnabled true

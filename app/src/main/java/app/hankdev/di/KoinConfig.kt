@@ -1,6 +1,5 @@
 package app.hankdev.di
 
-import app.hankdev.BuildConfig
 import app.hankdev.firestore.*
 import app.hankdev.network.FcmApi
 import app.hankdev.network.getRetrofit
@@ -40,22 +39,14 @@ val networkModule = module {
 }
 
 val managerModule = module {
-    single { ApplicationManager(db.collection(COLLECTION_APPLICATION)) }
-    single {
-        InstallationManager(
-            get<ApplicationManager>().getSubcollection(
-                BuildConfig.FS_APPLICATION_ID,
-                COLLECTION_INSTALLATION
-            )
-        )
-    }
+    single { InstallationManager(db.collection(COLLECTION_INSTALLATION)) }
     single { FeedManager(db.collection(COLLECTION_FEED)) }
     single { InfluencerManager(db.collection(COLLECTION_INFLUENCER)) }
     single { ProfileManager(db.collection(COLLECTION_PROFILE)) }
 }
 
 val repoModule = module {
-    single { AuthRepo(get(), get(), get(), get()) }
+    single { AuthRepo(get(), get(), get()) }
     single { FeedRepo(get(), get(), get(), get(), get()) }
     single { ProfileRepo(get()) }
 }
