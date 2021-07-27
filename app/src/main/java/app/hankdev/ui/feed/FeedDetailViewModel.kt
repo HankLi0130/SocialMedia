@@ -32,7 +32,7 @@ class FeedDetailViewModel(
 
     private lateinit var feedRegistration: ListenerRegistration
 
-    fun loadFeed(feedId: String, influencerId: String) {
+    fun loadFeed(feedId: String) {
         this.feedId = feedId
 
         feedRegistration = feedRepo.observeFeed(feedId) { value, error ->
@@ -44,7 +44,6 @@ class FeedDetailViewModel(
 
             value?.toObject(Feed::class.java)?.let { feed ->
                 viewModelScope.launch(IO) {
-                    feed.photoURL = profileRepo.getPhotoURL(influencerId)
                     feed.reactionByCurrentUser = feedRepo.getReaction(feedId, currentUserId!!)
                     _feedData.postValue(feed)
                 }

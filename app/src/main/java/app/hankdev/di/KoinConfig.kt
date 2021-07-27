@@ -41,13 +41,12 @@ val networkModule = module {
 val managerModule = module {
     single { InstallationManager(db.collection(COLLECTION_INSTALLATION)) }
     single { FeedManager(db.collection(COLLECTION_FEED)) }
-    single { InfluencerManager(db.collection(COLLECTION_INFLUENCER)) }
     single { ProfileManager(db.collection(COLLECTION_PROFILE)) }
 }
 
 val repoModule = module {
     single { AuthRepo(get(), get(), get()) }
-    single { FeedRepo(get(), get(), get(), get(), get()) }
+    single { FeedRepo(get(), get(), get(), get()) }
     single { ProfileRepo(get()) }
 }
 

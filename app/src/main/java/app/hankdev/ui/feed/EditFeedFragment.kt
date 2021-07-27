@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import app.hankdev.R
@@ -19,7 +18,6 @@ import app.hankdev.utils.Consts.REQUEST_PLACES
 import app.hankdev.utils.ext.isInternetConnected
 import app.hankdev.utils.getPlacesIntent
 import app.hankdev.utils.media.*
-import com.bumptech.glide.Glide
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import kotlinx.android.synthetic.main.fragment_edit_feed.*
@@ -44,11 +42,12 @@ class EditFeedFragment :
 
         viewModel.loadFeed(args.feedId)
 
-        lifecycleScope.launchWhenCreated {
-            viewModel.getPhotoURL(app.influencerId)?.let { url ->
-                Glide.with(this@EditFeedFragment).load(url).into(view_feed_head_shot)
-            } ?: view_feed_head_shot.setImageResource(R.drawable.ic_person)
-        }
+        // TODO rewrite getting profile photo
+//        lifecycleScope.launchWhenCreated {
+//            viewModel.getPhotoURL()?.let { url ->
+//                Glide.with(this@EditFeedFragment).load(url).into(view_feed_head_shot)
+//            } ?: view_feed_head_shot.setImageResource(R.drawable.ic_person)
+//        }
 
         view_list_media.run {
             (this.layoutManager as GridLayoutManager).spanCount = 3
@@ -183,7 +182,7 @@ class EditFeedFragment :
         return when (item.itemId) {
             R.id.action_ok -> {
                 if (requireContext().isInternetConnected()) {
-                    viewModel.submit(requireContext().contentResolver, app.influencerId)
+                    viewModel.submit(requireContext().contentResolver)
                 } else viewModel.showNoInternet()
                 true
             }

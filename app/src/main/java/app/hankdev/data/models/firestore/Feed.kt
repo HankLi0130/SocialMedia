@@ -13,10 +13,6 @@ import java.util.*
 class Feed(
     override var objectId: String = EMPTY,
 
-    @get:PropertyName(INFLUENCER)
-    @set:PropertyName(INFLUENCER)
-    var influencer: DocumentReference? = null,
-
     @get:PropertyName(AUTHOR)
     @set:PropertyName(AUTHOR)
     var author: DocumentReference? = null,
@@ -68,7 +64,6 @@ class Feed(
     var reactionByCurrentUser: Reaction? = null
 ) : FirestoreModel {
     companion object {
-        const val INFLUENCER = "influencer"
         const val AUTHOR = "author"
         const val CREATED_AT = "createdAt"
         const val UPDATED_AT = "updatedAt"

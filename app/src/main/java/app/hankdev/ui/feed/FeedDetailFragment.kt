@@ -32,7 +32,7 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.loadFeed(args.feedId, app.influencerId)
+        viewModel.loadFeed(args.feedId)
 
         viewModel.feedData.observe(viewLifecycleOwner, { feed -> updateUI(feed) })
 

@@ -2,16 +2,14 @@ package app.hankdev.firestore
 
 import app.hankdev.data.models.firestore.Feed
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 
 
 class FeedManager(collection: CollectionReference) : FirestoreManager<Feed>(collection) {
 
-    fun queryByInfluencer(influencerDoc: DocumentReference, limit: Long = 10): Query {
+    fun query(limit: Long = 10): Query {
         return rootCollection
-            .whereEqualTo(Feed.INFLUENCER, influencerDoc)
             .orderBy(Feed.PIN_STATE, Query.Direction.DESCENDING)
             .orderBy(Feed.UPDATED_AT, Query.Direction.DESCENDING)
             .limit(limit)

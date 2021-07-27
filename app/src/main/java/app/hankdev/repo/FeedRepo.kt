@@ -10,7 +10,6 @@ import app.hankdev.firebase.BUCKET_FEED
 import app.hankdev.firebase.StorageManager
 import app.hankdev.firebase.THUMBNAIL
 import app.hankdev.firestore.FeedManager
-import app.hankdev.firestore.InfluencerManager
 import app.hankdev.firestore.ProfileManager
 import app.hankdev.network.FcmApi
 import app.hankdev.network.NotificationRequest
@@ -27,7 +26,6 @@ import java.util.*
 
 class FeedRepo(
     private val feedManager: FeedManager,
-    private val influencerManager: InfluencerManager,
     private val profileManager: ProfileManager,
     private val fcmApi: FcmApi,
     private val moshi: Moshi
@@ -37,11 +35,9 @@ class FeedRepo(
         scope: CoroutineScope,
         feed: Feed,
         authorUserId: String,
-        influencerId: String,
         uploadingMedias: List<UploadingMedia>
     ) {
         feed.author = profileManager.getDoc(authorUserId)
-        feed.influencer = influencerManager.getDoc(influencerId)
         val medias = uploadingMedias.map { uploadFeedMedia(scope, it) }
         feed.medias = medias
         feedManager.add(feed)
@@ -156,8 +152,8 @@ class FeedRepo(
         feedManager.updateCommentCount(feedId)
     }
 
-    fun queryByInfluencer(influencerId: String): Query {
-        return feedManager.queryByInfluencer(influencerManager.getDoc(influencerId))
+    fun query(): Query {
+        return feedManager.query()
     }
 
     fun queryComments(feedId: String): Query {
@@ -166,7 +162,8 @@ class FeedRepo(
 
     suspend fun sendToChannel(data: app.hankdev.data.models.messaging.FeedData) {
         val topic = BuildConfig.APPLICATION_ID
-        val value = moshi.adapter(app.hankdev.data.models.messaging.FeedData::class.java).toJson(data)
+        val value =
+            moshi.adapter(app.hankdev.data.models.messaging.FeedData::class.java).toJson(data)
         val request = NotificationRequest(
             topic, mapOf(
                 MESSAGING_KEY to app.hankdev.data.models.messaging.MessagingKey.KEY_FEED.name,

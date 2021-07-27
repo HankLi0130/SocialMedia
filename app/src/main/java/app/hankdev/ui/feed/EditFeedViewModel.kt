@@ -80,10 +80,7 @@ class EditFeedViewModel(private val feedRepo: FeedRepo, private val profileRepo:
         _locationData.value = feed.location
     }
 
-    fun submit(
-        contentResolver: ContentResolver,
-        influencerId: String
-    ) {
+    fun submit(contentResolver: ContentResolver) {
         val errorMessageRes = checkValid()
         if (errorMessageRes.isNotEmpty()) {
             showErrors(errorMessageRes)
@@ -102,7 +99,7 @@ class EditFeedViewModel(private val feedRepo: FeedRepo, private val profileRepo:
                 }
 
                 withContext(IO) {
-                    feedRepo.addFeed(this, feed, currentUserId!!, influencerId, uploadingMedias)
+                    feedRepo.addFeed(this, feed, currentUserId!!, uploadingMedias)
                 }
 
                 callProgress(false)

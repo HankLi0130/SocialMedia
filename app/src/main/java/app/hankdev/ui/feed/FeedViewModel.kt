@@ -19,13 +19,12 @@ class FeedViewModel(
 
     val refreshFeedsCode = 1
 
-    fun getFeedOptions(influencerId: String) = FirestoreRecyclerOptions.Builder<Feed>()
-        .setQuery(feedRepo.queryByInfluencer(influencerId)) { snapshot ->
+    fun getFeedOptions() = FirestoreRecyclerOptions.Builder<Feed>()
+        .setQuery(feedRepo.query()) { snapshot ->
             val feed = snapshot.toObject(Feed::class.java)!!
 
             viewModelScope.launch(Main) {
                 withContext(IO) {
-                    feed.photoURL = profileRepo.getPhotoURL(influencerId)
                     feed.reactionByCurrentUser =
                         feedRepo.getReaction(feed.objectId, currentUserId!!)
                 }

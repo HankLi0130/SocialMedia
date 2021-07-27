@@ -13,9 +13,6 @@ import org.koin.core.context.startKoin
 
 class App : Application() {
 
-    lateinit var influencerId: String
-        private set
-
     override fun onCreate() {
         super.onCreate()
 
@@ -26,7 +23,6 @@ class App : Application() {
         }
 
         Places.initialize(this, getString(R.string.places_api_key))
-        influencerId = BuildConfig.FS_INFLUENCER_ID
 
         createNotificationChannel()
     }

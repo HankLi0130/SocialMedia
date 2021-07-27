@@ -15,7 +15,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kotlinx.android.synthetic.main.card_feed.view.*
 import tw.hankli.brookray.core.extension.viewOf
 
-class FeedCardAdapter(val showItemOptions: Boolean, options: FirestoreRecyclerOptions<Feed>) :
+class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
     FirestoreRecyclerAdapter<Feed, FeedCardAdapter.ViewHolder>(options) {
 
     lateinit var onItemClick: (feedId: String) -> Unit
@@ -36,7 +36,6 @@ class FeedCardAdapter(val showItemOptions: Boolean, options: FirestoreRecyclerOp
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: Feed) {
         holder.bind(
             model,
-            showItemOptions,
             onItemClick,
             onItemOptionsClick,
             onItemReactionClick,
@@ -50,7 +49,6 @@ class FeedCardAdapter(val showItemOptions: Boolean, options: FirestoreRecyclerOp
 
         fun bind(
             item: Feed,
-            showItemOptions: Boolean,
             onItemClick: (feedId: String) -> Unit,
             onItemOptionsClick: (feedId: String) -> Unit,
             onItemReactionClick: (feedId: String) -> Unit,
@@ -94,7 +92,6 @@ class FeedCardAdapter(val showItemOptions: Boolean, options: FirestoreRecyclerOp
                 view_feed_comment_count.isVisible = item.commentCount > 0
                 view_feed_comment_count.text = item.commentCount.toString()
 
-                view_feed_more_options.isVisible = showItemOptions
                 view_feed_more_options.setOnClickListener { onItemOptionsClick(item.objectId) }
 
                 view_feed_pin_state.isVisible = item.pinState
@@ -103,7 +100,8 @@ class FeedCardAdapter(val showItemOptions: Boolean, options: FirestoreRecyclerOp
         }
 
         fun setReaction(reaction: Reaction?) {
-            val src = reaction?.reactionType?.drawableRes ?: app.hankdev.data.enums.ReactionType.NO_REACTION.drawableRes
+            val src = reaction?.reactionType?.drawableRes
+                ?: app.hankdev.data.enums.ReactionType.NO_REACTION.drawableRes
             itemView.view_feed_reaction.setImageResource(src)
         }
     }

@@ -6,7 +6,6 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import app.hankdev.R
-import app.hankdev.firebase.AuthManager
 import app.hankdev.utils.ArchFragment
 import app.hankdev.utils.ext.isInternetConnected
 import kotlinx.android.synthetic.main.fragment_feed.*
@@ -23,14 +22,7 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Role Permission
-        val writable = AuthManager.currentUserId == app.influencerId
-        setMenuVisibility(writable)
-
-        feedCardAdapter = FeedCardAdapter(
-            writable,
-            viewModel.getFeedOptions(app.influencerId)
-        ).apply {
+        feedCardAdapter = FeedCardAdapter(viewModel.getFeedOptions()).apply {
             stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             onItemClick = ::onFeedCardClick
             onItemOptionsClick = ::onFeedCardOptionsClick
