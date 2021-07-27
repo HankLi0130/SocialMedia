@@ -70,10 +70,8 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
             when (which) {
                 // update
                 0 -> toEditFeedFragment(feedId)
-                // notify
-                1 -> viewModel.pushNotification(feedId)
                 // delete
-                2 -> viewModel.deleteFeed(feedId)
+                1 -> viewModel.deleteFeed(feedId)
             }
         }
     }

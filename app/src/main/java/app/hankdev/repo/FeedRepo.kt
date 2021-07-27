@@ -6,6 +6,7 @@ import app.hankdev.data.models.firestore.Comment
 import app.hankdev.data.models.firestore.Feed
 import app.hankdev.data.models.firestore.Media
 import app.hankdev.data.models.firestore.Reaction
+import app.hankdev.data.models.messaging.FeedData
 import app.hankdev.firebase.BUCKET_FEED
 import app.hankdev.firebase.StorageManager
 import app.hankdev.firebase.THUMBNAIL
@@ -160,10 +161,10 @@ class FeedRepo(
         return feedManager.getCommentManager(feedId).queryComments()
     }
 
-    suspend fun sendToChannel(data: app.hankdev.data.models.messaging.FeedData) {
+    suspend fun sendToChannel(data: FeedData) {
         val topic = BuildConfig.APPLICATION_ID
         val value =
-            moshi.adapter(app.hankdev.data.models.messaging.FeedData::class.java).toJson(data)
+            moshi.adapter(FeedData::class.java).toJson(data)
         val request = NotificationRequest(
             topic, mapOf(
                 MESSAGING_KEY to app.hankdev.data.models.messaging.MessagingKey.KEY_FEED.name,

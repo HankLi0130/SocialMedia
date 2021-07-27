@@ -1,7 +1,6 @@
 package app.hankdev.ui.feed
 
 import androidx.lifecycle.viewModelScope
-import app.hankdev.R
 import app.hankdev.data.models.firestore.Feed
 import app.hankdev.repo.FeedRepo
 import app.hankdev.utils.ArchViewModel
@@ -50,15 +49,6 @@ class FeedViewModel(
             } else {
                 feedRepo.like(feedId, currentUserId)
             }
-        }
-    }
-
-    fun pushNotification(feedId: String) {
-        viewModelScope.launch(Main) {
-            callProgress(true)
-            feedRepo.sendToChannel(app.hankdev.data.models.messaging.FeedData(feedId))
-            callProgress(false)
-            showMessage(messageRes = R.string.push_notification_successfully)
         }
     }
 }

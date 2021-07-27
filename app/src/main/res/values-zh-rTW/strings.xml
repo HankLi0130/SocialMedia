@@ -45,7 +45,6 @@
     <string name="feed_actions_title">動作</string>
     <string-array name="feed_actions">
         <item>更新</item>
-        <item>推播</item>
         <item>刪除</item>
     </string-array>
 
