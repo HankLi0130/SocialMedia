@@ -10,10 +10,10 @@ android {
 
     defaultConfig {
         applicationId "app.hankdev"
-        minSdkVersion 24
+        minSdkVersion 26
         targetSdkVersion 30
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 1
+        versionName "0.0.1"
         resConfigs "zh-rTW"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -21,15 +21,17 @@ android {
     buildTypes {
         debug {
             debuggable true
+            applicationIdSuffix ".doggogo.debug"
+            versionNameSuffix "-debug"
 
             // strings.xml
-            resValue "string", "places_api_key", "AIzaSyBTGHMX2CKs6vYIFVVS0Ovu_XzH9pWQSrs"
-            resValue "string", "facebook_application_id", "247892093066632"
-            resValue "string", "facebook_login_protocol_scheme", "fb247892093066632"
-            resValue "string", "app_name", "SocialMedia"
+            resValue "string", "places_api_key", "api_key"
+            resValue "string", "facebook_application_id", "app_id"
+            resValue "string", "facebook_login_protocol_scheme", "scheme"
+            resValue "string", "app_name", "DOGGOGO"
 
             // BuildConfig.java
-            buildConfigField "String", "FS_INFLUENCER_ID", "\"Pw81JDGIUXWS8hF07xxUW52fMP03\""
+            buildConfigField "String", "FS_INFLUENCER_ID", "\"1Z5YxgkFL1UKMOORneljq5beXTz1\""
             buildConfigField "String", "FS_APPLICATION_ID", "\"ABC\""
         }
         release {
