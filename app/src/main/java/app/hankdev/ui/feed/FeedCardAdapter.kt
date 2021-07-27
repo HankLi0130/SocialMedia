@@ -26,8 +26,6 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
 
     lateinit var onItemCommentClick: (feedId: String) -> Unit
 
-    lateinit var onItemUnpinClick: (feedId: String) -> Unit
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.viewOf(R.layout.card_feed)
         return ViewHolder(view)
@@ -39,8 +37,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
             onItemClick,
             onItemOptionsClick,
             onItemReactionClick,
-            onItemCommentClick,
-            onItemUnpinClick
+            onItemCommentClick
         )
         holder.setReaction(model.reactionByCurrentUser)
     }
@@ -52,8 +49,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
             onItemClick: (feedId: String) -> Unit,
             onItemOptionsClick: (feedId: String) -> Unit,
             onItemReactionClick: (feedId: String) -> Unit,
-            onItemCommentClick: (feedId: String) -> Unit,
-            onItemUnpinClick: (feedId: String) -> Unit
+            onItemCommentClick: (feedId: String) -> Unit
         ) {
             with(itemView) {
                 setOnClickListener { onItemClick(item.objectId) }
@@ -93,9 +89,6 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
                 view_feed_comment_count.text = item.commentCount.toString()
 
                 view_feed_more_options.setOnClickListener { onItemOptionsClick(item.objectId) }
-
-                view_feed_pin_state.isVisible = item.pinState
-                view_feed_pin_state.setOnClickListener { onItemUnpinClick(item.objectId) }
             }
         }
 

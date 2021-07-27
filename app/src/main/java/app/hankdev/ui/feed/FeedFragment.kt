@@ -28,7 +28,6 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
             onItemOptionsClick = ::onFeedCardOptionsClick
             onItemReactionClick = ::onFeedCardReactionClick
             onItemCommentClick = ::onFeedCardCommentClick
-            onItemUnpinClick = ::onFeedUnpin
         }
 
         view_feeds.apply {
@@ -73,10 +72,8 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
                 0 -> toEditFeedFragment(feedId)
                 // notify
                 1 -> viewModel.pushNotification(feedId)
-                // pin
-                2 -> viewModel.pinFeed(feedId)
                 // delete
-                3 -> viewModel.deleteFeed(feedId)
+                2 -> viewModel.deleteFeed(feedId)
             }
         }
     }
@@ -92,10 +89,6 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
         findNavController().navigate(
             FeedFragmentDirections.actionFeedFragmentToFeedDetailFragment(feedId)
         )
-    }
-
-    private fun onFeedUnpin(feedId: String) {
-        viewModel.unpinFeed(feedId)
     }
 
     override fun onStart() {

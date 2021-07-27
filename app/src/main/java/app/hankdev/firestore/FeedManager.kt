@@ -10,7 +10,6 @@ class FeedManager(collection: CollectionReference) : FirestoreManager<Feed>(coll
 
     fun query(limit: Long = 10): Query {
         return rootCollection
-            .orderBy(Feed.PIN_STATE, Query.Direction.DESCENDING)
             .orderBy(Feed.UPDATED_AT, Query.Direction.DESCENDING)
             .limit(limit)
     }
@@ -32,9 +31,5 @@ class FeedManager(collection: CollectionReference) : FirestoreManager<Feed>(coll
     suspend fun updateCommentCount(feedId: String) {
         val count = getCommentManager(feedId).getDocSize()
         getDoc(feedId).update(Feed.COMMENT_COUNT, count).await()
-    }
-
-    suspend fun updatePinState(feedId: String, pinState: Boolean) {
-        getDoc(feedId).update(Feed.PIN_STATE, pinState).await()
     }
 }

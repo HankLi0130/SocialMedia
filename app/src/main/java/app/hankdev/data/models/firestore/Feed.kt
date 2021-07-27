@@ -53,10 +53,6 @@ class Feed(
     @set:PropertyName(MEDIAS)
     var medias: List<Media> = emptyList(),
 
-    @get:PropertyName(PIN_STATE)
-    @set:PropertyName(PIN_STATE)
-    var pinState: Boolean = false,
-
     @get:Exclude
     var photoURL: String? = null,
 
@@ -74,6 +70,5 @@ class Feed(
         const val REACTION_COUNT = "reactionCount"
         const val CONTENT = "content"
         const val MEDIAS = "medias"
-        const val PIN_STATE = "pinState"
     }
 }

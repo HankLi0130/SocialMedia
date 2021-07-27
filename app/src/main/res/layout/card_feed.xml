@@ -53,17 +53,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/view_feed_pin_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/distance_6_dp"
-            android:padding="@dimen/distance_12_dp"
-            android:src="@drawable/ic_baseline_push_pin_24"
-            app:layout_constraintBottom_toBottomOf="@id/view_feed_more_options"
-            app:layout_constraintEnd_toStartOf="@id/view_feed_more_options"
-            app:layout_constraintTop_toTopOf="@id/view_feed_more_options" />
-
         <TextView
             android:id="@+id/view_feed_content"
             android:layout_width="@dimen/match_constraint"

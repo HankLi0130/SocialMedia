@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import app.hankdev.R
 import app.hankdev.data.models.firestore.Feed
 import app.hankdev.repo.FeedRepo
-import app.hankdev.repo.ProfileRepo
 import app.hankdev.utils.ArchViewModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kotlinx.coroutines.Dispatchers.IO
@@ -13,8 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FeedViewModel(
-    private val feedRepo: FeedRepo,
-    private val profileRepo: ProfileRepo
+    private val feedRepo: FeedRepo
 ) : ArchViewModel() {
 
     val refreshFeedsCode = 1
@@ -61,22 +59,6 @@ class FeedViewModel(
             feedRepo.sendToChannel(app.hankdev.data.models.messaging.FeedData(feedId))
             callProgress(false)
             showMessage(messageRes = R.string.push_notification_successfully)
-        }
-    }
-
-    fun pinFeed(feedId: String) {
-        viewModelScope.launch(Main) {
-            callProgress(true)
-            feedRepo.pinFeed(feedId)
-            callProgress(false)
-        }
-    }
-
-    fun unpinFeed(feedId: String) {
-        viewModelScope.launch(Main) {
-            callProgress(true)
-            feedRepo.unpinFeed(feedId)
-            callProgress(false)
         }
     }
 }

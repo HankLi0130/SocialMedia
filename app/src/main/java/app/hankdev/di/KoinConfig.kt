@@ -54,7 +54,7 @@ val viewModelModule = module {
     // auth
     viewModel { AuthViewModel(get(), get()) }
     // feed
-    viewModel { FeedViewModel(get(), get()) }
+    viewModel { FeedViewModel(get()) }
     viewModel { FeedDetailViewModel(get(), get()) }
     viewModel { EditFeedViewModel(get(), get()) }
     // comment
