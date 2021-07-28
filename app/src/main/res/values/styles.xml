@@ -13,4 +13,8 @@
         <item name="titleTextColor">@color/colorAccent</item>
     </style>
 
+    <style name="ShapeAppearanceOverlay.App.CornerSize" parent="">
+        <item name="cornerSize">8dp</item>
+    </style>
+
 </resources>

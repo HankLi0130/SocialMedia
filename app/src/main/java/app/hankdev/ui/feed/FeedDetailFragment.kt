@@ -57,8 +57,8 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
 
     private fun updateUI(feed: Feed) {
         feed.photoURL?.let { url ->
-            Glide.with(this).load(url).into(view_profile_avatar.image)
-        } ?: view_profile_avatar.image.setImageResource(R.drawable.ic_person)
+            Glide.with(this).load(url).into(view_user_avatar.image)
+        } ?: view_user_avatar.image.setImageResource(R.drawable.ic_person)
 
         view_feed_time.text = feed.createdAt.toDateString()
 

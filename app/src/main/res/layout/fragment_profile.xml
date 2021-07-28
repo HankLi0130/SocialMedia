@@ -16,7 +16,7 @@
         android:paddingEnd="@dimen/distance_12_dp">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/view_profile_avatar"
+            android:id="@+id/view_user_avatar"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"

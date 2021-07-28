@@ -3,77 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/distance_8_dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <tw.hankli.brookray.ui.card.ImageCardView
-            android:id="@+id/view_profile_avatar"
-            android:layout_width="@dimen/distance_52_dp"
-            android:layout_height="@dimen/distance_52_dp"
-            android:layout_margin="@dimen/distance_16_dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            app:cardCornerRadius="@dimen/corner_radius_50_dp"
-            app:cardElevation="@dimen/distance_3_dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_person" />
-
-        <TextView
-            android:id="@+id/view_feed_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/distance_16_dp"
-            android:maxLines="1"
-            app:layout_constraintBottom_toTopOf="@id/view_feed_location"
-            app:layout_constraintStart_toEndOf="@+id/view_profile_avatar"
-            app:layout_constraintTop_toTopOf="@+id/view_profile_avatar"
-            tools:text="1 hours ago" />
-
-        <TextView
-            android:id="@+id/view_feed_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/distance_16_dp"
-            android:maxLines="1"
-            app:layout_constraintBottom_toBottomOf="@+id/view_profile_avatar"
-            app:layout_constraintStart_toEndOf="@+id/view_profile_avatar"
-            app:layout_constraintTop_toBottomOf="@id/view_feed_time"
-            tools:text="Toronto" />
-
-        <ImageView
-            android:id="@+id/view_feed_more_options"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/distance_12_dp"
-            android:src="@drawable/ic_more_horiz"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/view_feed_content"
-            android:layout_width="@dimen/match_constraint"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            app:layout_constraintBottom_toTopOf="@id/view_feed_media"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_profile_avatar"
-            tools:text="Hello everyone, this is my feed !" />
-
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/view_feed_media"
             android:layout_width="@dimen/match_constraint"
-            android:layout_height="@dimen/distance_300_dp"
-            android:layout_margin="10dp"
+            android:layout_height="@dimen/distance_200_dp"
+            android:layout_margin="@dimen/distance_3_dp"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toTopOf="@id/view_feed_reaction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_feed_content" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize"
+            tools:src="@color/colorPrimary" />
 
         <ImageView
             android:id="@+id/view_play"
@@ -84,46 +31,102 @@
             app:layout_constraintBottom_toBottomOf="@id/view_feed_media"
             app:layout_constraintEnd_toEndOf="@id/view_feed_media"
             app:layout_constraintStart_toStartOf="@id/view_feed_media"
-            app:layout_constraintTop_toTopOf="@id/view_feed_media" />
+            app:layout_constraintTop_toTopOf="@id/view_feed_media"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/view_feed_content"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/distance_8_dp"
+            android:layout_marginTop="@dimen/distance_12_dp"
+            android:layout_marginEnd="@dimen/distance_8_dp"
+            android:textSize="@dimen/font_24_sp"
+            app:layout_constraintEnd_toEndOf="@+id/view_feed_media"
+            app:layout_constraintStart_toStartOf="@+id/view_feed_media"
+            app:layout_constraintTop_toBottomOf="@+id/view_feed_media"
+            tools:text="Hello everyone, this is my feed !" />
+
+        <tw.hankli.brookray.ui.card.ImageCardView
+            android:id="@+id/view_user_avatar"
+            android:layout_width="@dimen/distance_28_dp"
+            android:layout_height="@dimen/distance_28_dp"
+            android:layout_marginTop="@dimen/distance_12_dp"
+            android:layout_marginBottom="@dimen/distance_12_dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:cardCornerRadius="@dimen/corner_radius_50_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/view_feed_content"
+            app:layout_constraintTop_toBottomOf="@+id/view_feed_content"
+            tools:src="@drawable/ic_person" />
+
+        <TextView
+            android:id="@+id/view_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/distance_3_dp"
+            android:maxLines="1"
+            app:layout_constraintBottom_toBottomOf="@+id/view_user_avatar"
+            app:layout_constraintStart_toEndOf="@+id/view_user_avatar"
+            app:layout_constraintTop_toTopOf="@+id/view_user_avatar"
+            tools:text="Jordan" />
+
+        <TextView
+            android:id="@+id/view_divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="・"
+            app:layout_constraintBottom_toBottomOf="@+id/view_user_name"
+            app:layout_constraintStart_toEndOf="@+id/view_user_name"
+            app:layout_constraintTop_toTopOf="@+id/view_user_name"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/view_feed_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            app:layout_constraintBottom_toBottomOf="@+id/view_user_name"
+            app:layout_constraintStart_toEndOf="@+id/view_divider"
+            app:layout_constraintTop_toTopOf="@+id/view_user_name"
+            tools:text="1 hours ago" />
+
+        <ImageView
+            android:id="@+id/view_feed_more_options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/distance_8_dp"
+            android:paddingEnd="@dimen/distance_8_dp"
+            android:src="@drawable/ic_baseline_more_vert_24"
+            app:layout_constraintBottom_toBottomOf="@+id/view_user_avatar"
+            app:layout_constraintEnd_toEndOf="@+id/view_feed_content"
+            app:layout_constraintTop_toTopOf="@+id/view_user_avatar"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/view_feed_sharing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/distance_8_dp"
+            android:paddingEnd="@dimen/distance_8_dp"
+            android:src="@drawable/ic_baseline_share_24"
+            app:layout_constraintBottom_toBottomOf="@+id/view_feed_more_options"
+            app:layout_constraintEnd_toStartOf="@+id/view_feed_more_options"
+            app:layout_constraintTop_toTopOf="@+id/view_feed_more_options"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/view_feed_reaction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/distance_12_dp"
-            android:src="@drawable/selector_like_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/view_feed_content"
-            app:layout_constraintTop_toBottomOf="@id/view_feed_media" />
-
-        <TextView
-            android:id="@+id/view_feed_reaction_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/view_feed_reaction"
-            app:layout_constraintStart_toEndOf="@id/view_feed_reaction"
-            app:layout_constraintTop_toTopOf="@id/view_feed_reaction"
-            tools:text="1" />
-
-        <ImageView
-            android:id="@+id/view_feed_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/distance_4_dp"
-            android:padding="@dimen/distance_12_dp"
-            android:src="@drawable/ic_comment"
-            app:layout_constraintBottom_toBottomOf="@id/view_feed_reaction"
-            app:layout_constraintStart_toEndOf="@id/view_feed_reaction_count"
-            app:layout_constraintTop_toTopOf="@id/view_feed_reaction" />
-
-        <TextView
-            android:id="@+id/view_feed_comment_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/view_feed_comment"
-            app:layout_constraintStart_toEndOf="@id/view_feed_comment"
-            app:layout_constraintTop_toTopOf="@id/view_feed_comment"
-            tools:text="1" />
+            android:paddingStart="@dimen/distance_8_dp"
+            android:paddingEnd="@dimen/distance_8_dp"
+            android:src="@drawable/ic_baseline_favorite_border_24"
+            app:layout_constraintBottom_toBottomOf="@+id/view_feed_sharing"
+            app:layout_constraintEnd_toStartOf="@+id/view_feed_sharing"
+            app:layout_constraintTop_toTopOf="@+id/view_feed_sharing"
+            tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
