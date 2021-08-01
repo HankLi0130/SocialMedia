@@ -5,6 +5,10 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/timelineFragment">
 
+    <action
+        android:id="@+id/action_global_authFragment"
+        app:destination="@id/authFragment" />
+
     <fragment
         android:id="@+id/authFragment"
         android:name="app.hankdev.ui.auth.AuthFragment"

@@ -37,7 +37,7 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
                     setUI()
                 }
                 SharedViewModel.AuthenticationState.UNAUTHENTICATED -> navController.navigate(
-                    R.id.authFragment
+                    FeedFragmentDirections.actionGlobalAuthFragment()
                 )
                 else -> {
 
