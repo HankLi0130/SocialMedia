@@ -8,11 +8,11 @@ import kotlinx.coroutines.tasks.await
 
 class FeedManager(collection: CollectionReference) : FirestoreManager<Feed>(collection) {
 
-    fun query(limit: Long = 10): Query {
-        return rootCollection
-            .orderBy(Feed.UPDATED_AT, Query.Direction.DESCENDING)
-            .limit(limit)
-    }
+    fun queryAll() = rootCollection.orderBy(Feed.CREATED_AT, Query.Direction.DESCENDING)
+
+    fun query(limit: Long) = rootCollection
+        .orderBy(Feed.UPDATED_AT, Query.Direction.DESCENDING)
+        .limit(limit)
 
     fun getCommentManager(feedId: String): CommentManager {
         return CommentManager(getDoc(feedId).collection(COLLECTION_COMMENTS))

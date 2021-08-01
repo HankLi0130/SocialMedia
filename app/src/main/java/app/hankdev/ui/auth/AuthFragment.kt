@@ -4,7 +4,6 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.fragment.findNavController
 import app.hankdev.R
 import app.hankdev.firebase.AuthManager.getSignInIntent
 import app.hankdev.utils.ArchFragment
@@ -47,7 +46,7 @@ class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
     override fun notifyFromViewModel(code: Int) {
         when (code) {
             viewModel.signInSuccessfullyCode -> {
-                findNavController().navigate(AuthFragmentDirections.actionAuthFragmentToNavMain())
+                // TODO
             }
         }
     }

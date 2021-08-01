@@ -6,6 +6,7 @@ import app.hankdev.network.getRetrofit
 import app.hankdev.repo.AuthRepo
 import app.hankdev.repo.FeedRepo
 import app.hankdev.repo.ProfileRepo
+import app.hankdev.ui.SharedViewModel
 import app.hankdev.ui.auth.AuthViewModel
 import app.hankdev.ui.comment.CommentViewModel
 import app.hankdev.ui.feed.EditFeedViewModel
@@ -13,6 +14,7 @@ import app.hankdev.ui.feed.FeedDetailViewModel
 import app.hankdev.ui.feed.FeedViewModel
 import app.hankdev.ui.profile.EditProfileViewModel
 import app.hankdev.ui.profile.ProfileViewModel
+import app.hankdev.ui.timeline.TimelineViewModel
 import app.hankdev.utils.SharedPreferencesManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
@@ -51,6 +53,10 @@ val repoModule = module {
 }
 
 val viewModelModule = module {
+    // shared
+    viewModel { SharedViewModel() }
+    // timeline
+    viewModel { TimelineViewModel(get()) }
     // auth
     viewModel { AuthViewModel(get(), get()) }
     // feed

@@ -153,9 +153,9 @@ class FeedRepo(
         feedManager.updateCommentCount(feedId)
     }
 
-    fun query(): Query {
-        return feedManager.query()
-    }
+    fun query(limit: Long) = feedManager.query(limit)
+
+    fun queryAll() = feedManager.queryAll()
 
     fun queryComments(feedId: String): Query {
         return feedManager.getCommentManager(feedId).queryComments()

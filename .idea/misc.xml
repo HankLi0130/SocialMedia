@@ -8,9 +8,37 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_camera.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_add_location.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_calendar.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_play_circle_outline_24.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_push_pin_24.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_source.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_broken_image.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_cancel.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_comment.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_dog.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_event_add.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_home.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_more_horiz.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_person.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_photo_camera.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_post_add.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/res_rounded_border.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/selector_like_button.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/selector_nav_item_color.xml" value="0.4197916666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.38405797101449274" />
         <entry key="app/src/main/res/layout/card_feed.xml" value="0.30434782608695654" />
         <entry key="app/src/main/res/layout/fragment_auth.xml" value="0.38405797101449274" />
+        <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.29393115942028986" />
+        <entry key="app/src/main/res/menu/bottom_nav.xml" value="0.4036458333333333" />
+        <entry key="app/src/main/res/menu/fragment_profile.xml" value="0.4036458333333333" />
+        <entry key="app/src/main/res/menu/fragment_timeline.xml" value="0.4036458333333333" />
       </map>
     </option>
   </component>

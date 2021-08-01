@@ -3,65 +3,45 @@ package app.hankdev.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import app.hankdev.NavGraphDirections
 import app.hankdev.R
-import app.hankdev.firebase.AuthManager
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
+    private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
-
-    private val topLevelDestinations = setOf(
-        R.id.feedFragment,
-        R.id.profileFragment
-    )
 
     private val noActionBarDestinations = setOf(R.id.authFragment)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        appBarConfiguration = AppBarConfiguration(topLevelDestinations)
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.view_nav_host) as NavHostFragment
 
-        navController = findNavController(R.id.view_nav_host)
+        navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-
             // Action Bar
             if (noActionBarDestinations.contains(destination.id)) {
                 supportActionBar?.hide()
             } else {
                 supportActionBar?.show()
             }
-
-            // Navigation
-            view_bottom_nav.isVisible = topLevelDestinations.contains(destination.id)
         }
+
+        appBarConfiguration = AppBarConfiguration(navController.graph)
 
         // Action Bar
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-        // Bottom Navigation
-        view_bottom_nav.setupWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (AuthManager.currentUser == null) {
-            navController.navigate(NavGraphDirections.actionGlobalAuthFragment())
-        }
     }
 
     fun restart() {

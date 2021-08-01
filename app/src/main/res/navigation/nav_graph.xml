@@ -3,25 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/feedFragment">
-
-    <action
-        android:id="@+id/action_global_authFragment"
-        app:destination="@id/authFragment"
-        app:launchSingleTop="true"
-        app:popUpTo="@id/nav_graph"
-        app:popUpToInclusive="true" />
+    app:startDestination="@id/timelineFragment">
 
     <fragment
         android:id="@+id/authFragment"
         android:name="app.hankdev.ui.auth.AuthFragment"
-        tools:layout="@layout/fragment_auth">
-        <action
-            android:id="@+id/action_authFragment_to_nav_main"
-            app:destination="@id/feedFragment"
-            app:popUpTo="@id/nav_graph"
-            app:popUpToInclusive="true" />
-    </fragment>
+        tools:layout="@layout/fragment_auth" />
+
+    <fragment
+        android:id="@+id/timelineFragment"
+        android:name="app.hankdev.ui.timeline.TimelineFragment"
+        android:label="@string/timeline"
+        tools:layout="@layout/fragment_feed" />
 
     <fragment
         android:id="@+id/feedFragment"

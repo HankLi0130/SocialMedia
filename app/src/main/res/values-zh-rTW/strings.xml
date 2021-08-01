@@ -8,7 +8,9 @@
     <string name="cancel">取消</string>
     <string name="loading">請稍候…</string>
 
-    <string name="feed">貼文</string>
+    <string name="timeline">貼文牆</string>
+
+    <string name="feed">我的貼文</string>
     <string name="add_feed">新增貼文</string>
     <string name="edit_feed">編輯貼文</string>
     <string name="feed_reminding">貼文提醒</string>

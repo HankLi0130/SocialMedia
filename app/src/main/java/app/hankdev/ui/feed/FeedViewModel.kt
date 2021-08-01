@@ -10,14 +10,12 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FeedViewModel(
-    private val feedRepo: FeedRepo
-) : ArchViewModel() {
+class FeedViewModel(private val feedRepo: FeedRepo) : ArchViewModel() {
 
     val refreshFeedsCode = 1
 
     fun getFeedOptions() = FirestoreRecyclerOptions.Builder<Feed>()
-        .setQuery(feedRepo.query()) { snapshot ->
+        .setQuery(feedRepo.query(10)) { snapshot ->
             val feed = snapshot.toObject(Feed::class.java)!!
 
             viewModelScope.launch(Main) {

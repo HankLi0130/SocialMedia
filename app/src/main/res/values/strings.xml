@@ -8,7 +8,9 @@
     <string name="cancel">Cancel</string>
     <string name="loading">Please, wait…</string>
 
-    <string name="feed">Feed</string>
+    <string name="timeline">Timeline</string>
+
+    <string name="feed">My Feed</string>
     <string name="add_feed">Add feed</string>
     <string name="edit_feed">Edit feed</string>
     <string name="feed_reminding">Feed reminding</string>

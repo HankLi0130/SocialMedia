@@ -12,7 +12,6 @@ import app.hankdev.data.models.firestore.Feed
 import app.hankdev.data.models.firestore.Media
 import app.hankdev.ui.comment.CommentAdapter
 import app.hankdev.utils.ArchFragment
-import app.hankdev.utils.ArchViewModel
 import app.hankdev.utils.ext.isInternetConnected
 import app.hankdev.utils.ext.toDateString
 import app.hankdev.utils.media.VIDEO
@@ -21,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_feed_detail.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 
-class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_detail) {
+class FeedDetailFragment : ArchFragment<FeedDetailViewModel>(R.layout.fragment_feed_detail) {
 
     override val viewModel: FeedDetailViewModel by viewModel()
 
