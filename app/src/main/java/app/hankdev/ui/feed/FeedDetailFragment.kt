@@ -88,7 +88,7 @@ class FeedDetailFragment : ArchFragment<ArchViewModel>(R.layout.fragment_feed_de
             } else viewModel.showNoInternet()
         }
         val src = feed.reactionByCurrentUser?.reactionType?.drawableRes
-            ?: ReactionType.NO_REACTION.drawableRes
+            ?: ReactionType.NONE.drawableRes
         view_feed_reaction.setImageResource(src)
 
         view_feed_reaction_count.isVisible = feed.reactionCount > 0

@@ -81,7 +81,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
 
         fun setReaction(reaction: Reaction?) {
             val src = reaction?.reactionType?.drawableRes
-                ?: ReactionType.NO_REACTION.drawableRes
+                ?: ReactionType.NONE.drawableRes
             itemView.view_feed_reaction.setImageResource(src)
         }
     }

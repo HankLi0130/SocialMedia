@@ -123,7 +123,7 @@ class FeedRepo(
         val userDoc = profileManager.getDoc(userId)
         val reaction = Reaction(
             userId,
-            ReactionType.LIKE,
+            ReactionType.LOVE,
             userDoc
         )
         feedManager.getReactionManager(feedId).set(reaction)

@@ -1,5 +1,6 @@
 package app.hankdev.data.models.firestore
 
+import app.hankdev.data.enums.ReactionType
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
@@ -12,7 +13,7 @@ class Reaction(
 
     @get:PropertyName(REACTION_TYPE)
     @set:PropertyName(REACTION_TYPE)
-    var reactionType: app.hankdev.data.enums.ReactionType? = null,
+    var reactionType: ReactionType? = null,
 
     @get:PropertyName(PROFILE)
     @set:PropertyName(PROFILE)
