@@ -1,7 +1,10 @@
 package app.hankdev.ui.timeline
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.RecyclerView
 import app.hankdev.R
 import app.hankdev.ui.feed.FeedCardAdapter
@@ -34,6 +37,11 @@ class TimelineFragment :
                 MarginItemDecoration(resources.getDimension(R.dimen.distance_12_dp).toInt())
             )
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val navController = findNavController(this)
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
     private fun onFeedCardClick(feedId: String) {

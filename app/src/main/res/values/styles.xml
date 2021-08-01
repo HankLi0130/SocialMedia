@@ -6,10 +6,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="toolbarStyle">@style/CustomToolBarStyle</item>
+        <item name="toolbarStyle">@style/MyToolbarStyle</item>
     </style>
 
-    <style name="CustomToolBarStyle" parent="@style/Widget.AppCompat.Toolbar">
+    <style name="MyToolbarStyle" parent="@style/Widget.MaterialComponents.Toolbar">
         <item name="titleTextColor">@color/colorAccent</item>
     </style>
 

@@ -15,19 +15,7 @@ class FeedViewModel(private val feedRepo: FeedRepo) : ArchViewModel() {
     val refreshFeedsCode = 1
 
     fun getFeedOptions() = FirestoreRecyclerOptions.Builder<Feed>()
-        .setQuery(feedRepo.query(10)) { snapshot ->
-            val feed = snapshot.toObject(Feed::class.java)!!
-
-            viewModelScope.launch(Main) {
-                withContext(IO) {
-                    feed.reactionByCurrentUser =
-                        feedRepo.getReaction(feed.objectId, currentUserId!!)
-                }
-                notifyView(refreshFeedsCode)
-            }
-
-            return@setQuery feed
-        }
+        .setQuery(feedRepo.query(10), Feed::class.java)
         .build()
 
     fun deleteFeed(feedId: String) {
