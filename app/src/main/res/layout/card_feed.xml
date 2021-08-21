@@ -10,16 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.imageview.ShapeableImageView
+        <ImageView
             android:id="@+id/view_feed_media"
             android:layout_width="@dimen/match_constraint"
             android:layout_height="@dimen/distance_200_dp"
-            android:layout_margin="@dimen/distance_3_dp"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize"
             tools:src="@color/colorPrimary" />
 
         <ImageView
