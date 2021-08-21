@@ -39,6 +39,7 @@
         <entry key="app/src/main/res/menu/bottom_nav.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/menu/fragment_profile.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/menu/fragment_timeline.xml" value="0.4036458333333333" />
+        <entry key="app/src/main/res/menu/single_action_ok.xml" value="0.4036458333333333" />
       </map>
     </option>
   </component>

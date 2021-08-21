@@ -8,16 +8,22 @@ import androidx.activity.addCallback
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import app.hankdev.R
+import app.hankdev.data.enums.AuthenticationState
 import app.hankdev.firebase.AuthManager.getSignInIntent
+import app.hankdev.ui.SharedViewModel
 import app.hankdev.utils.ArchFragment
 import app.hankdev.utils.Consts.REQUEST_SIGN_IN
 import com.firebase.ui.auth.IdpResponse
 import kotlinx.android.synthetic.main.fragment_auth.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import tw.hankli.brookray.core.log.logInfo
 
 class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
 
     override val viewModel: AuthViewModel by viewModel()
+
+    private val sharedViewModel by sharedViewModel<SharedViewModel>()
 
     private lateinit var navController: NavController
 
@@ -34,6 +40,19 @@ class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
         view_sign_in.setOnClickListener {
             startActivityForResult(getSignInIntent(), REQUEST_SIGN_IN)
         }
+
+        sharedViewModel.authenticationState.observe(viewLifecycleOwner) { authenticationState ->
+            when (authenticationState) {
+                AuthenticationState.AUTHENTICATED -> {
+                    logInfo("AUTHENTICATED from AuthFragment")
+                }
+                AuthenticationState.UNAUTHENTICATED -> {
+                    logInfo("UNAUTHENTICATED from AuthFragment")
+                }
+                else -> {
+                }
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -44,6 +63,7 @@ class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
             when {
                 resultCode == RESULT_OK -> {
                     viewModel.onSignInSuccessfully(response)
+                    logInfo("RESULT_OK from AuthFragment")
                 }
                 response == null -> {
                     viewModel.showMessage(messageRes = R.string.sign_in_canceled)
@@ -57,9 +77,7 @@ class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
 
     override fun notifyFromViewModel(code: Int) {
         when (code) {
-            viewModel.signInSuccessfullyCode -> {
-                // TODO
-            }
+            viewModel.signInSuccessfullyCode -> navController.navigateUp()
         }
     }
 }

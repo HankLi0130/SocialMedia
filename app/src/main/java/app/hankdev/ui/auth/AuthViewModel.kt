@@ -3,7 +3,6 @@ package app.hankdev.ui.auth
 import androidx.lifecycle.viewModelScope
 import app.hankdev.R
 import app.hankdev.repo.AuthRepo
-import app.hankdev.repo.ProfileRepo
 import app.hankdev.utils.ArchViewModel
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
@@ -12,10 +11,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AuthViewModel(
-    private val profileRepo: ProfileRepo,
-    private val authRepo: AuthRepo
-) : ArchViewModel() {
+class AuthViewModel(private val authRepo: AuthRepo) : ArchViewModel() {
 
     val signInSuccessfullyCode = 1
 

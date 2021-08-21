@@ -58,7 +58,7 @@ val viewModelModule = module {
     // timeline
     viewModel { TimelineViewModel(get()) }
     // auth
-    viewModel { AuthViewModel(get(), get()) }
+    viewModel { AuthViewModel(get()) }
     // feed
     viewModel { FeedViewModel(get()) }
     viewModel { FeedDetailViewModel(get(), get()) }

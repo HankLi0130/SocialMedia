@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import app.hankdev.R
+import app.hankdev.data.enums.AuthenticationState
 import app.hankdev.ui.SharedViewModel
 import app.hankdev.utils.ArchFragment
 import app.hankdev.utils.ext.isInternetConnected
@@ -14,6 +15,8 @@ import kotlinx.android.synthetic.main.fragment_feed.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import tw.hankli.brookray.core.constant.EMPTY
+import tw.hankli.brookray.core.log.logError
+import tw.hankli.brookray.core.log.logInfo
 import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 
 class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.fragment_home) {
@@ -31,16 +34,20 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
 
         navController = findNavController()
 
-        sharedViewModel.authenticationState.observe(viewLifecycleOwner) { authState ->
-            when (authState) {
-                SharedViewModel.AuthenticationState.AUTHENTICATED -> {
+        sharedViewModel.authenticationState.observe(viewLifecycleOwner) { authenticationState ->
+            when (authenticationState) {
+                AuthenticationState.AUTHENTICATED -> {
+                    logInfo("AUTHENTICATED from FeedFragment")
                     setUI()
                 }
-                SharedViewModel.AuthenticationState.UNAUTHENTICATED -> navController.navigate(
-                    FeedFragmentDirections.actionGlobalAuthFragment()
-                )
+                AuthenticationState.UNAUTHENTICATED -> {
+                    logInfo("UNAUTHENTICATED from FeedFragment")
+                    navController.navigate(
+                        FeedFragmentDirections.actionGlobalAuthFragment()
+                    )
+                }
                 else -> {
-
+                    logError("New $authenticationState state that doesn't require any UI change")
                 }
             }
         }

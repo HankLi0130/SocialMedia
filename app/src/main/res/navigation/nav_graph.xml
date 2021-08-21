@@ -18,7 +18,11 @@
         android:id="@+id/timelineFragment"
         android:name="app.hankdev.ui.timeline.TimelineFragment"
         android:label="@string/timeline"
-        tools:layout="@layout/fragment_feed" />
+        tools:layout="@layout/fragment_feed">
+        <action
+            android:id="@+id/action_timelineFragment_to_feedFragment2"
+            app:destination="@id/feedFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/feedFragment"

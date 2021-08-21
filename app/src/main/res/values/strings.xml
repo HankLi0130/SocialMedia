@@ -3,6 +3,7 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_out">Sign Out</string>
     <string name="sign_in_canceled">Sign in canceled</string>
+    <string name="sign_in_unsuccessful">Sign in unsuccessful</string>
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
