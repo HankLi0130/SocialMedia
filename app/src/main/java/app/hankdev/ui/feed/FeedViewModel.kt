@@ -19,7 +19,7 @@ class FeedViewModel(
     val refreshFeedsCode = 1
 
     fun getFeedOptions() = FirestoreRecyclerOptions.Builder<Feed>()
-        .setQuery(feedRepo.query(10), Feed::class.java)
+        .setQuery(feedRepo.queryAllBy(authManager.currentUserId!!), Feed::class.java)
         .build()
 
     fun deleteFeed(feedId: String) {

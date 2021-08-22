@@ -53,6 +53,7 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
             onItemOptionsClick = ::onFeedCardOptionsClick
             onItemReactionClick = ::onFeedCardReactionClick
             onItemCommentClick = ::onFeedCardCommentClick
+            startListening()
         }
 
         view_feeds.apply {
@@ -112,11 +113,6 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
         findNavController().navigate(
             FeedFragmentDirections.actionFeedFragmentToFeedDetailFragment(feedId)
         )
-    }
-
-    override fun onStart() {
-        super.onStart()
-        feedCardAdapter?.startListening()
     }
 
     override fun onStop() {

@@ -154,7 +154,7 @@ class FeedRepo(
         feedManager.updateCommentCount(feedId)
     }
 
-    fun query(limit: Long) = feedManager.query(limit)
+    fun queryAllBy(authorId: String) = feedManager.queryAllBy(profileManager.getDoc(authorId))
 
     fun queryAll() = feedManager.queryAll()
 
