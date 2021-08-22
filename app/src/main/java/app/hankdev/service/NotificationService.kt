@@ -48,9 +48,13 @@ class NotificationService : FirebaseMessagingService(), KoinComponent {
         }
     }
 
-    private fun handleTopicMessaging(key: String, value: String): app.hankdev.data.models.messaging.MessagingData? {
+    private fun handleTopicMessaging(
+        key: String,
+        value: String
+    ): app.hankdev.data.models.messaging.MessagingData? {
         return when (app.hankdev.data.models.messaging.MessagingKey.valueOf(key)) {
-            app.hankdev.data.models.messaging.MessagingKey.KEY_FEED -> moshi.adapter(app.hankdev.data.models.messaging.FeedData::class.java).fromJson(value)
+            app.hankdev.data.models.messaging.MessagingKey.KEY_FEED -> moshi.adapter(app.hankdev.data.models.messaging.FeedData::class.java)
+                .fromJson(value)
         }
     }
 
