@@ -3,8 +3,7 @@ package app.hankdev.firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.tasks.await
 
-object MessagingManager {
-    private val messaging: FirebaseMessaging by lazy { FirebaseMessaging.getInstance() }
+class MessagingManager(private val messaging: FirebaseMessaging) {
 
     suspend fun getToken() = messaging.token.await()
 

@@ -9,7 +9,11 @@ import app.hankdev.firestore.ProfileManager
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
 
-class ProfileRepo(private val profileManager: ProfileManager) {
+class ProfileRepo(
+    private val profileManager: ProfileManager,
+    private val authManager: AuthManager,
+    private val storageManager: StorageManager
+) {
 
     suspend fun getProfile(userId: String): Profile? = profileManager.get(userId)
 
@@ -19,9 +23,9 @@ class ProfileRepo(private val profileManager: ProfileManager) {
 
 
     suspend fun updateHeadshot(uri: Uri): String {
-        val userId = AuthManager.currentUserId!!
+        val userId = authManager.currentUserId!!
         val filePath = "${BUCKET_PROFILE}/${userId}"
-        val url = StorageManager.uploadFile(filePath, uri)
+        val url = storageManager.uploadFile(filePath, uri)
         profileManager.updatePhotoUrl(userId, url)
         return url
     }

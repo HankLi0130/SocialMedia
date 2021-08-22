@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import app.hankdev.data.models.firestore.Profile
+import app.hankdev.firebase.AuthManager
 import app.hankdev.repo.AuthRepo
 import app.hankdev.repo.ProfileRepo
 import app.hankdev.utils.ArchViewModel
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val profileRepo: ProfileRepo,
-    private val authRepo: AuthRepo
+    private val authRepo: AuthRepo,
+    private val authManager: AuthManager
 ) : ArchViewModel() {
 
     val restartCode = 1
@@ -26,15 +28,16 @@ class ProfileViewModel(
         get() = _profileData
 
     fun subscribeProfile() {
-        registration = profileRepo.observeProfile(currentUserId!!) { snapshot, exception ->
-            if (exception != null) {
-                exception.printStackTrace()
-                return@observeProfile
-            }
+        registration =
+            profileRepo.observeProfile(authManager.currentUserId!!) { snapshot, exception ->
+                if (exception != null) {
+                    exception.printStackTrace()
+                    return@observeProfile
+                }
 
-            val profile = snapshot?.toObject(Profile::class.java)!!
-            _profileData.value = profile
-        }
+                val profile = snapshot?.toObject(Profile::class.java)!!
+                _profileData.value = profile
+            }
     }
 
     override fun onCleared() {

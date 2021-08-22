@@ -29,7 +29,8 @@ class FeedRepo(
     private val feedManager: FeedManager,
     private val profileManager: ProfileManager,
     private val fcmApi: FcmApi,
-    private val moshi: Moshi
+    private val moshi: Moshi,
+    private val storageManager: StorageManager
 ) {
 
     suspend fun addFeed(
@@ -91,11 +92,11 @@ class FeedRepo(
         val thumbnailPath = "${filePath}_${THUMBNAIL}"
 
         val fileUrl = scope.async {
-            StorageManager.uploadFile(filePath, media.file)
+            storageManager.uploadFile(filePath, media.file)
         }
 
         val thumbnailUrl = scope.async {
-            StorageManager.uploadFile(thumbnailPath, media.thumbnail)
+            storageManager.uploadFile(thumbnailPath, media.thumbnail)
         }
 
         return Media(
@@ -111,8 +112,8 @@ class FeedRepo(
     private suspend fun removeFeedMedia(mediaId: String) {
         val filePath = "$BUCKET_FEED/$mediaId"
         val thumbnailPath = "${filePath}_${THUMBNAIL}"
-        StorageManager.deleteFile(filePath)
-        StorageManager.deleteFile(thumbnailPath)
+        storageManager.deleteFile(filePath)
+        storageManager.deleteFile(thumbnailPath)
     }
 
     suspend fun hasReaction(feedId: String, userId: String): Boolean {

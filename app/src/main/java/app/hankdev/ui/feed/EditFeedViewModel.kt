@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import app.hankdev.R
 import app.hankdev.data.models.firestore.Feed
+import app.hankdev.firebase.AuthManager
 import app.hankdev.repo.FeedRepo
 import app.hankdev.repo.ProfileRepo
 import app.hankdev.utils.ArchViewModel
@@ -17,7 +18,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tw.hankli.brookray.core.constant.EMPTY
 
-class EditFeedViewModel(private val feedRepo: FeedRepo, private val profileRepo: ProfileRepo) :
+class EditFeedViewModel(
+    private val feedRepo: FeedRepo,
+    private val profileRepo: ProfileRepo,
+    private val authManager: AuthManager
+) :
     ArchViewModel() {
 
     private lateinit var feed: Feed
@@ -99,7 +104,7 @@ class EditFeedViewModel(private val feedRepo: FeedRepo, private val profileRepo:
                 }
 
                 withContext(IO) {
-                    feedRepo.addFeed(this, feed, currentUserId!!, uploadingMedias)
+                    feedRepo.addFeed(this, feed, authManager.currentUserId!!, uploadingMedias)
                 }
 
                 callProgress(false)

@@ -16,7 +16,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import tw.hankli.brookray.core.constant.EMPTY
 import tw.hankli.brookray.core.log.logError
-import tw.hankli.brookray.core.log.logInfo
 import tw.hankli.brookray.recyclerview.decoration.MarginItemDecoration
 
 class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.fragment_home) {
@@ -36,16 +35,10 @@ class FeedFragment : ArchFragment<FeedViewModel>(R.layout.fragment_feed, R.menu.
 
         sharedViewModel.authenticationState.observe(viewLifecycleOwner) { authenticationState ->
             when (authenticationState) {
-                AuthenticationState.AUTHENTICATED -> {
-                    logInfo("AUTHENTICATED from FeedFragment")
-                    setUI()
-                }
-                AuthenticationState.UNAUTHENTICATED -> {
-                    logInfo("UNAUTHENTICATED from FeedFragment")
-                    navController.navigate(
-                        FeedFragmentDirections.actionGlobalAuthFragment()
-                    )
-                }
+                AuthenticationState.AUTHENTICATED -> setUI()
+                AuthenticationState.UNAUTHENTICATED -> navController.navigate(
+                    FeedFragmentDirections.actionGlobalAuthFragment()
+                )
                 else -> {
                     logError("New $authenticationState state that doesn't require any UI change")
                 }

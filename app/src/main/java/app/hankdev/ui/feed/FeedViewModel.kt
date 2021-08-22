@@ -2,6 +2,7 @@ package app.hankdev.ui.feed
 
 import androidx.lifecycle.viewModelScope
 import app.hankdev.data.models.firestore.Feed
+import app.hankdev.firebase.AuthManager
 import app.hankdev.repo.FeedRepo
 import app.hankdev.utils.ArchViewModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -10,7 +11,10 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FeedViewModel(private val feedRepo: FeedRepo) : ArchViewModel() {
+class FeedViewModel(
+    private val feedRepo: FeedRepo,
+    private val authManager: AuthManager
+) : ArchViewModel() {
 
     val refreshFeedsCode = 1
 
@@ -30,10 +34,10 @@ class FeedViewModel(private val feedRepo: FeedRepo) : ArchViewModel() {
 
     fun doReaction(feedId: String) {
         viewModelScope.launch(IO) {
-            if (feedRepo.hasReaction(feedId, currentUserId!!)) {
-                feedRepo.unlike(feedId, currentUserId)
+            if (feedRepo.hasReaction(feedId, authManager.currentUserId!!)) {
+                feedRepo.unlike(feedId, authManager.currentUserId!!)
             } else {
-                feedRepo.like(feedId, currentUserId)
+                feedRepo.like(feedId, authManager.currentUserId!!)
             }
         }
     }

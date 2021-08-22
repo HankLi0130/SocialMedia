@@ -32,4 +32,6 @@ class AuthViewModel(private val authRepo: AuthRepo) : ArchViewModel() {
             if (error.errorCode == ErrorCodes.NO_NETWORK) showNoInternet()
         } ?: showError(R.string.error_unknown)
     }
+
+    fun getSignInIntent() = authRepo.getSignInIntent()
 }

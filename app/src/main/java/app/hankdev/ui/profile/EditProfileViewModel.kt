@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import app.hankdev.data.models.firestore.Profile
+import app.hankdev.firebase.AuthManager
 import app.hankdev.repo.ProfileRepo
 import app.hankdev.utils.ArchViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -13,7 +14,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class EditProfileViewModel(private val profileRepo: ProfileRepo) : ArchViewModel() {
+class EditProfileViewModel(
+    private val profileRepo: ProfileRepo,
+    private val authManager: AuthManager
+) : ArchViewModel() {
 
     private lateinit var profile: Profile
 
@@ -24,7 +28,7 @@ class EditProfileViewModel(private val profileRepo: ProfileRepo) : ArchViewModel
     fun loadProfile() {
         callProgress(true)
         viewModelScope.launch(IO) {
-            val profile = profileRepo.getProfile(currentUserId!!)!!
+            val profile = profileRepo.getProfile(authManager.currentUserId!!)!!
             withContext(Main) {
                 callProgress(false)
                 this@EditProfileViewModel.profile = profile

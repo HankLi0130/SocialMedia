@@ -8,9 +8,7 @@ import java.io.InputStream
 /**
  *  https://firebase.google.com/docs/storage/android/upload-files
  */
-object StorageManager {
-
-    private val storage by lazy { FirebaseStorage.getInstance() }
+class StorageManager(private val storage: FirebaseStorage) {
 
     suspend fun uploadFile(path: String, uri: Uri): String {
         val ref = storage.reference.child(path)

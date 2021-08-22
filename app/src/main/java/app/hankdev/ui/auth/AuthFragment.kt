@@ -9,7 +9,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import app.hankdev.R
 import app.hankdev.data.enums.AuthenticationState
-import app.hankdev.firebase.AuthManager.getSignInIntent
 import app.hankdev.ui.SharedViewModel
 import app.hankdev.utils.ArchFragment
 import app.hankdev.utils.Consts.REQUEST_SIGN_IN
@@ -38,7 +37,7 @@ class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
         }
 
         view_sign_in.setOnClickListener {
-            startActivityForResult(getSignInIntent(), REQUEST_SIGN_IN)
+            startActivityForResult(viewModel.getSignInIntent(), REQUEST_SIGN_IN)
         }
 
         sharedViewModel.authenticationState.observe(viewLifecycleOwner) { authenticationState ->
@@ -61,16 +60,9 @@ class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
         if (requestCode == REQUEST_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
             when {
-                resultCode == RESULT_OK -> {
-                    viewModel.onSignInSuccessfully(response)
-                    logInfo("RESULT_OK from AuthFragment")
-                }
-                response == null -> {
-                    viewModel.showMessage(messageRes = R.string.sign_in_canceled)
-                }
-                else -> {
-                    viewModel.onSignInFailed(response)
-                }
+                resultCode == RESULT_OK -> viewModel.onSignInSuccessfully(response)
+                response == null -> viewModel.showMessage(messageRes = R.string.sign_in_canceled)
+                else -> viewModel.onSignInFailed(response)
             }
         }
     }

@@ -7,8 +7,8 @@ import app.hankdev.R
 import app.hankdev.data.models.firestore.Comment
 import app.hankdev.data.models.firestore.Feed
 import app.hankdev.data.models.firestore.Profile
+import app.hankdev.firebase.AuthManager
 import app.hankdev.repo.FeedRepo
-import app.hankdev.repo.ProfileRepo
 import app.hankdev.utils.ArchViewModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.ListenerRegistration
@@ -19,7 +19,7 @@ import kotlinx.coroutines.withContext
 
 class FeedDetailViewModel(
     private val feedRepo: FeedRepo,
-    private val profileRepo: ProfileRepo
+    private val authManager: AuthManager
 ) : ArchViewModel() {
 
     val refreshCommentsCode = 1
@@ -44,7 +44,8 @@ class FeedDetailViewModel(
 
             value?.toObject(Feed::class.java)?.let { feed ->
                 viewModelScope.launch(IO) {
-                    feed.reactionByCurrentUser = feedRepo.getReaction(feedId, currentUserId!!)
+                    feed.reactionByCurrentUser =
+                        feedRepo.getReaction(feedId, authManager.currentUserId!!)
                     _feedData.postValue(feed)
                 }
             }
@@ -67,10 +68,10 @@ class FeedDetailViewModel(
 
     fun doReaction(feedId: String) {
         viewModelScope.launch(IO) {
-            if (feedRepo.hasReaction(feedId, currentUserId!!)) {
-                feedRepo.unlike(feedId, currentUserId)
+            if (feedRepo.hasReaction(feedId, authManager.currentUserId!!)) {
+                feedRepo.unlike(feedId, authManager.currentUserId!!)
             } else {
-                feedRepo.like(feedId, currentUserId)
+                feedRepo.like(feedId, authManager.currentUserId!!)
             }
         }
     }
@@ -80,7 +81,13 @@ class FeedDetailViewModel(
 
         viewModelScope.launch {
             callProgress(true)
-            withContext(Dispatchers.IO) { feedRepo.addComment(feedId, currentUserId!!, message) }
+            withContext(Dispatchers.IO) {
+                feedRepo.addComment(
+                    feedId,
+                    authManager.currentUserId!!,
+                    message
+                )
+            }
             callProgress(false)
         }
     }

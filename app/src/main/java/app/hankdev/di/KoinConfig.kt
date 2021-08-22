@@ -1,5 +1,8 @@
 package app.hankdev.di
 
+import app.hankdev.firebase.AuthManager
+import app.hankdev.firebase.MessagingManager
+import app.hankdev.firebase.StorageManager
 import app.hankdev.firestore.*
 import app.hankdev.network.FcmApi
 import app.hankdev.network.getRetrofit
@@ -16,8 +19,10 @@ import app.hankdev.ui.profile.EditProfileViewModel
 import app.hankdev.ui.profile.ProfileViewModel
 import app.hankdev.ui.timeline.TimelineViewModel
 import app.hankdev.utils.SharedPreferencesManager
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.storage.FirebaseStorage
 import com.squareup.moshi.Moshi
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -28,6 +33,8 @@ private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
 val firebaseModule = module {
     single { FirebaseMessaging.getInstance() }
+    single { FirebaseAuth.getInstance() }
+    single { FirebaseStorage.getInstance() }
 }
 
 val appModule = module {
@@ -47,9 +54,14 @@ val managerModule = module {
 }
 
 val repoModule = module {
-    single { AuthRepo(get(), get(), get()) }
-    single { FeedRepo(get(), get(), get(), get()) }
-    single { ProfileRepo(get()) }
+    single { AuthRepo(get(), get(), get(), get(), get()) }
+    single { FeedRepo(get(), get(), get(), get(), get()) }
+    single { ProfileRepo(get(), get(), get()) }
+
+    // Firebase
+    single { AuthManager(get()) }
+    single { MessagingManager(get()) }
+    single { StorageManager(get()) }
 }
 
 val viewModelModule = module {
@@ -60,14 +72,14 @@ val viewModelModule = module {
     // auth
     viewModel { AuthViewModel(get()) }
     // feed
-    viewModel { FeedViewModel(get()) }
+    viewModel { FeedViewModel(get(), get()) }
     viewModel { FeedDetailViewModel(get(), get()) }
-    viewModel { EditFeedViewModel(get(), get()) }
+    viewModel { EditFeedViewModel(get(), get(), get()) }
     // comment
-    viewModel { CommentViewModel(get()) }
+    viewModel { CommentViewModel(get(), get()) }
     // profile
-    viewModel { EditProfileViewModel(get()) }
-    viewModel { ProfileViewModel(get(), get()) }
+    viewModel { EditProfileViewModel(get(), get()) }
+    viewModel { ProfileViewModel(get(), get(), get()) }
 }
 
 val koinModules =

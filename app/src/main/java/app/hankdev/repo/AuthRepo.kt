@@ -14,7 +14,9 @@ import com.firebase.ui.auth.IdpResponse
 class AuthRepo(
     private val installationManager: InstallationManager,
     private val profileManager: ProfileManager,
-    private val spManager: SharedPreferencesManager
+    private val spManager: SharedPreferencesManager,
+    private val authManager: AuthManager,
+    private val messagingManager: MessagingManager
 ) {
 
     suspend fun signIn(response: IdpResponse) {
@@ -31,7 +33,7 @@ class AuthRepo(
             "password" -> "EMAIL"
             else -> null
         }
-        val user = AuthManager.currentUser!!
+        val user = authManager.currentUser!!
 
         val profile = Profile(
             objectId = user.uid,
@@ -46,8 +48,8 @@ class AuthRepo(
 
     private suspend fun createInstallation() {
         val installationId = installationManager.add(
-            fcmToken = MessagingManager.getToken(),
-            profile = profileManager.getDoc(AuthManager.currentUserId!!),
+            fcmToken = messagingManager.getToken(),
+            profile = profileManager.getDoc(authManager.currentUserId!!),
             deviceType = DEVICE_TYPE
         )
         spManager.saveInstallationId(installationId)
@@ -57,15 +59,15 @@ class AuthRepo(
         val installationId = spManager.getInstallationId()!!
         installationManager.update(
             installationId,
-            MessagingManager.getToken(),
-            profileManager.getDoc(AuthManager.currentUserId!!),
+            messagingManager.getToken(),
+            profileManager.getDoc(authManager.currentUserId!!),
             DEVICE_TYPE
         )
     }
 
     private suspend fun subscribeToTopic() {
         val topic = BuildConfig.APPLICATION_ID
-        MessagingManager.subscribeToTopic(topic)
+        messagingManager.subscribeToTopic(topic)
     }
 
     suspend fun signOut(context: Context) {
@@ -75,7 +77,9 @@ class AuthRepo(
             installationManager.removeFcmToken(installationId)
         }
         val topic = BuildConfig.APPLICATION_ID
-        MessagingManager.unsubscribeFromTopic(topic)
-        AuthManager.signOut(context)
+        messagingManager.unsubscribeFromTopic(topic)
+        authManager.signOut(context)
     }
+
+    fun getSignInIntent() = authManager.getSignInIntent()
 }
