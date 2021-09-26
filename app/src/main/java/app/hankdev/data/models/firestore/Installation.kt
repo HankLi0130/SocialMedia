@@ -8,7 +8,7 @@ import java.util.*
 
 @IgnoreExtraProperties
 data class Installation(
-    override var objectId: String = EMPTY,
+    override var id: String = EMPTY,
 
     @get:PropertyName(FCM_TOKEN)
     @set:PropertyName(FCM_TOKEN)
@@ -22,19 +22,13 @@ data class Installation(
     @set:PropertyName(DEVICE_TYPE)
     var deviceType: String? = null,
 
-    @get:PropertyName(CREATED_AT)
-    @set:PropertyName(CREATED_AT)
-    var createdAt: Date = Date(),
+    override var createdAt: Date = Date(),
+    override var updatedAt: Date? = null
 
-    @get:PropertyName(UPDATED_AT)
-    @set:PropertyName(UPDATED_AT)
-    var updatedAt: Date? = null
 ) : FirestoreModel {
     companion object {
         const val FCM_TOKEN = "fcmToken"
         const val PROFILE = "profile"
         const val DEVICE_TYPE = "deviceType"
-        const val CREATED_AT = "createdAt"
-        const val UPDATED_AT = "updatedAt"
     }
 }

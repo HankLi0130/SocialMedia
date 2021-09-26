@@ -44,10 +44,15 @@ val appModule = module {
 
 val networkModule = module {
     single { getRetrofit() }
+
     single { get<Retrofit>().create(FcmApi::class.java) }
 }
 
 val managerModule = module {
+    single { AuthManager(get()) }
+    single { MessagingManager(get()) }
+    single { StorageManager(get()) }
+
     single { InstallationManager(db.collection(COLLECTION_INSTALLATION)) }
     single { FeedManager(db.collection(COLLECTION_FEED)) }
     single { ProfileManager(db.collection(COLLECTION_PROFILE)) }
@@ -57,16 +62,11 @@ val repoModule = module {
     single { AuthRepo(get(), get(), get(), get(), get()) }
     single { FeedRepo(get(), get(), get(), get(), get()) }
     single { ProfileRepo(get(), get(), get()) }
-
-    // Firebase
-    single { AuthManager(get()) }
-    single { MessagingManager(get()) }
-    single { StorageManager(get()) }
 }
 
 val viewModelModule = module {
     // shared
-    viewModel { SharedViewModel() }
+    viewModel { SharedViewModel(get()) }
     // timeline
     viewModel { TimelineViewModel(get()) }
     // auth

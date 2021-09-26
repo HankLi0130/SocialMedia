@@ -1,6 +1,5 @@
 package app.hankdev.repo
 
-import app.hankdev.BuildConfig
 import app.hankdev.data.enums.ReactionType
 import app.hankdev.data.models.firestore.Comment
 import app.hankdev.data.models.firestore.Feed
@@ -56,7 +55,7 @@ class FeedRepo(
         val medias = feed.medias.toMutableList()
         removingMediaIds.forEach { mediaId ->
             removeFeedMedia(mediaId)
-            medias.removeIf { it.objectId == mediaId }
+            medias.removeIf { it.id == mediaId }
         }
 
         medias.addAll(newMedias)
@@ -72,7 +71,7 @@ class FeedRepo(
 
         val feed = getFeed(feedId)!!
         for (media in feed.medias) {
-            removeFeedMedia(media.objectId)
+            removeFeedMedia(media.id)
         }
 
         feedManager.remove(feedId)
@@ -163,7 +162,7 @@ class FeedRepo(
     }
 
     suspend fun sendToChannel(data: FeedData) {
-        val topic = BuildConfig.APPLICATION_ID
+        val topic = "topic"
         val value =
             moshi.adapter(FeedData::class.java).toJson(data)
         val request = NotificationRequest(

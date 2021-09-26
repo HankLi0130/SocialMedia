@@ -1,5 +1,6 @@
 package app.hankdev.firestore
 
+import app.hankdev.data.models.firestore.FirestoreModel
 import app.hankdev.data.models.firestore.Installation
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
@@ -29,7 +30,7 @@ class InstallationManager(collection: CollectionReference) :
             Installation.FCM_TOKEN to fcmToken,
             Installation.PROFILE to profile,
             Installation.DEVICE_TYPE to deviceType,
-            Installation.UPDATED_AT to Date()
+            FirestoreModel.UPDATED_AT to Date()
         )
     }
 

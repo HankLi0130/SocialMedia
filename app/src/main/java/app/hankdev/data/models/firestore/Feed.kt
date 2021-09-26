@@ -5,25 +5,16 @@ import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import tw.hankli.brookray.core.constant.EMPTY
-import tw.hankli.brookray.core.constant.ZERO
 import java.util.*
 
 // https://stackoverflow.com/a/40117301/8361227
 @IgnoreExtraProperties
 class Feed(
-    override var objectId: String = EMPTY,
+    override var id: String = EMPTY,
 
     @get:PropertyName(AUTHOR)
     @set:PropertyName(AUTHOR)
     var author: DocumentReference? = null,
-
-    @get:PropertyName(CREATED_AT)
-    @set:PropertyName(CREATED_AT)
-    var createdAt: Date = Date(),
-
-    @get:PropertyName(UPDATED_AT)
-    @set:PropertyName(UPDATED_AT)
-    var updatedAt: Date? = null,
 
     @get:PropertyName(LOCATION)
     @set:PropertyName(LOCATION)
@@ -37,14 +28,6 @@ class Feed(
     @set:PropertyName(LONGITUDE)
     var longitude: Double? = null,
 
-    @get:PropertyName(COMMENT_COUNT)
-    @set:PropertyName(COMMENT_COUNT)
-    var commentCount: Int = ZERO,
-
-    @get:PropertyName(REACTION_COUNT)
-    @set:PropertyName(REACTION_COUNT)
-    var reactionCount: Int = ZERO,
-
     @get:PropertyName(CONTENT)
     @set:PropertyName(CONTENT)
     var content: String = EMPTY,
@@ -57,12 +40,14 @@ class Feed(
     var photoURL: String? = null,
 
     @get:Exclude
-    var reactionByCurrentUser: Reaction? = null
+    var reactionByCurrentUser: Reaction? = null,
+
+    override var createdAt: Date = Date(),
+    override var updatedAt: Date? = null
+
 ) : FirestoreModel {
     companion object {
         const val AUTHOR = "author"
-        const val CREATED_AT = "createdAt"
-        const val UPDATED_AT = "updatedAt"
         const val LOCATION = "location"
         const val LATITUDE = "latitude"
         const val LONGITUDE = "longitude"

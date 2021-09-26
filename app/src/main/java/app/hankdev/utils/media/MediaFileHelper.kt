@@ -20,7 +20,7 @@ const val MAX_THUMBNAIL_SIZE = 320
 fun getRandomId(): String = UUID.randomUUID().toString()
 
 fun Media.toMediaFile() = RemoteMediaFile(
-    this.objectId,
+    this.id,
     this.url,
     this.type,
     this.thumbnailUrl

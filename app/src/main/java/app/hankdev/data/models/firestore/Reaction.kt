@@ -9,7 +9,7 @@ import java.util.*
 
 @IgnoreExtraProperties
 class Reaction(
-    override var objectId: String = EMPTY,
+    override var id: String = EMPTY,
 
     @get:PropertyName(REACTION_TYPE)
     @set:PropertyName(REACTION_TYPE)
@@ -19,13 +19,12 @@ class Reaction(
     @set:PropertyName(PROFILE)
     var profile: DocumentReference? = null,
 
-    @get:PropertyName(CREATED_AT)
-    @set:PropertyName(CREATED_AT)
-    var createdAt: Date = Date()
+    override var createdAt: Date = Date(),
+    override var updatedAt: Date? = null
+
 ) : FirestoreModel {
     companion object {
         const val REACTION_TYPE = "reactionType"
         const val PROFILE = "profile"
-        const val CREATED_AT = "createdAt"
     }
 }

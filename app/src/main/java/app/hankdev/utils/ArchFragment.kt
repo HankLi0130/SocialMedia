@@ -4,7 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import app.hankdev.R
+import app.hankdev.ui.SharedViewModel
+import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.flow.collect
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import tw.hankli.brookray.core.constant.NO_RESOURCE
 
 abstract class ArchFragment<T : ArchViewModel> : BaseFragment {
@@ -19,6 +25,8 @@ abstract class ArchFragment<T : ArchViewModel> : BaseFragment {
     ) : super(layoutId, menuRes)
 
     protected abstract val viewModel: T
+
+    private val sharedViewModel: SharedViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,7 +56,27 @@ abstract class ArchFragment<T : ArchViewModel> : BaseFragment {
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            sharedViewModel.authState.collect { currentUser ->
+
+                if (currentUser == null) {
+                    if (findNavController().currentDestination?.id != R.id.authFragment) {
+                        findNavController().navigate(R.id.action_global_authFragment)
+                    }
+                } else {
+                    whenUserReady(currentUser)
+                }
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        sharedViewModel.checkAuthState()
     }
 
     protected open fun notifyFromViewModel(code: Int) {}
+
+    protected open fun whenUserReady(currentUser: FirebaseUser) {}
 }

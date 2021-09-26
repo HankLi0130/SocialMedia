@@ -4,10 +4,11 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import tw.hankli.brookray.core.constant.EMPTY
 import tw.hankli.brookray.core.constant.ZERO
+import java.util.*
 
 @IgnoreExtraProperties
 class Media(
-    override var objectId: String = EMPTY,
+    override var id: String = EMPTY,
 
     @get:PropertyName(URL)
     @set:PropertyName(URL)
@@ -27,7 +28,11 @@ class Media(
 
     @get:PropertyName(THUMBNAIL_URL)
     @set:PropertyName(THUMBNAIL_URL)
-    var thumbnailUrl: String = EMPTY
+    var thumbnailUrl: String = EMPTY,
+
+    override var createdAt: Date = Date(),
+    override var updatedAt: Date? = null
+
 ) : FirestoreModel {
     companion object {
         const val URL = "url"

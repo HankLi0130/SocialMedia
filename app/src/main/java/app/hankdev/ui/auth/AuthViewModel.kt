@@ -15,15 +15,13 @@ class AuthViewModel(private val authRepo: AuthRepo) : ArchViewModel() {
 
     val signInSuccessfullyCode = 1
 
-    fun onSignInSuccessfully(response: IdpResponse?) {
-        response?.let {
-            viewModelScope.launch(Main) {
-                callProgress(true)
-                withContext(IO) { authRepo.signIn(it) }
-                callProgress(false)
-                notifyView(signInSuccessfullyCode)
-            }
-        } ?: showError(R.string.error_unknown)
+    fun onSignInSuccessfully(response: IdpResponse) {
+        viewModelScope.launch(Main) {
+            callProgress(true)
+            withContext(IO) { authRepo.signIn(response) }
+            callProgress(false)
+            notifyView(signInSuccessfullyCode)
+        }
     }
 
     fun onSignInFailed(response: IdpResponse) {

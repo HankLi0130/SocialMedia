@@ -94,7 +94,7 @@ class EditFeedViewModel(
 
         // If the post doesn't have an objectId, create a new post
         // Instead of, update the post
-        if (feed.objectId == EMPTY) {
+        if (feed.id == EMPTY) {
             viewModelScope.launch(Main) {
                 callProgress(true)
 
@@ -120,7 +120,7 @@ class EditFeedViewModel(
                 }
 
                 val removingMediaIds = withContext(Default) {
-                    val originIds = feed.medias.map { it.objectId }
+                    val originIds = feed.medias.map { it.id }
                     val keepingIds = mediaFiles.filterIsInstance(RemoteMediaFile::class.java)
                         .map { it.id }
                     return@withContext originIds.subtract(keepingIds)

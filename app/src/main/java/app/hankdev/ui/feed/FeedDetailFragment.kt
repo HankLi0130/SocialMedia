@@ -89,12 +89,6 @@ class FeedDetailFragment : ArchFragment<FeedDetailViewModel>(R.layout.fragment_f
         val src = feed.reactionByCurrentUser?.reactionType?.drawableRes
             ?: ReactionType.NONE.drawableRes
         view_feed_reaction.setImageResource(src)
-
-        view_feed_reaction_count.isVisible = feed.reactionCount > 0
-        view_feed_reaction_count.text = feed.reactionCount.toString()
-
-        view_feed_comment_count.isVisible = feed.commentCount > 0
-        view_feed_comment_count.text = feed.commentCount.toString()
     }
 
     override fun notifyFromViewModel(code: Int) {

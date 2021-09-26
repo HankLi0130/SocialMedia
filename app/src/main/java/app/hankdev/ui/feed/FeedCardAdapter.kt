@@ -52,7 +52,7 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
             onItemCommentClick: (feedId: String) -> Unit
         ) {
             with(itemView) {
-                setOnClickListener { onItemClick(item.objectId) }
+                setOnClickListener { onItemClick(item.id) }
 
                 item.photoURL?.let { url ->
                     Glide.with(this).load(url).into(view_user_avatar.image)
@@ -73,9 +73,9 @@ class FeedCardAdapter(options: FirestoreRecyclerOptions<Feed>) :
                     view_play.isVisible = media.type == VIDEO
                 }
 
-                view_feed_reaction.setOnClickListener { onItemReactionClick(item.objectId) }
+                view_feed_reaction.setOnClickListener { onItemReactionClick(item.id) }
 
-                view_feed_more_options.setOnClickListener { onItemOptionsClick(item.objectId) }
+                view_feed_more_options.setOnClickListener { onItemOptionsClick(item.id) }
             }
         }
 

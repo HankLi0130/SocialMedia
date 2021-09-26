@@ -1,7 +1,6 @@
 package app.hankdev.repo
 
 import android.content.Context
-import app.hankdev.BuildConfig
 import app.hankdev.data.models.firestore.Profile
 import app.hankdev.firebase.AuthManager
 import app.hankdev.firebase.MessagingManager
@@ -36,7 +35,7 @@ class AuthRepo(
         val user = authManager.currentUser!!
 
         val profile = Profile(
-            objectId = user.uid,
+            id = user.uid,
             displayName = user.displayName,
             email = user.email,
             phoneNumber = user.phoneNumber,
@@ -66,7 +65,7 @@ class AuthRepo(
     }
 
     private suspend fun subscribeToTopic() {
-        val topic = BuildConfig.APPLICATION_ID
+        val topic = "topic"
         messagingManager.subscribeToTopic(topic)
     }
 
@@ -76,7 +75,7 @@ class AuthRepo(
             val installationId = spManager.getInstallationId()!!
             installationManager.removeFcmToken(installationId)
         }
-        val topic = BuildConfig.APPLICATION_ID
+        val topic = "topic"
         messagingManager.unsubscribeFromTopic(topic)
         authManager.signOut(context)
     }

@@ -1,6 +1,7 @@
 package app.hankdev.firestore
 
 import app.hankdev.data.models.firestore.Feed
+import app.hankdev.data.models.firestore.FirestoreModel
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
@@ -9,11 +10,11 @@ import kotlinx.coroutines.tasks.await
 
 class FeedManager(collection: CollectionReference) : FirestoreManager<Feed>(collection) {
 
-    fun queryAll() = rootCollection.orderBy(Feed.CREATED_AT, Query.Direction.DESCENDING)
+    fun queryAll() = rootCollection.orderBy(FirestoreModel.CREATED_AT, Query.Direction.DESCENDING)
 
     fun queryAllBy(author: DocumentReference) = rootCollection
         .whereEqualTo(Feed.AUTHOR, author)
-        .orderBy(Feed.CREATED_AT, Query.Direction.DESCENDING)
+        .orderBy(FirestoreModel.CREATED_AT, Query.Direction.DESCENDING)
 
     fun getCommentManager(feedId: String): CommentManager {
         return CommentManager(getDoc(feedId).collection(COLLECTION_COMMENTS))

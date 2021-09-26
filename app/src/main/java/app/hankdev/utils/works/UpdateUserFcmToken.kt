@@ -16,7 +16,7 @@ class UpdateUserFcmToken(context: Context, workerParams: WorkerParameters) :
 
     override suspend fun doWork(): Result {
         val token = inputData.getString(Installation.FCM_TOKEN)
-        val userId = inputData.getString(FirestoreModel.OBJECT_ID)
+        val userId = inputData.getString(FirestoreModel.ID)
 
         return if (!token.isNullOrEmpty() && !userId.isNullOrEmpty()) {
             try {

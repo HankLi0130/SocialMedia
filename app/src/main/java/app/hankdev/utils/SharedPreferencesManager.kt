@@ -23,15 +23,15 @@ class SharedPreferencesManager(private val context: Context) {
 
     private fun isKeyExists(spName: String, key: String) = getSp(spName).contains(key)
 
-    fun getInstallationId(): String? = getSp(INSTALLATION).getString(FirestoreModel.OBJECT_ID, null)
+    fun getInstallationId(): String? = getSp(INSTALLATION).getString(FirestoreModel.ID, null)
 
     fun saveInstallationId(id: String) {
-        getSpEdit(INSTALLATION) { putString(FirestoreModel.OBJECT_ID, id) }
+        getSpEdit(INSTALLATION) { putString(FirestoreModel.ID, id) }
     }
 
-    fun remoeInstallationId() = removeKey(INSTALLATION, FirestoreModel.OBJECT_ID)
+    fun remoeInstallationId() = removeKey(INSTALLATION, FirestoreModel.ID)
 
-    fun installationIdExists() = isKeyExists(INSTALLATION, FirestoreModel.OBJECT_ID)
+    fun installationIdExists() = isKeyExists(INSTALLATION, FirestoreModel.ID)
 
     fun installationIdNotExists() = !installationIdExists()
 }

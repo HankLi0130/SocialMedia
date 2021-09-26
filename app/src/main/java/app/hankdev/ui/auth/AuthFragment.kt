@@ -5,52 +5,28 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import app.hankdev.R
-import app.hankdev.data.enums.AuthenticationState
-import app.hankdev.ui.SharedViewModel
 import app.hankdev.utils.ArchFragment
 import app.hankdev.utils.Consts.REQUEST_SIGN_IN
 import com.firebase.ui.auth.IdpResponse
 import kotlinx.android.synthetic.main.fragment_auth.*
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import tw.hankli.brookray.core.log.logInfo
 
 class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
 
     override val viewModel: AuthViewModel by viewModel()
 
-    private val sharedViewModel by sharedViewModel<SharedViewModel>()
-
-    private lateinit var navController: NavController
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        navController = findNavController()
-
-        // If the user presses the back button, bring them back to the home screen.
+        // If the user presses the back button, finish the app.
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            navController.popBackStack(R.id.timelineFragment, false)
+            requireActivity().finish()
         }
 
         view_sign_in.setOnClickListener {
             startActivityForResult(viewModel.getSignInIntent(), REQUEST_SIGN_IN)
-        }
-
-        sharedViewModel.authenticationState.observe(viewLifecycleOwner) { authenticationState ->
-            when (authenticationState) {
-                AuthenticationState.AUTHENTICATED -> {
-                    logInfo("AUTHENTICATED from AuthFragment")
-                }
-                AuthenticationState.UNAUTHENTICATED -> {
-                    logInfo("UNAUTHENTICATED from AuthFragment")
-                }
-                else -> {
-                }
-            }
         }
     }
 
@@ -58,18 +34,18 @@ class AuthFragment : ArchFragment<AuthViewModel>(R.layout.fragment_auth) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
-            when {
-                resultCode == RESULT_OK -> viewModel.onSignInSuccessfully(response)
-                response == null -> viewModel.showMessage(messageRes = R.string.sign_in_canceled)
-                else -> viewModel.onSignInFailed(response)
-            }
+            IdpResponse.fromResultIntent(data)?.let {
+                when (resultCode) {
+                    RESULT_OK -> viewModel.onSignInSuccessfully(it)
+                    else -> viewModel.onSignInFailed(it)
+                }
+            } ?: viewModel.showMessage(messageRes = R.string.sign_in_canceled)
         }
     }
 
     override fun notifyFromViewModel(code: Int) {
         when (code) {
-            viewModel.signInSuccessfullyCode -> navController.navigateUp()
+            viewModel.signInSuccessfullyCode -> findNavController().popBackStack()
         }
     }
 }

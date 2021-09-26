@@ -1,5 +1,6 @@
 package app.hankdev.data.models.firestore
 
+import app.hankdev.data.enums.Gender
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import tw.hankli.brookray.core.constant.EMPTY
@@ -7,7 +8,7 @@ import java.util.*
 
 @IgnoreExtraProperties
 class Profile(
-    override var objectId: String = EMPTY,
+    override var id: String = EMPTY,
 
     @get:PropertyName(DISPLAY_NAME)
     @set:PropertyName(DISPLAY_NAME)
@@ -47,17 +48,12 @@ class Profile(
 
     @get:PropertyName(GENDER)
     @set:PropertyName(GENDER)
-    var gender: app.hankdev.data.enums.Gender? = null,
+    var gender: Gender? = null,
 
-    @get:PropertyName(CREATED_AT)
-    @set:PropertyName(CREATED_AT)
-    var createdAt: Date = Date(),
+    override var createdAt: Date = Date(),
+    override var updatedAt: Date? = null,
 
-    @get:PropertyName(UPDATED_AT)
-    @set:PropertyName(UPDATED_AT)
-    var updatedAt: Date? = null
-
-) : FirestoreModel {
+    ) : FirestoreModel {
     companion object {
         const val DISPLAY_NAME = "displayName"
         const val DESCRIPTION = "description"
@@ -69,7 +65,5 @@ class Profile(
         const val PHONE_NUMBER = "phoneNumber"
         const val PHOTO_URL = "photoURL"
         const val GENDER = "sex"
-        const val CREATED_AT = "createdAt"
-        const val UPDATED_AT = "updatedAt"
     }
 }

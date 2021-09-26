@@ -25,12 +25,12 @@ open class FirestoreManager<M : FirestoreModel>(protected val rootCollection: Co
 
     suspend fun add(model: M): String {
         val doc = rootCollection.document()
-        model.objectId = doc.id
+        model.id = doc.id
         doc.set(model).await()
         return doc.id
     }
 
-    suspend fun set(model: M) = getDoc(model.objectId).set(model).await()
+    suspend fun set(model: M) = getDoc(model.id).set(model).await()
 
     suspend fun update(objectId: String, vararg updates: Pair<String, Any>) {
         rootCollection.document(objectId).update(hashMapOf(*updates)).await()
